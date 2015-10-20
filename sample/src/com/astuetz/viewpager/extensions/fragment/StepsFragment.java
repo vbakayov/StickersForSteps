@@ -19,6 +19,7 @@ package com.astuetz.viewpager.extensions.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,8 +57,16 @@ public class StepsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_card,container,false);
         ButterKnife.inject(this, rootView);
-        ViewCompat.setElevation(rootView,50);
+        ViewCompat.setElevation(rootView, 50);
         textView.setText("CARD "+position);
 		return rootView;
 	}
+
+	public void updateArticleView(float v) {
+		Log.w("Count", Float.toString(v));
+		textView.setText("Step "+position);
+	}
+
+
+
 }

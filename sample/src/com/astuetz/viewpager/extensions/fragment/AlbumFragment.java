@@ -26,6 +26,7 @@ public class AlbumFragment extends Fragment {
     private int position;
 
     public static StepsFragment newInstance(int position) {
+
         StepsFragment f = new StepsFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);

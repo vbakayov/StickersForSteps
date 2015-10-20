@@ -63,12 +63,15 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
     private Button refresh;
     boolean activityRunning;
     private View.OnClickListener myhandler1;
+    private float steps;
+
 
 
     private MyPagerAdapter adapter;
     private Drawable oldBackground = null;
     private int currentColor;
     private SystemBarTintManager mTintManager;
+    private StepsFragment m;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +105,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
                 Toast.makeText(MainActivity.this, "Tab reselected: " + position, Toast.LENGTH_SHORT).show();
             }
         });
+         //m = ((StepsFragment) getSupportFragmentManager().findFragmentById(R.id.steps_fragment));
     }
 
     @Override
@@ -109,6 +113,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -180,19 +185,36 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(final SensorEvent event) {
+       // final StepsFragment articleFrag = (StepsFragment)
+                //getSupportFragmentManager().findFragmentById(R.id.steps_fragment);
+
         if (activityRunning) {
             if(firstTime){
                 initialStep = (int) event.values[0];
-                count.setText(String.valueOf(event.values[0]- initialStep));
+                steps= event.values[0] - initialStep;
+                count.setText(String.valueOf(event.values[0] - initialStep));
                 firstTime= false;
-            }else{
-                count.setText(String.valueOf(event.values[0]- initialStep));
+//                if(articleFrag != null)
+//                    articleFrag.updateArticleView(event.values[0]- initialStep);
+                     steps= event.values[0] - initialStep;
+
+
+
+                }else{
+                count.setText(String.valueOf(event.values[0] - initialStep));
+                steps= event.values[0] - initialStep;
+//                if(articleFrag != null)
+//                    articleFrag.updateArticleView(event.values[0] - initialStep);
+                    steps= event.values[0] - initialStep;
+
             }
 
             myhandler1 = new View.OnClickListener() {
                 public void onClick(View v) {
                     initialStep =  (int) event.values[0];
                     count.setText(String.valueOf(event.values[0] - initialStep));
+//                    if(articleFrag != null)
+//                        articleFrag.updateArticleView(event.values[0] - initialStep);
                 }
             };
         }
@@ -223,13 +245,23 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
 
         @Override
         public Fragment getItem(int position) {
-            if(position == 0)
-                return StepsFragment.newInstance(position);
+            if(position == 0){
+               // return StepsFragment.newInstance(position);
+//            StepsFragment myFragment = new StepsFragment();
+//            StepsFragment.add(R.id.steps_fragment, myFragment, "testfragment");
+
+//           getSupportFragmentManager().beginTransaction().add(R.id.activity_main, new StepsFragment(), "tag").commit();
+               // getSupportFragmentManager().beginTransaction().add(R.id.steps_fragment, new StepsFragment(), "steps_fragment").commit();
+                return StepsFragment.newInstance(Math.round(steps) );
+            }
             else if (position == 1)
                 return AlbumFragment.newInstance(1);
             else{
                 return AlbumFragment.newInstance(1);
             }
         }
+    }
+    public interface OnNewtepListener{
+        public void onNewStep(int position);
     }
 }
