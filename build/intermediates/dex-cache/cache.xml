@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\StickersForSteps\sample\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="C:\StickersForSteps\sample\build\intermediates\pre-dexed\debug\classes-49419ac5fa7bcccacb5b5e8b17060645a73ad57c.jar" />
+    </item>
+    <item
+        jar="C:\StickersForSteps\sample\build\intermediates\exploded-aar\com.jpardogo.materialtabstrip\library\1.1.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c44e7250c00ff5ae8c04eaa62794bb6cae247d24">
+        <dex dex="C:\StickersForSteps\sample\build\intermediates\pre-dexed\debug\classes-06b15bf39a60d5f9bff4f976cc09d04188c6b8ef.jar" />
+    </item>
+    <item
+        jar="C:\Users\Viktor\.gradle\caches\modules-2\files-2.1\com.readystatesoftware.systembartint\systembartint\1.0.3\de4f7404e2f58d8f6e83cb1e85d0c2d6c2987287\systembartint-1.0.3.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="de4f7404e2f58d8f6e83cb1e85d0c2d6c2987287">
+        <dex dex="C:\StickersForSteps\sample\build\intermediates\pre-dexed\debug\systembartint-1.0.3-1f089c4f167d99cb9e4c37a8a78ce7215f6e834e.jar" />
+    </item>
+    <item
+        jar="C:\StickersForSteps\sample\build\intermediates\exploded-aar\com.android.support\cardview-v7\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="97f7e239e86ef994de894818fdd8a71d2e89d6aa">
+        <dex dex="C:\StickersForSteps\sample\build\intermediates\pre-dexed\debug\classes-4f3ace824fa51df958886dee5ddbecb49840d7b9.jar" />
+    </item>
+    <item
+        jar="C:\Users\Viktor\.gradle\caches\modules-2\files-2.1\com.jakewharton\butterknife\6.0.0\3a10b25b6820e19102e118711afe6a66c0bae123\butterknife-6.0.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="3a10b25b6820e19102e118711afe6a66c0bae123">
+        <dex dex="C:\StickersForSteps\sample\build\intermediates\pre-dexed\debug\butterknife-6.0.0-79225663fd84b3ae924df398b564de6af7cf4bcc.jar" />
+    </item>
+    <item
+        jar="C:\Users\Viktor\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="C:\StickersForSteps\sample\build\intermediates\pre-dexed\debug\library-2.4.0-d8e20bbb70527fedca0445ab3f87e1f37ad237c9.jar" />
+    </item>
+    <item
+        jar="C:\StickersForSteps\sample\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\libs\internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="C:\StickersForSteps\sample\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-62e46c5c11774825ebd7b0d8b1d628a9219e7391.jar" />
+    </item>
+    <item
+        jar="C:\Users\Viktor\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="C:\StickersForSteps\sample\build\intermediates\pre-dexed\debug\support-annotations-22.2.0-e8ebb05ac33a5258aaa30fc1d0b1f6a9acbfafb2.jar" />
+    </item>
+    <item
+        jar="C:\StickersForSteps\sample\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="C:\StickersForSteps\sample\build\intermediates\pre-dexed\debug\classes-217de6707613884a846fa7ea27e5e28f726277b9.jar" />
+    </item>
+
+</items>

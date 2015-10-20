@@ -1,0 +1,8 @@
+<resources>
+
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:dialogTheme">@style/DialogStyle</item>
+    </style>
+
+</resources>
