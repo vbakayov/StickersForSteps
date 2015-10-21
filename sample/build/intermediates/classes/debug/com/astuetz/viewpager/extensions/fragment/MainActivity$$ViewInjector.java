@@ -9,9 +9,9 @@ public class MainActivity$$ViewInjector {
     View view;
     view = finder.findRequiredView(source, 2131427432, "field 'toolbar'");
     target.toolbar = (android.support.v7.widget.Toolbar) view;
-    view = finder.findRequiredView(source, 2131427411, "field 'tabs'");
-    target.tabs = (com.astuetz.PagerSlidingTabStrip) view;
-    view = finder.findRequiredView(source, 2131427412, "field 'pager'");
+    view = finder.findRequiredView(source, 2131427409, "field 'tabs'");
+    target.tabs = (com.astuetz.SlidingTabLayout) view;
+    view = finder.findRequiredView(source, 2131427410, "field 'pager'");
     target.pager = (android.support.v4.view.ViewPager) view;
   }
 

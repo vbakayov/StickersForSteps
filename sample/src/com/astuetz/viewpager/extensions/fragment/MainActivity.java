@@ -32,6 +32,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -49,6 +50,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.astuetz.SlidingTabLayout;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -60,19 +62,18 @@ import butterknife.InjectView;
 
 import static java.security.AccessController.getContext;
 
-public class MainActivity extends ActionBarActivity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
     @InjectView(R.id.tabs)
-    PagerSlidingTabStrip tabs;
+    SlidingTabLayout tabs;
     @InjectView(R.id.pager)
     ViewPager pager;
 
     private SensorManager sensorManager;
     private boolean firstTime;
     private int initialStep;
-    private TextView count;
     private Button refresh;
     boolean activityRunning;
     private View.OnClickListener myhandler1;
@@ -91,9 +92,6 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        count = (TextView) findViewById(R.id.count);
-        refresh= (Button) findViewById(R.id.buttonrefresh);
-        refresh.setOnClickListener(myhandler1);
         initialStep = 0;
         firstTime= true;
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -105,6 +103,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         mTintManager.setStatusBarTintEnabled(true);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
+        tabs.setDistributeEvenly(true);
         tabs.setViewPager(pager);
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                 .getDisplayMetrics());
@@ -113,13 +112,20 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         //changeColor(getResources().getColor(R.color.green));
         tabs.setBackgroundColor(getResources().getColor(R.color.green));
 
-        tabs.setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
+//        tabs.setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
+//            @Override
+//            public void onTabReselected(int position) {
+//                Toast.makeText(MainActivity.this, "Tab reselected: " + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+        // Setting Custom Color for the Scroll bar indicator of the Tab View
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
-            public void onTabReselected(int position) {
-                Toast.makeText(MainActivity.this, "Tab reselected: " + position, Toast.LENGTH_SHORT).show();
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.tabsScrollColor);
             }
         });
-         //m = ((StepsFragment) getSupportFragmentManager().findFragmentById(R.id.steps_fragment));
 
 
   }
@@ -215,33 +221,13 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
             if(firstTime){
                 initialStep = (int) event.values[0];
                 steps= event.values[0] - initialStep;
-                count.setText(String.valueOf(event.values[0] - initialStep));
                 firstTime= false;
-
-                steps= event.values[0] - initialStep;
                 frag.updateCountView(steps);
-
-
-
                 }else{
-                count.setText(String.valueOf(event.values[0] - initialStep));
-                steps= event.values[0] - initialStep;
-//                if(articleFrag != null)
-//                    articleFrag.updateArticleView(event.values[0] - initialStep);
                     steps= event.values[0] - initialStep;
-                frag.updateCountView(steps);
+                    frag.updateCountView(steps);
 
-            }
-
-            myhandler1 = new View.OnClickListener() {
-                public void onClick(View v) {
-                    initialStep =  (int) event.values[0];
-                    count.setText(String.valueOf(event.values[0] - initialStep));
-//                    if(articleFrag != null)
-//                        articleFrag.updateArticleView(event.values[0] - initialStep);
-                   // frag.updateCountView(steps);
                 }
-            };
         }
         }
     }
@@ -256,7 +242,8 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
 
     // Extend from SmartFragmentStatePagerAdapter now instead for more dynamic ViewPager items
     public static class MyPagerAdapter extends SmartFragmentStatePagerAdapter {
-        private static int NUM_ITEMS = 3;
+        private static int NUM_ITEMS = 4;
+        private final String[] TITLES = {"Steps", "Album","Stickers","Swap"};
 
         public MyPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
@@ -272,21 +259,22 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0: // Fragment # 0 - This will show FirstFragment
+                case 0: // Fragment # 1 - This will show Steps Fragment
                     return StepsFragment.newInstance(0);
-                case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return StepsFragment.newInstance(1);
-                case 2: // Fragment # 1 - This will show SecondFragment
-                    return StepsFragment.newInstance(2);
+                case 1: // Fragment # 2 - This will show  Album
+                    return AlbumFragment.newInstance(1);
+                case 2: // Fragment # 3 - This will show Stickers
+                    return StickersFragment.newInstance(2);
+                case 3 : //Fragmern 4 - Swapping
+                    return SwapsFragment.newInstance(3);
                 default:
                     return null;
             }
         }
 
-        // Returns the page title for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Page " + position;
+            return TITLES[position];
         }
 
     }

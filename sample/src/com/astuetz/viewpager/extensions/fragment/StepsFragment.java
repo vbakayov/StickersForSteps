@@ -38,7 +38,7 @@ public class StepsFragment extends Fragment {
     @InjectView(R.id.textView2)
     TextView textView;
 
-	private int steps;
+	private static int steps;
 
 	public static StepsFragment newInstance(int position) {
 		StepsFragment f = new StepsFragment();
@@ -60,6 +60,7 @@ public class StepsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.steps_fragment,container,false);
         ButterKnife.inject(this, rootView);
         ViewCompat.setElevation(rootView, 50);
+		Log.w("Create VIew", "HERE");
         textView.setText("Steps "+steps);
 		return rootView;
 	}

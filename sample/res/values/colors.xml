@@ -4,4 +4,7 @@
     <color name="green">#689F38</color>
     <color name="greenDark">#3E5F22</color>
     <color name="banana">#FFCC00</color>
+    <color name="ColorPrimary">#00897B</color>
+    <color name="ColorPrimaryDark">#00695C</color>
+    <color name="tabsScrollColor">#004D40</color>
 </resources>

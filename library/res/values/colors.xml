@@ -2,4 +2,7 @@
 <resources>
     <color name="psts_background_tab_pressed">#1AFFFFFF</color>
     <color name="psts_background_tab_pressed_ripple">#AAFFFFFF</color>
+    <color name="ColorPrimary">#00897B</color>
+    <color name="ColorPrimaryDark">#00695C</color>
+    <color name="tabsScrollColor">#004D40</color>
 </resources>

@@ -16,8 +16,12 @@ int attr pstsTabTextSize 0x7f01000c
 int attr pstsTabTextStyle 0x7f01000e
 int attr pstsUnderlineColor 0x7f010002
 int attr pstsUnderlineHeight 0x7f010003
-int color psts_background_tab_pressed 0x7f040000
-int color psts_background_tab_pressed_ripple 0x7f040001
+int color ColorPrimary 0x7f040000
+int color ColorPrimaryDark 0x7f040001
+int color psts_background_tab_pressed 0x7f040002
+int color psts_background_tab_pressed_ripple 0x7f040003
+int color selector 0x7f040005
+int color tabsScrollColor 0x7f040004
 int drawable psts_background_tab 0x7f020000
 int id bold 0x7f050000
 int id italic 0x7f050001

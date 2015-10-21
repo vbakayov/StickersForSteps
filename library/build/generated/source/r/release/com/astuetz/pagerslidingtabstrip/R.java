@@ -170,8 +170,12 @@ containing a value of this type.
         public static int pstsUnderlineHeight=0x7f010003;
     }
     public static final class color {
-        public static int psts_background_tab_pressed=0x7f040000;
-        public static int psts_background_tab_pressed_ripple=0x7f040001;
+        public static int ColorPrimary=0x7f040000;
+        public static int ColorPrimaryDark=0x7f040001;
+        public static int psts_background_tab_pressed=0x7f040002;
+        public static int psts_background_tab_pressed_ripple=0x7f040003;
+        public static int selector=0x7f040005;
+        public static int tabsScrollColor=0x7f040004;
     }
     public static final class drawable {
         public static int psts_background_tab=0x7f020000;
