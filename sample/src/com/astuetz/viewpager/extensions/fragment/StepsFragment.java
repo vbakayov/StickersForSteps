@@ -18,6 +18,7 @@ package com.astuetz.viewpager.extensions.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,37 +35,40 @@ public class StepsFragment extends Fragment {
 
 	private static final String ARG_POSITION = "position";
 
-    @InjectView(R.id.textView)
+    @InjectView(R.id.textView2)
     TextView textView;
 
-	private int position;
+	private int steps;
 
 	public static StepsFragment newInstance(int position) {
 		StepsFragment f = new StepsFragment();
 		Bundle b = new Bundle();
 		b.putInt(ARG_POSITION, position);
 		f.setArguments(b);
+
 		return f;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		position = getArguments().getInt(ARG_POSITION);
+		//steps = getArguments().getInt(ARG_POSITION);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_card,container,false);
+        View rootView = inflater.inflate(R.layout.steps_fragment,container,false);
         ButterKnife.inject(this, rootView);
         ViewCompat.setElevation(rootView, 50);
-        textView.setText("CARD "+position);
+        textView.setText("Steps "+steps);
 		return rootView;
 	}
 
-	public void updateArticleView(float v) {
-		Log.w("Count", Float.toString(v));
-		textView.setText("Step "+position);
+	public void updateCountView(float steps) {
+		Log.w("Count", Float.toString(steps));
+		this.steps=Math.round(steps);
+		textView.setText("Steps "+this.steps);
+
 	}
 
 

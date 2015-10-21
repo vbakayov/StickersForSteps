@@ -29,13 +29,21 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.util.SparseArray;
 import android.util.TypedValue;
+
+
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,8 +52,13 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+
+import static java.security.AccessController.getContext;
 
 public class MainActivity extends ActionBarActivity implements SensorEventListener {
 
@@ -71,6 +84,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
     private Drawable oldBackground = null;
     private int currentColor;
     private SystemBarTintManager mTintManager;
+    private SmartFragmentStatePagerAdapter adapterViewPager;
     private StepsFragment m;
 
     @Override
@@ -106,7 +120,9 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
             }
         });
          //m = ((StepsFragment) getSupportFragmentManager().findFragmentById(R.id.steps_fragment));
-    }
+
+
+  }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -185,18 +201,25 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(final SensorEvent event) {
-       // final StepsFragment articleFrag = (StepsFragment)
-                //getSupportFragmentManager().findFragmentById(R.id.steps_fragment);
+
+
 
         if (activityRunning) {
+            StepsFragment frag = (StepsFragment) adapter.getRegisteredFragment(0);
+            if (frag != null) {
+                // If article frag is available, we're in two-pane layout...
+
+                // Call a method in the ArticleFragment to update its content
+
+
             if(firstTime){
                 initialStep = (int) event.values[0];
                 steps= event.values[0] - initialStep;
                 count.setText(String.valueOf(event.values[0] - initialStep));
                 firstTime= false;
-//                if(articleFrag != null)
-//                    articleFrag.updateArticleView(event.values[0]- initialStep);
-                     steps= event.values[0] - initialStep;
+
+                steps= event.values[0] - initialStep;
+                frag.updateCountView(steps);
 
 
 
@@ -206,6 +229,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
 //                if(articleFrag != null)
 //                    articleFrag.updateArticleView(event.values[0] - initialStep);
                     steps= event.values[0] - initialStep;
+                frag.updateCountView(steps);
 
             }
 
@@ -215,53 +239,88 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
                     count.setText(String.valueOf(event.values[0] - initialStep));
 //                    if(articleFrag != null)
 //                        articleFrag.updateArticleView(event.values[0] - initialStep);
+                   // frag.updateCountView(steps);
                 }
             };
         }
-
+        }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
-    public class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = {"Steps","Album","Stickers","Swap"};
 
-        public MyPagerAdapter(FragmentManager fm) {
-            super(fm);
+
+
+    // Extend from SmartFragmentStatePagerAdapter now instead for more dynamic ViewPager items
+    public static class MyPagerAdapter extends SmartFragmentStatePagerAdapter {
+        private static int NUM_ITEMS = 3;
+
+        public MyPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
         }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return TITLES[position];
-        }
-
+        // Returns total number of pages
         @Override
         public int getCount() {
-            return TITLES.length;
+            return NUM_ITEMS;
         }
 
+        // Returns the fragment to display for that page
         @Override
         public Fragment getItem(int position) {
-            if(position == 0){
-               // return StepsFragment.newInstance(position);
-//            StepsFragment myFragment = new StepsFragment();
-//            StepsFragment.add(R.id.steps_fragment, myFragment, "testfragment");
-
-//           getSupportFragmentManager().beginTransaction().add(R.id.activity_main, new StepsFragment(), "tag").commit();
-               // getSupportFragmentManager().beginTransaction().add(R.id.steps_fragment, new StepsFragment(), "steps_fragment").commit();
-                return StepsFragment.newInstance(Math.round(steps) );
-            }
-            else if (position == 1)
-                return AlbumFragment.newInstance(1);
-            else{
-                return AlbumFragment.newInstance(1);
+            switch (position) {
+                case 0: // Fragment # 0 - This will show FirstFragment
+                    return StepsFragment.newInstance(0);
+                case 1: // Fragment # 0 - This will show FirstFragment different title
+                    return StepsFragment.newInstance(1);
+                case 2: // Fragment # 1 - This will show SecondFragment
+                    return StepsFragment.newInstance(2);
+                default:
+                    return null;
             }
         }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "Page " + position;
+        }
+
     }
-    public interface OnNewtepListener{
-        public void onNewStep(int position);
+
+}
+
+
+
+abstract class SmartFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
+    // Sparse array to keep track of registered fragments in memory
+    private SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+
+    public SmartFragmentStatePagerAdapter(FragmentManager fragmentManager) {
+        super(fragmentManager);
+    }
+
+    // Register the fragment when the item is instantiated
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment fragment = (Fragment) super.instantiateItem(container, position);
+        Log.d("PUT","FRAGMENT");
+        registeredFragments.put(position, fragment);
+        return fragment;
+    }
+
+    // Unregister when the item is inactive
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        registeredFragments.remove(position);
+        super.destroyItem(container, position, object);
+    }
+
+    // Returns the fragment for the position (if instantiated)
+    public Fragment getRegisteredFragment(int position) {
+        return registeredFragments.get(position);
     }
 }

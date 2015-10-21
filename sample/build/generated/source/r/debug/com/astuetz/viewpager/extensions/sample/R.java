@@ -1826,7 +1826,7 @@ containing a value of this type.
         public static final int action_bar_spinner=0x7f0b0001;
         public static final int action_bar_subtitle=0x7f0b0026;
         public static final int action_bar_title=0x7f0b0025;
-        public static final int action_contact=0x7f0b0068;
+        public static final int action_contact=0x7f0b0069;
         public static final int action_context_bar=0x7f0b0043;
         public static final int action_divider=0x7f0b005e;
         public static final int action_menu_divider=0x7f0b0002;
@@ -1914,10 +1914,11 @@ containing a value of this type.
         public static final int text2=0x7f0b0062;
         public static final int textSpacerNoButtons=0x7f0b0035;
         public static final int textView=0x7f0b0058;
+        public static final int textView2=0x7f0b0067;
         public static final int time=0x7f0b0060;
         public static final int title=0x7f0b002e;
         public static final int title_template=0x7f0b0031;
-        public static final int toolbar=0x7f0b0067;
+        public static final int toolbar=0x7f0b0068;
         public static final int topPanel=0x7f0b0030;
         public static final int up=0x7f0b0008;
         public static final int useLogo=0x7f0b0012;
