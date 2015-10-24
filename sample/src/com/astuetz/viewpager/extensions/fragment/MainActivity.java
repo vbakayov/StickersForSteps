@@ -170,9 +170,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_contact:
-                QuickContactFragment.newInstance().show(getSupportFragmentManager(), "QuickContactFragment");
-                return true;
+//            case R.id.action_contact:
+//                QuickContactFragment.newInstance().show(getSupportFragmentManager(), "QuickContactFragment");
+//                return true;
             case R.id.menu_toggle_log:
                 mLogShown = !mLogShown;
                 ViewAnimator output = (ViewAnimator) findViewById(R.id.sample_output);
