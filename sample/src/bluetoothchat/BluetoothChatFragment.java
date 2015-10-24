@@ -19,6 +19,7 @@ package bluetoothchat;
 
 
 
+import butterknife.ButterKnife;
 import logger.Log;
 
 import android.app.ActionBar;
@@ -32,6 +33,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,6 +49,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.astuetz.viewpager.extensions.fragment.StepsFragment;
 import com.astuetz.viewpager.extensions.sample.R;
 
 
@@ -56,6 +59,8 @@ import com.astuetz.viewpager.extensions.sample.R;
 public class BluetoothChatFragment extends Fragment {
 
     private static final String TAG = "BluetoothChatFragment";
+
+    private static final String ARG_POSITION = "position";
 
     // Intent request codes
     private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
@@ -404,5 +409,16 @@ public class BluetoothChatFragment extends Fragment {
         }
         return false;
     }
+
+    public static BluetoothChatFragment newInstance(int i) {
+
+        BluetoothChatFragment f = new BluetoothChatFragment();
+        Bundle b = new Bundle();
+        b.putInt(ARG_POSITION, i);
+        f.setArguments(b);
+
+        return f;
+    }
+
 
 }

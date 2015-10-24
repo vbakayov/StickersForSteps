@@ -106,12 +106,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState == null) {
+//        if (savedInstanceState == null) {
 //            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //            BluetoothChatFragment fragment = new BluetoothChatFragment();
-//          transaction.replace(R.id.sample_content_fragment, fragment);
+//             transaction.replace(R.id.sample_content_fragment, fragment);
 //            transaction.commit();
-        }
+//        }
 
         initialStep = 0;
         firstTime= true;
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (countSensor != null) {
             sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
         } else {
-            Toast.makeText(this, "Count sensor not available!", Toast.LENGTH_LONG).show();
+          //  Toast.makeText(this, "Count sensor not available!", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -337,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 case 2: // Fragment # 3 - This will show Stickers
                     return StickersFragment.newInstance(2);
                 case 3 : //Fragmern 4 - Swapping
-                    return SwapsFragment.newInstance(3);
+                    return BluetoothChatFragment.newInstance(3);
                 default:
                     return null;
             }
