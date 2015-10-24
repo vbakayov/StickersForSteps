@@ -28,4 +28,4 @@ android {
     }
 }
 
-apply from: 'https://raw.githubusercontent.com/jpardogo/gradle-mvn-push/master/gradle-mvn-push.gradle'
+//apply from: 'https://raw.githubusercontent.com/jpardogo/gradle-mvn-push/master/gradle-mvn-push.gradle'

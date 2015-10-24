@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
     <!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
     <eat-comment/>
     <attr format="reference" name="drawerArrowStyle"/>
@@ -205,9 +205,24 @@
     <item name="dialog_fixed_width_minor" type="dimen">320dp</item>
     <item format="float" name="disabled_alpha_material_dark" type="dimen">0.30</item>
     <item format="float" name="disabled_alpha_material_light" type="dimen">0.26</item>
+    <!-- From: file:/C:/StickersForSteps/sample/res/values/template-dimens.xml -->
+    <eat-comment/>
+    <dimen name="horizontal_page_margin">@dimen/margin_medium</dimen>
+    <dimen name="margin_huge">64dp</dimen>
+    <dimen name="margin_large">32dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_tiny">4dp</dimen>
+    <!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
+    <eat-comment/>
     <dimen name="notification_large_icon_height">64dp</dimen>
     <dimen name="notification_large_icon_width">64dp</dimen>
     <dimen name="notification_subtext_size">12dp</dimen>
+    <!-- From: file:/C:/StickersForSteps/sample/res/values/template-dimens.xml -->
+    <eat-comment/>
+    <dimen name="vertical_page_margin">@dimen/margin_medium</dimen>
+    <!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
+    <eat-comment/>
     <drawable name="notification_template_icon_bg">#3333B5E5</drawable>
     <item name="action_bar_activity_content" type="id"/>
     <item name="action_bar_spinner" type="id"/>
@@ -244,9 +259,54 @@
     <eat-comment/>
     <string name="action_contact">Contact</string>
     <string name="app_name">PagerSlidingTabStrip</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
+    <string name="button_scan">Scan for devices</string>
+    <string name="discoverable">Make discoverable</string>
+    <string name="insecure_connect">Connect a device - Insecure</string>
+    <!-- From: file:/C:/StickersForSteps/sample/res/values/base-strings.xml -->
+    <eat-comment/>
+    <string name="intro_message">
+        <![CDATA[
+        
+            
+            This application allows two Android devices to carry out two-way text chat over
+            Bluetooth. It demonstrates all the fundamental Bluetooth API capabilites, such as:
+              (1) Scanning for other Bluetooth devices
+              (2) Querying the local Bluetooth adapter for paired Bluetooth devices
+              (3) Establishing RFCOMM channels/sockets
+              (4) Connecting to a remote device
+              (5) Transfering data over Bluetooth
+            
+        
+        ]]>
+    </string>
+    <!-- From: file:/C:/StickersForSteps/sample/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="none_found">No devices found</string>
+    <string name="none_paired">No devices have been paired</string>
+    <string name="not_connected">You are not connected to a device</string>
+    <!-- From: file:/C:/StickersForSteps/sample/res/values/fragmentview_strings.xml -->
+    <eat-comment/>
+    <string name="sample_hide_log">Hide Log</string>
+    <string name="sample_show_log">Show Log</string>
+    <!-- From: file:/C:/StickersForSteps/sample/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="scanning">scanning for devices...</string>
+    <string name="secure_connect">Connect a device - Secure</string>
+    <string name="select_device">select a device to connect</string>
+    <string name="send">Send</string>
     <!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
     <eat-comment/>
     <string name="status_bar_notification_info_overflow">999+</string>
+    <!-- From: file:/C:/StickersForSteps/sample/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="title_connected_to">connected to <ns1:g id="device_name">%1$s</ns1:g></string>
+    <string name="title_connecting">connecting...</string>
+    <string name="title_not_connected">not connected</string>
+    <string name="title_other_devices">Other Available Devices</string>
+    <string name="title_paired_devices">Paired Devices</string>
+    <!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
+    <eat-comment/>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>
     <style name="Animation.AppCompat.Dialog" parent="Base.Animation.AppCompat.Dialog"/>
@@ -1426,11 +1486,22 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <!-- From: file:/C:/StickersForSteps/sample/res/values/template-styles.xml -->
+    <eat-comment/>
+    <style name="Theme.Base" parent="android:Theme.Light"/>
+    <style name="Theme.Sample" parent="Theme.Base"/>
+    <!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
+    <eat-comment/>
     <style name="ThemeOverlay.AppCompat" parent="Base.ThemeOverlay.AppCompat"/>
     <style name="ThemeOverlay.AppCompat.ActionBar" parent="Base.ThemeOverlay.AppCompat.ActionBar"/>
     <style name="ThemeOverlay.AppCompat.Dark" parent="Base.ThemeOverlay.AppCompat.Dark"/>
     <style name="ThemeOverlay.AppCompat.Dark.ActionBar" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="ThemeOverlay.AppCompat.Light" parent="Base.ThemeOverlay.AppCompat.Light"/>
+    <!-- From: file:/C:/StickersForSteps/sample/res/values/template-styles.xml -->
+    <eat-comment/>
+    <style name="Widget"/>
+    <!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
+    <eat-comment/>
     <style name="Widget.AppCompat.ActionBar" parent="Base.Widget.AppCompat.ActionBar">
     </style>
     <style name="Widget.AppCompat.ActionBar.Solid" parent="Base.Widget.AppCompat.ActionBar.Solid">
@@ -1522,4 +1593,15 @@
     <style name="Widget.AppCompat.TextView.SpinnerItem" parent="Base.Widget.AppCompat.TextView.SpinnerItem"/>
     <style name="Widget.AppCompat.Toolbar" parent="Base.Widget.AppCompat.Toolbar"/>
     <style name="Widget.AppCompat.Toolbar.Button.Navigation" parent="RtlOverlay.Widget.AppCompat.Toolbar.Button.Navigation"/>
+    <!-- From: file:/C:/StickersForSteps/sample/res/values/template-styles.xml -->
+    <eat-comment/>
+    <style name="Widget.SampleMessage">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="Widget.SampleMessageTile">
+        <item name="android:shadowColor">#7F000000</item>
+        <item name="android:shadowDy">-3.5</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
 </resources>

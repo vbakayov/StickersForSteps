@@ -30,6 +30,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +49,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewAnimator;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.astuetz.SlidingTabLayout;
@@ -57,6 +59,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 
+import bluetoothchat.BluetoothChatFragment;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -92,6 +95,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (savedInstanceState == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            BluetoothChatFragment fragment = new BluetoothChatFragment();
+            transaction.replace(R.id.sample_content_fragment, fragment);
+            transaction.commit();
+        }
+
         initialStep = 0;
         firstTime= true;
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -135,6 +146,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//        MenuItem logToggle = menu.findItem(R.id.menu_toggle_log);
+//        logToggle.setVisible(findViewById(R.id.sample_output) instanceof ViewAnimator);
+//        logToggle.setTitle(mLogShown ? R.string.sample_hide_log : R.string.sample_show_log);
+//
+//        return super.onPrepareOptionsMenu(menu);
+//    }
 
 
     @Override
