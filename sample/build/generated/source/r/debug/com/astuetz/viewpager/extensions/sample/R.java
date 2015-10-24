@@ -1893,6 +1893,7 @@ containing a value of this type.
         public static final int list_item=0x7f0b002c;
         public static final int log_fragment=0x7f0b0073;
         public static final int media_actions=0x7f0b0064;
+        public static final int menu_toggle_log=0x7f0b007a;
         public static final int middle=0x7f0b0015;
         public static final int multiply=0x7f0b0020;
         public static final int never=0x7f0b0019;
