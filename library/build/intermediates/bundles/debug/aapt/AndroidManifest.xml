@@ -3,7 +3,7 @@
     package="com.astuetz.pagerslidingtabstrip" >
 
     <uses-sdk
-        android:minSdkVersion="12"
+        android:minSdkVersion="10"
         android:targetSdkVersion="22" />
 
     <application />
