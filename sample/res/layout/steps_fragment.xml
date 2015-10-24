@@ -8,7 +8,7 @@
     <TextView android:textColor="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Step count since reboot:"/>
+        android:text="Step count since rebooooot:"/>
     <TextView android:id="@+id/count"
         android:textSize="36dp"
         android:textColor="@android:color/white"

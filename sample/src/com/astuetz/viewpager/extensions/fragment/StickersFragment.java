@@ -32,9 +32,9 @@ public class StickersFragment extends Fragment {
 
     private int position;
 
-    public static StepsFragment newInstance(int position) {
+    public static StickersFragment newInstance(int position) {
 
-        StepsFragment f = new StepsFragment();
+        StickersFragment f = new StickersFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
         f.setArguments(b);

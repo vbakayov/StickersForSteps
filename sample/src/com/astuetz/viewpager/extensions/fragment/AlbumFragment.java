@@ -25,9 +25,9 @@ public class AlbumFragment extends Fragment {
 
     private int position;
 
-    public static StepsFragment newInstance(int position) {
+    public static AlbumFragment newInstance(int position) {
 
-        StepsFragment f = new StepsFragment();
+        AlbumFragment f = new AlbumFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
         f.setArguments(b);
@@ -42,10 +42,12 @@ public class AlbumFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_card,container,false);
-        ButterKnife.inject(this, rootView);
-        ViewCompat.setElevation(rootView,50);
-        textView.setText("CARD "+position);
-        return rootView;
+        View v = inflater.inflate(R.layout.fragment_album, container, false);
+
+        TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
+        tv.setText(getArguments().getString("msg"));
+
+        return v;
     }
+
 }

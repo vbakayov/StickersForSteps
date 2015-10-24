@@ -6,6 +6,7 @@ package com.astuetz.viewpager.extensions.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.astuetz.viewpager.extensions.sample.R;
 
+import bluetoothchat.BluetoothChatFragment;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -32,9 +34,9 @@ public class SwapsFragment extends Fragment {
 
     private int position;
 
-    public static StepsFragment newInstance(int position) {
+    public static SwapsFragment newInstance(int position) {
 
-        StepsFragment f = new StepsFragment();
+        SwapsFragment f = new SwapsFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
         f.setArguments(b);
@@ -49,10 +51,15 @@ public class SwapsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_card,container,false);
-        ButterKnife.inject(this, rootView);
-        ViewCompat.setElevation(rootView, 50);
-        textView.setText("CARD "+position);
+        View rootView = inflater.inflate(R.layout.swaps_fragment,container,false);
+
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        BluetoothChatFragment fragment = new BluetoothChatFragment();
+        transaction.replace(R.id.sample_content_fragment, fragment);
+        transaction.commit();
+        //ButterKnife.inject(this, rootView);
+        //ViewCompat.setElevation(rootView, 50);
+       // textView.setText("CARD "+position);
         return rootView;
     }
 }
