@@ -87,8 +87,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Button refresh;
     boolean activityRunning;
     private View.OnClickListener myhandler1;
-    private float steps;
-
+    private int steps;
+     private Database db;
 
 
     private MyPagerAdapter adapter;//
@@ -100,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private SystemBarTintManager mTintManager;
     private SmartFragmentStatePagerAdapter adapterViewPager;
     private StepsFragment m;
+    private int since_boot;
+    private int todayOffset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -278,28 +280,31 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
     @Override
     public void onSensorChanged(final SensorEvent event) {
+         db = Database.getInstance(this);
 
 
 
         if (activityRunning) {
+            steps=  (int) event.values[0];
+
+            android.util.Log.w("CountActivity", Integer.toString(steps));
             StepsFragment frag = (StepsFragment) adapter.getRegisteredFragment(0);
-            if (frag != null) {
-                // If article frag is available, we're in two-pane layout...
+            if(frag != null){
+                if (db.getSteps(Util.getToday()) == Integer.MIN_VALUE)
+                    db.insertNewDay(Util.getToday(), steps);
 
-                // Call a method in the ArticleFragment to update its content
 
+                db.saveCurrentSteps(steps);
+                todayOffset = db.getSteps(Util.getToday());
 
-            if(firstTime){
-                initialStep = (int) event.values[0];
-                steps= event.values[0] - initialStep;
-                firstTime= false;
-                frag.updateCountView(steps);
-                }else{
-                    steps= event.values[0] - initialStep;
-                    frag.updateCountView(steps);
+                since_boot = db.getCurrentSteps();
+                android.util.Log.w("StepsSinceReboot",Integer.toString(since_boot));
+                // todayOffset might still be Integer.MIN_VALUE on first start
+                int steps_today = Math.max(todayOffset + since_boot, 0);
 
-                }
-        }
+                 frag.updateCountView(steps_today);
+                db.close();
+            }
         }
     }
 
