@@ -30,13 +30,13 @@ public final class R {
 	public static final class color {
 		public static final int ColorPrimary = 0x7f0a0000;
 		public static final int ColorPrimaryDark = 0x7f0a0001;
-		public static final int psts_background_tab_pressed = 0x7f0a0033;
-		public static final int psts_background_tab_pressed_ripple = 0x7f0a0034;
-		public static final int selector = 0x7f0a0049;
-		public static final int tabsScrollColor = 0x7f0a003f;
+		public static final int psts_background_tab_pressed = 0x7f0a0034;
+		public static final int psts_background_tab_pressed_ripple = 0x7f0a0035;
+		public static final int selector = 0x7f0a004a;
+		public static final int tabsScrollColor = 0x7f0a0040;
 	}
 	public static final class drawable {
-		public static final int psts_background_tab = 0x7f020048;
+		public static final int psts_background_tab = 0x7f020049;
 	}
 	public static final class id {
 		public static final int bold = 0x7f0b001b;

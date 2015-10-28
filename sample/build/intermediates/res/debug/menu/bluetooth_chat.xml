@@ -20,14 +20,18 @@
         android:id="@+id/secure_connect_scan"
         android:icon="@drawable/ic_action_device_access_bluetooth_searching"
         app:showAsAction="ifRoom"
-        android:title="@string/secure_connect"/>
+        android:title="@string/secure_connect"
+        android:textColor="@color/MenuColorDark"/>
 
     <item
         android:id="@+id/insecure_connect_scan"
-        android:title="@string/insecure_connect"/>
+        android:title="@string/insecure_connect"
+        android:textColor="@color/MenuColorDark"/>
 
     <item
         android:id="@+id/discoverable"
-        android:title="@string/discoverable"/>
+        android:title="@string/discoverable"
+        android:textColor="@color/MenuColorDark"/>
+
 
 </menu><!-- From: file:/C:/StickersForSteps/sample/res/menu/bluetooth_chat.xml -->

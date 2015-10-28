@@ -155,7 +155,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        menu.clear();
+        getMenuInflater().inflate(R.menu.bluetooth_chat, menu);
+       // menu.findItem(R.id.secure_connect_scan).setVisible(false);
         return true;
     }
 
@@ -175,16 +177,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //            case R.id.action_contact:
 //                QuickContactFragment.newInstance().show(getSupportFragmentManager(), "QuickContactFragment");
 //                return true;
-            case R.id.menu_toggle_log:
-                mLogShown = !mLogShown;
-                ViewAnimator output = (ViewAnimator) findViewById(R.id.sample_output);
-                if (mLogShown) {
-                    output.setDisplayedChild(1);
-                } else {
-                    output.setDisplayedChild(0);
-                }
-                supportInvalidateOptionsMenu();
-                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -250,9 +243,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
        @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem logToggle = menu.findItem(R.id.menu_toggle_log);
-        logToggle.setVisible(findViewById(R.id.sample_output) instanceof ViewAnimator);
-           logToggle.setTitle(mLogShown ? R.string.sample_hide_log : R.string.sample_show_log);
 
         return super.onPrepareOptionsMenu(menu);
     }
