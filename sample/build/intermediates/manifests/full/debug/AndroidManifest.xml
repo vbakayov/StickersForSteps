@@ -49,6 +49,7 @@
                 android:name="description"
                 android:value="Displays the steps taken today" />
         </service>
+        <service android:name="com.astuetz.viewpager.extensions.fragment.SensorListener" />
     </application>
 
 </manifest>

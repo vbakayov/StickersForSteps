@@ -16,7 +16,10 @@
 
 package com.astuetz.viewpager.extensions.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -28,22 +31,14 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 
 import android.util.SparseArray;
 import android.util.TypedValue;
 import logger.Log;
-import logger.LogFragment;
-import logger.LogWrapper;
-import logger.MessageOnlyLogFilter;
-
 
 
 import android.view.Menu;
@@ -51,28 +46,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewAnimator;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.astuetz.SlidingTabLayout;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
-
 import bluetoothchat.BluetoothChatFragment;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import logger.LogFragment;
-import logger.LogWrapper;
-import logger.MessageOnlyLogFilter;
 
-import static java.security.AccessController.getContext;
-
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity  {
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
@@ -88,7 +72,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     boolean activityRunning;
     private View.OnClickListener myhandler1;
     private int steps;
-     private Database db;
+    private Database db;
+    private MyReceiver myReceiver;
 
 
     private MyPagerAdapter adapter;//
@@ -107,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        startService(new Intent(this, SensorListener.class));
 
 //        if (savedInstanceState == null) {
 //            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -151,13 +137,34 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         });
 
 
-  }
+    }
+
+    @Override
+    protected void onStart() {
+        // TODO Auto-generated method stub
+
+        //Register BroadcastReceiver
+        //to receive event from our service
+        myReceiver = new MyReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(SensorListener.ACTION_STEPS);
+        registerReceiver(myReceiver, intentFilter);
+        super.onStart();
+    }
+
+    @Override
+    protected  void onStop(){
+        unregisterReceiver(myReceiver);
+        super.onStop();
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.clear();
         getMenuInflater().inflate(R.menu.bluetooth_chat, menu);
-       // menu.findItem(R.id.secure_connect_scan).setVisible(false);
+        menu.findItem(R.id.secure_connect_scan).setVisible(false);
         return true;
     }
 
@@ -174,9 +181,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_contact:
-//                QuickContactFragment.newInstance().show(getSupportFragmentManager(), "QuickContactFragment");
-//                return true;
 
         }
         return super.onOptionsItemSelected(item);
@@ -223,12 +227,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onResume() {
         super.onResume();
         activityRunning = true;
-        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        if (countSensor != null) {
-            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
-        } else {
-          //  Toast.makeText(this, "Count sensor not available!", Toast.LENGTH_LONG).show();
-        }
+//        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+//        if (countSensor != null) {
+//            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
+//        } else {
+//          //  Toast.makeText(this, "Count sensor not available!", Toast.LENGTH_LONG).show();
+//        }
 
     }
 
@@ -248,58 +252,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
 
+    private class MyReceiver extends BroadcastReceiver {
 
-    /** Create a chain of targets that will receive log data */
-
-    public void initializeLogging() {
-//        // Wraps Android's native log framework.
-//        LogWrapper logWrapper = new LogWrapper();
-//        // Using Log, front-end to the logging chain, emulates android.util.log method signatures.
-//        Log.setLogNode(logWrapper);
-//
-//        // Filter strips out everything except the message text.
-//        MessageOnlyLogFilter msgFilter = new MessageOnlyLogFilter();
-//        logWrapper.setNext(msgFilter);
-//
-//        // On screen logging via a fragment with a TextView.
-//        LogFragment logFragment = (LogFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.log_fragment);
-//        msgFilter.setNext(logFragment.getLogView());
-
-       // Log.i(TAG, "Ready");
-    }
-    @Override
-    public void onSensorChanged(final SensorEvent event) {
-         db = Database.getInstance(this);
-
-
-
-        if (activityRunning) {
-            steps=  (int) event.values[0];
-
-            android.util.Log.w("CountActivity", Integer.toString(steps));
+        @Override
+        public void onReceive(Context arg0, Intent arg1) {
             StepsFragment frag = (StepsFragment) adapter.getRegisteredFragment(0);
-            if(frag != null){
-                if (db.getSteps(Util.getToday()) == Integer.MIN_VALUE)
-                    db.insertNewDay(Util.getToday(), steps);
-
-
-                db.saveCurrentSteps(steps);
-                todayOffset = db.getSteps(Util.getToday());
-
-                since_boot = db.getCurrentSteps();
-                android.util.Log.w("StepsSinceReboot",Integer.toString(since_boot));
-                // todayOffset might still be Integer.MIN_VALUE on first start
-                int steps_today = Math.max(todayOffset + since_boot, 0);
-
-                 frag.updateCountView(steps_today);
-                db.close();
+            if(frag != null) {
+                int datapassed = arg1.getIntExtra("DATAPASSED", 0);
+//                Toast.makeText(MainActivity.this,
+//                        "Triggered by Service!\n"
+//                                + "Data passed: " + String.valueOf(datapassed),
+//                        Toast.LENGTH_LONG).show();
+//                Log.w("TRIGGED BY SERVICE", String.valueOf(datapassed));
+                frag.updateCountView(datapassed);
             }
         }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
 
@@ -349,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
 
+
 abstract class SmartFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
     // Sparse array to keep track of registered fragments in memory
     private SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
@@ -377,4 +345,6 @@ abstract class SmartFragmentStatePagerAdapter extends FragmentStatePagerAdapter 
     public Fragment getRegisteredFragment(int position) {
         return registeredFragments.get(position);
     }
+
+
 }

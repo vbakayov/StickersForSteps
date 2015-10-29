@@ -263,6 +263,7 @@
     <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
     <string name="button_scan">Scan for devices</string>
     <string name="discoverable">Make discoverable</string>
+    <string name="goal_reached_notification">Goal reached! %s steps and counting</string>
     <string name="insecure_connect">Connect a device - Insecure</string>
     <!-- From: file:/C:/StickersForSteps/sample/res/values/base-strings.xml -->
     <eat-comment/>
@@ -283,9 +284,12 @@
     </string>
     <!-- From: file:/C:/StickersForSteps/sample/res/values/strings.xml -->
     <eat-comment/>
+    <string name="ispaused">Pedometer is paused</string>
     <string name="none_found">No devices found</string>
     <string name="none_paired">No devices have been paired</string>
     <string name="not_connected">You are not connected to a device</string>
+    <string name="notification_text">%s steps to go</string>
+    <string name="notification_title">Pedometer is counting</string>
     <!-- From: file:/C:/StickersForSteps/sample/res/values/fragmentview_strings.xml -->
     <eat-comment/>
     <string name="sample_hide_log">Hide Log</string>
@@ -306,6 +310,7 @@
     <string name="title_not_connected">not connected</string>
     <string name="title_other_devices">Other Available Devices</string>
     <string name="title_paired_devices">Paired Devices</string>
+    <string name="your_progress_will_be_shown_here_soon">Your progress will be shown here soon</string>
     <!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
     <eat-comment/>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>

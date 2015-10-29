@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.astuetz.viewpager.extensions.sample">
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-sdk tools:overrideLibrary="com.astuetz.pagerslidingtabstrip"/>
 
     <application
         android:allowBackup="true"
@@ -44,6 +46,9 @@
                 android:name="description"
                 android:value="Displays the steps taken today"/>
         </service>
+
+        <service
+            android:name="com.astuetz.viewpager.extensions.fragment.SensorListener"/>
 
     </application>
 
