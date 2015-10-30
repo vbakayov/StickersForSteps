@@ -1834,7 +1834,7 @@ containing a value of this type.
     }
     public static final class id {
         public static final int action0=0x7f0c006a;
-        public static final int action_about=0x7f0c0084;
+        public static final int action_about=0x7f0c0081;
         public static final int action_bar=0x7f0c0042;
         public static final int action_bar_activity_content=0x7f0c0000;
         public static final int action_bar_container=0x7f0c0041;
@@ -1849,9 +1849,9 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0c003f;
         public static final int action_mode_bar_stub=0x7f0c003e;
         public static final int action_mode_close_button=0x7f0c0027;
-        public static final int action_pause=0x7f0c0081;
-        public static final int action_settings=0x7f0c0082;
-        public static final int action_split_count=0x7f0c0083;
+        public static final int action_pause=0x7f0c007e;
+        public static final int action_settings=0x7f0c007f;
+        public static final int action_split_count=0x7f0c0080;
         public static final int activity_chooser_view_content=0x7f0c0028;
         public static final int alertTitle=0x7f0c0032;
         public static final int always=0x7f0c0016;
@@ -1878,7 +1878,7 @@ containing a value of this type.
         public static final int default_activity_button=0x7f0c002b;
         public static final int dialog=0x7f0c001d;
         public static final int disableHome=0x7f0c000c;
-        public static final int discoverable=0x7f0c0080;
+        public static final int discoverable=0x7f0c0084;
         public static final int distance=0x7f0c005d;
         public static final int distanceunit=0x7f0c005e;
         public static final int dropdown=0x7f0c001e;
@@ -1896,7 +1896,7 @@ containing a value of this type.
         public static final int image=0x7f0c002a;
         public static final int in=0x7f0c0064;
         public static final int info=0x7f0c0075;
-        public static final int insecure_connect_scan=0x7f0c007f;
+        public static final int insecure_connect_scan=0x7f0c0083;
         public static final int italic=0x7f0c001c;
         public static final int line1=0x7f0c006f;
         public static final int line3=0x7f0c0073;
@@ -1929,7 +1929,7 @@ containing a value of this type.
         public static final int search_plate=0x7f0c004a;
         public static final int search_src_text=0x7f0c004b;
         public static final int search_voice_btn=0x7f0c004f;
-        public static final int secure_connect_scan=0x7f0c007e;
+        public static final int secure_connect_scan=0x7f0c0082;
         public static final int select_dialog_listview=0x7f0c0050;
         public static final int shortcut=0x7f0c003b;
         public static final int showCustom=0x7f0c000f;

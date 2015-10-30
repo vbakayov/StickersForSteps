@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity  {
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                 .getDisplayMetrics());
         pager.setPageMargin(pageMargin);
+        pager.setOffscreenPageLimit(3);
         pager.setCurrentItem(1);
         //changeColor(getResources().getColor(R.color.green));
         tabs.setBackgroundColor(getResources().getColor(R.color.green));
@@ -237,10 +238,10 @@ public class MainActivity extends AppCompatActivity  {
 //        return super.onPrepareOptionsMenu(menu);
 //    }
 
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+//    @Override
+//    public boolean onCreateOptionsMenu(final Menu menu) {
+//        getMenuInflater().inflate(R.menu.main, menu);
+//        return true;
      //   MenuItem pause = menu.getItem(0);
        // Drawable d;
 //        if (getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS)
@@ -253,48 +254,62 @@ public class MainActivity extends AppCompatActivity  {
 //        }
         //d.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
       //  pause.setIcon(d);
-    }
-
-
+  //  }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())  {
-            case R.id.secure_connect_scan: {
-            // Launch the DeviceListActivity to see devices and do scan
-            Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity.class);
-            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
-            return true;
-        }
-            case R.id.insecure_connect_scan: {
-            // Launch the DeviceListActivity to see devices and do scan
-            Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity.class);
-            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_INSECURE);
-            return true;
-        }
-            case R.id.discoverable: {
-            // Ensure this device is discoverable by others
-            BluetoothChatFragment frag = (BluetoothChatFragment) adapter.getRegisteredFragment(3);
-            if(frag != null)
-                    frag.ensureDiscoverable();
-            return true;
-        }
-
-            case R.id.action_split_count:{
-                Dialog_Split.getDialog(MainActivity.this,
-                        total_start + Math.max(todayOffset + since_boot, 0)).show();
-                return true;
-
-        }
-            default:
-            return optionsItemSelected(item);
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.bluetooth_chat, menu);
+        return super.onPrepareOptionsMenu(menu);
     }
-    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//    }
+
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId())  {
+//            case R.id.secure_connect_scan: {
+//            // Launch the DeviceListActivity to see devices and do scan
+//            Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity.class);
+//            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
+//            return true;
+//        }
+//            case R.id.insecure_connect_scan: {
+//            // Launch the DeviceListActivity to see devices and do scan
+//            Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity.class);
+//            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_INSECURE);
+//            return true;
+//        }
+//            case R.id.discoverable: {
+//            // Ensure this device is discoverable by others
+//            BluetoothChatFragment frag = (BluetoothChatFragment) adapter.getRegisteredFragment(3);
+//            if(frag != null)
+//                    frag.ensureDiscoverable();
+//            return true;
+//        }
+//
+//            case R.id.action_split_count:{
+//                Dialog_Split.getDialog(MainActivity.this,
+//                        total_start + Math.max(todayOffset + since_boot, 0)).show();
+//                return true;
+//
+//        }
+//            default:
+//            return optionsItemSelected(item);
+//
+//    }
+ //   }
 
 
     public boolean optionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_split_count:{
+                Dialog_Split.getDialog(MainActivity.this,
+                        total_start + Math.max(todayOffset + since_boot, 0)).show();
+                return true;}
             case android.R.id.home:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     getFragmentManager().popBackStackImmediate();

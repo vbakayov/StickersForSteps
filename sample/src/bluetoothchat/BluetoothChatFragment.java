@@ -21,6 +21,7 @@ package bluetoothchat;
 
 import butterknife.ButterKnife;
 import logger.Log;
+import ui.Dialog_Split;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -49,6 +50,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.astuetz.viewpager.extensions.fragment.MainActivity;
 import com.astuetz.viewpager.extensions.fragment.StepsFragment;
 import com.astuetz.viewpager.extensions.sample.R;
 
@@ -381,10 +383,7 @@ public class BluetoothChatFragment extends Fragment {
         mChatService.connect(device, secure);
     }
 
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        inflater.inflate(R.menu.bluetooth_chat, menu);
-//    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -406,8 +405,12 @@ public class BluetoothChatFragment extends Fragment {
                 ensureDiscoverable();
                 return true;
             }
+
+
+            default:
+            return ((MainActivity)getActivity()).optionsItemSelected(item);
         }
-        return false;
+
     }
 
     public static BluetoothChatFragment newInstance(int i) {
