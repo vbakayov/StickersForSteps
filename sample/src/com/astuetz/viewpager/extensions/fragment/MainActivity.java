@@ -262,46 +262,18 @@ public class MainActivity extends AppCompatActivity  {
         return super.onPrepareOptionsMenu(menu);
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //nasty hack to fix the chat pass the menu item to the BluetoothChat, if the menu
+        //is of type connect to device or make discoverable do the operations if not
+        // the menu will be passed back to the next method (optionsItemSelected)
+        BluetoothChatFragment frag = (BluetoothChatFragment) adapter.getRegisteredFragment(3);
+        if(frag != null)
+            frag. onOptionsItemSelectedPrivate(item);
 
+    return true;
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId())  {
-//            case R.id.secure_connect_scan: {
-//            // Launch the DeviceListActivity to see devices and do scan
-//            Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity.class);
-//            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
-//            return true;
-//        }
-//            case R.id.insecure_connect_scan: {
-//            // Launch the DeviceListActivity to see devices and do scan
-//            Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity.class);
-//            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_INSECURE);
-//            return true;
-//        }
-//            case R.id.discoverable: {
-//            // Ensure this device is discoverable by others
-//            BluetoothChatFragment frag = (BluetoothChatFragment) adapter.getRegisteredFragment(3);
-//            if(frag != null)
-//                    frag.ensureDiscoverable();
-//            return true;
-//        }
-//
-//            case R.id.action_split_count:{
-//                Dialog_Split.getDialog(MainActivity.this,
-//                        total_start + Math.max(todayOffset + since_boot, 0)).show();
-//                return true;
-//
-//        }
-//            default:
-//            return optionsItemSelected(item);
-//
-//    }
- //   }
+    }
 
 
     public boolean optionsItemSelected(final MenuItem item) {

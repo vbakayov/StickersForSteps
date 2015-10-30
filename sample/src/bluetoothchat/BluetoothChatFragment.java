@@ -385,8 +385,8 @@ public class BluetoothChatFragment extends Fragment {
 
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+
+    public boolean onOptionsItemSelectedPrivate(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.secure_connect_scan: {
                 // Launch the DeviceListActivity to see devices and do scan
