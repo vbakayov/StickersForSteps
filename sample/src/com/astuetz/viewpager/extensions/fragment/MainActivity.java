@@ -21,6 +21,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -58,6 +59,7 @@ import android.widget.Toast;
 import com.astuetz.SlidingTabLayout;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import ui.*;
 
 import bluetoothchat.BluetoothChatFragment;
 import butterknife.ButterKnife;
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity  {
     private StepsFragment m;
     private int since_boot;
     private int todayOffset;
+    private int total_start;
 
     @Override
     protected void onCreate(Bundle b) {
@@ -186,6 +189,35 @@ public class MainActivity extends AppCompatActivity  {
         super.onStop();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+      // getActionBar().setDisplayHomeAsUpEnabled(false);
+
+        Database db = Database.getInstance(this);
+        // read todays offset
+        todayOffset = db.getSteps(Util.getToday());
+
+        SharedPreferences prefs =
+                MainActivity.this.getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+
+        //goal = prefs.getInt("goal", Fragment_Settings.DEFAULT_GOAL);
+        since_boot = db.getCurrentSteps(); // do not use the value from the sharedPreferences
+        int pauseDifference = since_boot - prefs.getInt("pauseCount", since_boot);
+
+        // register a sensorlistener to live update the UI if a step is taken
+
+
+        since_boot -= pauseDifference;
+
+        total_start = db.getTotalWithoutToday();
+        //total_days = db.getDays();
+
+        db.close();
+
+      //  stepsDistanceChanged();
+    }
+
 
 
 //    @Override
@@ -234,13 +266,13 @@ public class MainActivity extends AppCompatActivity  {
             startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
             return true;
         }
-        case R.id.insecure_connect_scan: {
+            case R.id.insecure_connect_scan: {
             // Launch the DeviceListActivity to see devices and do scan
             Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity.class);
             startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_INSECURE);
             return true;
         }
-        case R.id.discoverable: {
+            case R.id.discoverable: {
             // Ensure this device is discoverable by others
             BluetoothChatFragment frag = (BluetoothChatFragment) adapter.getRegisteredFragment(3);
             if(frag != null)
@@ -248,9 +280,14 @@ public class MainActivity extends AppCompatActivity  {
             return true;
         }
 
+            case R.id.action_split_count:{
+                Dialog_Split.getDialog(MainActivity.this,
+                        total_start + Math.max(todayOffset + since_boot, 0)).show();
+                return true;
 
-        default:
-        return optionsItemSelected(item);
+        }
+            default:
+            return optionsItemSelected(item);
 
     }
     }
@@ -311,18 +348,6 @@ public class MainActivity extends AppCompatActivity  {
         changeColor(currentColor);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        activityRunning = true;
-//        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-//        if (countSensor != null) {
-//            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
-//        } else {
-//          //  Toast.makeText(this, "Count sensor not available!", Toast.LENGTH_LONG).show();
-//        }
-
-    }
 
     @Override
     protected void onPause() {
@@ -346,12 +371,14 @@ public class MainActivity extends AppCompatActivity  {
         public void onReceive(Context arg0, Intent arg1) {
             StepsFragment frag = (StepsFragment) adapter.getRegisteredFragment(0);
             if(frag != null) {
-                int datapassed = arg1.getIntExtra("DATAPASSED", 0);
+                int datapassed = arg1.getIntExtra("stepsToday", 0);
 //                Toast.makeText(MainActivity.this,
 //                        "Triggered by Service!\n"
 //                                + "Data passed: " + String.valueOf(datapassed),
 //                        Toast.LENGTH_LONG).show();
 //                Log.w("TRIGGED BY SERVICE", String.valueOf(datapassed));
+                todayOffset= arg1.getIntExtra("todayOffset",0);
+                since_boot= arg1.getIntExtra("since_boot",0);
                 frag.updateCountView(datapassed);
             }
         }
