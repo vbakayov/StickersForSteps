@@ -28,21 +28,21 @@ public final class R {
 		public static final int pstsUnderlineHeight = 0x7f010043;
 	}
 	public static final class color {
-		public static final int ColorPrimary = 0x7f0a0000;
-		public static final int ColorPrimaryDark = 0x7f0a0001;
-		public static final int psts_background_tab_pressed = 0x7f0a0034;
-		public static final int psts_background_tab_pressed_ripple = 0x7f0a0035;
-		public static final int selector = 0x7f0a004a;
-		public static final int tabsScrollColor = 0x7f0a0040;
+		public static final int ColorPrimary = 0x7f0b0000;
+		public static final int ColorPrimaryDark = 0x7f0b0001;
+		public static final int psts_background_tab_pressed = 0x7f0b0034;
+		public static final int psts_background_tab_pressed_ripple = 0x7f0b0035;
+		public static final int selector = 0x7f0b004a;
+		public static final int tabsScrollColor = 0x7f0b0040;
 	}
 	public static final class drawable {
 		public static final int psts_background_tab = 0x7f020049;
 	}
 	public static final class id {
-		public static final int bold = 0x7f0b001b;
-		public static final int italic = 0x7f0b001c;
-		public static final int normal = 0x7f0b000a;
-		public static final int psts_tab_title = 0x7f0b0059;
+		public static final int bold = 0x7f0c001b;
+		public static final int italic = 0x7f0c001c;
+		public static final int normal = 0x7f0c000a;
+		public static final int psts_tab_title = 0x7f0c0059;
 	}
 	public static final class layout {
 		public static final int psts_tab = 0x7f03002b;

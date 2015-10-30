@@ -201,7 +201,7 @@ public class BluetoothChatFragment extends Fragment {
     /**
      * Makes this device discoverable.
      */
-    private void ensureDiscoverable() {
+    public void ensureDiscoverable() {
         if (mBluetoothAdapter.getScanMode() !=
                 BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
@@ -381,10 +381,10 @@ public class BluetoothChatFragment extends Fragment {
         mChatService.connect(device, secure);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.bluetooth_chat, menu);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        inflater.inflate(R.menu.bluetooth_chat, menu);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

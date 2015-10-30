@@ -52,7 +52,6 @@ public class StepsFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//steps = getArguments().getInt(ARG_POSITION);
 	}
 
 	@Override

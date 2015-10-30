@@ -258,13 +258,17 @@
     <string name="abc_toolbar_collapse_description">Collapse</string>
     <!-- From: file:/C:/StickersForSteps/sample/res/values/strings.xml -->
     <eat-comment/>
+    <string name="about">About</string>
+    <string name="account">Account</string>
     <string name="action_contact">Contact</string>
-    <string name="app_name">PagerSlidingTabStrip</string>
+    <string name="app_name">Stickers For Steps</string>
     <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
     <string name="button_scan">Scan for devices</string>
     <string name="discoverable">Make discoverable</string>
+    <string name="goal">Goal</string>
     <string name="goal_reached_notification">Goal reached! %s steps and counting</string>
-    <string name="insecure_connect">Connect a device - Insecure</string>
+    <string name="goal_summary">Current goal: %,d steps</string>
+    <string name="insecure_connect">Connect a device</string>
     <!-- From: file:/C:/StickersForSteps/sample/res/values/base-strings.xml -->
     <eat-comment/>
     <string name="intro_message">
@@ -290,6 +294,7 @@
     <string name="not_connected">You are not connected to a device</string>
     <string name="notification_text">%s steps to go</string>
     <string name="notification_title">Pedometer is counting</string>
+    <string name="pause">Pause</string>
     <!-- From: file:/C:/StickersForSteps/sample/res/values/fragmentview_strings.xml -->
     <eat-comment/>
     <string name="sample_hide_log">Hide Log</string>
@@ -297,14 +302,20 @@
     <!-- From: file:/C:/StickersForSteps/sample/res/values/strings.xml -->
     <eat-comment/>
     <string name="scanning">scanning for devices...</string>
-    <string name="secure_connect">Connect a device - Secure</string>
+    <string name="secure_connect">Connect a device</string>
     <string name="select_device">select a device to connect</string>
     <string name="send">Send</string>
+    <string name="set_goal">Set goal</string>
+    <string name="set_step_size">Set step size</string>
+    <string name="settings">Settings</string>
+    <string name="split_count">Split count</string>
     <!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
     <eat-comment/>
     <string name="status_bar_notification_info_overflow">999+</string>
     <!-- From: file:/C:/StickersForSteps/sample/res/values/strings.xml -->
     <eat-comment/>
+    <string name="step_size">Step size</string>
+    <string name="step_size_summary">Current step size: %1$.2f %2$s</string>
     <string name="title_connected_to">connected to <ns1:g id="device_name">%1$s</ns1:g></string>
     <string name="title_connecting">connecting...</string>
     <string name="title_not_connected">not connected</string>

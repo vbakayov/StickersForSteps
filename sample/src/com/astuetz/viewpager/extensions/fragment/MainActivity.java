@@ -16,10 +16,13 @@
 
 package com.astuetz.viewpager.extensions.fragment;
 
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -28,6 +31,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,10 +42,13 @@ import android.support.v7.widget.Toolbar;
 
 import android.util.SparseArray;
 import android.util.TypedValue;
+
+import bluetoothchat.DeviceListActivity;
 import logger.Log;
 
 
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +83,9 @@ public class MainActivity extends AppCompatActivity  {
     private MyReceiver myReceiver;
 
 
+    private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
+    private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
+
     private MyPagerAdapter adapter;//
     // Whether the Log Fragment is currently shown
     private boolean mLogShown;
@@ -89,10 +99,28 @@ public class MainActivity extends AppCompatActivity  {
     private int todayOffset;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
         setContentView(R.layout.activity_main);
         startService(new Intent(this, SensorListener.class));
+
+//        if (b == null) {
+//            // Create new fragment and transaction
+//            android.app.Fragment newFragment = new Fragment_Overview();
+//            FragmentTransaction transaction = null;
+//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+//                transaction = getFragmentManager().beginTransaction();
+//
+//
+//            // Replace whatever is in the fragment_container view with this
+//            // fragment,
+//            // and add the transaction to the back stack
+//            transaction.replace(android.R.id.content, newFragment);
+//
+//            // Commit the transaction
+//            transaction.commit();
+//            }
+//        }
 
 //        if (savedInstanceState == null) {
 //            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -160,13 +188,13 @@ public class MainActivity extends AppCompatActivity  {
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.clear();
-        getMenuInflater().inflate(R.menu.bluetooth_chat, menu);
-        menu.findItem(R.id.secure_connect_scan).setVisible(false);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        menu.clear();
+//        getMenuInflater().inflate(R.menu.bluetooth_chat, menu);
+//        menu.findItem(R.id.secure_connect_scan).setVisible(false);
+//        return true;
+//    }
 
 //    @Override
 //    public boolean onPrepareOptionsMenu(Menu menu) {
@@ -177,13 +205,73 @@ public class MainActivity extends AppCompatActivity  {
 //        return super.onPrepareOptionsMenu(menu);
 //    }
 
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+     //   MenuItem pause = menu.getItem(0);
+       // Drawable d;
+//        if (getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS)
+//                .contains("pauseCount")) { // currently paused
+//            pause.setTitle(R.string.resume);
+//            d = getResources().getDrawable(R.drawable.ic_resume);
+//        } else {
+//            pause.setTitle(R.string.pause);
+//            d = getResources().getDrawable(R.drawable.ic_pause);
+//        }
+        //d.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+      //  pause.setIcon(d);
+    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
+        switch (item.getItemId())  {
+            case R.id.secure_connect_scan: {
+            // Launch the DeviceListActivity to see devices and do scan
+            Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity.class);
+            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
+            return true;
         }
-        return super.onOptionsItemSelected(item);
+        case R.id.insecure_connect_scan: {
+            // Launch the DeviceListActivity to see devices and do scan
+            Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity.class);
+            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_INSECURE);
+            return true;
+        }
+        case R.id.discoverable: {
+            // Ensure this device is discoverable by others
+            BluetoothChatFragment frag = (BluetoothChatFragment) adapter.getRegisteredFragment(3);
+            if(frag != null)
+                    frag.ensureDiscoverable();
+            return true;
+        }
+
+
+        default:
+        return optionsItemSelected(item);
+
+    }
+    }
+
+
+    public boolean optionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    getFragmentManager().popBackStackImmediate();
+                }
+                break;
+            case R.id.action_settings:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    getFragmentManager().beginTransaction()
+                            .replace(android.R.id.content, new Fragment_Settings()).addToBackStack(null)
+                            .commit();
+                }
+                break;
+        }
+        return true;
     }
 
     private void changeColor(int newColor) {
@@ -197,7 +285,7 @@ public class MainActivity extends AppCompatActivity  {
             getSupportActionBar().setBackgroundDrawable(ld);
         } else {
             TransitionDrawable td = new TransitionDrawable(new Drawable[]{oldBackground, ld});
-            getSupportActionBar().setBackgroundDrawable(td);
+                getSupportActionBar().setBackgroundDrawable(td);
             td.startTransition(200);
         }
 

@@ -7,7 +7,7 @@ import butterknife.ButterKnife.Finder;
 public class AlbumFragment$$ViewInjector {
   public static void inject(Finder finder, final com.astuetz.viewpager.extensions.fragment.AlbumFragment target, Object source) {
     View view;
-    view = finder.findRequiredView(source, 2131427423, "field 'textView'");
+    view = finder.findRequiredView(source, 2131492959, "field 'textView'");
     target.textView = (android.widget.TextView) view;
   }
 
