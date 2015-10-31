@@ -16,6 +16,7 @@
 
 package com.astuetz.viewpager.extensions.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -28,8 +29,13 @@ import android.widget.TextView;
 
 import com.astuetz.viewpager.extensions.sample.R;
 
+
+import org.eazegraph.lib.charts.PieChart;
+import org.eazegraph.lib.models.PieModel;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+
 
 public class StepsFragment extends Fragment {
 
@@ -39,6 +45,8 @@ public class StepsFragment extends Fragment {
     TextView textView;
 
 	private static int steps;
+	private PieChart pg;
+	private PieModel sliceGoal, sliceCurrent;
 
 	public static StepsFragment newInstance(int position) {
 		StepsFragment f = new StepsFragment();
@@ -57,17 +65,40 @@ public class StepsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.steps_fragment,container,false);
-        ButterKnife.inject(this, rootView);
+//        ButterKnife.inject(this, rootView);
         ViewCompat.setElevation(rootView, 50);
 		Log.w("Create VIew", "HERE");
-        textView.setText("Steps "+steps);
+//        textView.setText("Steps "+steps);
+
+
+		        pg = (PieChart) rootView.findViewById(R.id.graph);
+
+        // slice for the steps taken today
+        sliceCurrent = new PieModel("", 0, Color.parseColor("#99CC00"));
+        pg.addPieSlice(sliceCurrent);
+
+        // slice for the "missing" steps until reaching the goal
+        sliceGoal = new PieModel("", Fragment_Settings.DEFAULT_GOAL, Color.parseColor("#CC0000"));
+        pg.addPieSlice(sliceGoal);
+
+//        pg.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(final View view) {
+//                showSteps = !showSteps;
+//                stepsDistanceChanged();
+//            }
+//        });
+
+        pg.setDrawValueInPie(false);
+        pg.setUsePieRotation(true);
+        pg.startAnimation();
 		return rootView;
 	}
 
 	public void updateCountView(float steps) {
 		Log.w("Count", Float.toString(steps));
 		this.steps=Math.round(steps);
-		textView.setText("Steps "+this.steps);
+	//	textView.setText("Steps "+this.steps);
 
 	}
 
