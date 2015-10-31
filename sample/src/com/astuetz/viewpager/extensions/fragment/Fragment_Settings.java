@@ -25,14 +25,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -56,9 +57,9 @@ import java.util.Locale;
 
 public class Fragment_Settings extends PreferenceFragment implements OnPreferenceClickListener {
 
-    final static int DEFAULT_GOAL = 10000;
+    public final static int DEFAULT_GOAL = 10000;
     final static float DEFAULT_STEP_SIZE = Locale.getDefault() == Locale.US ? 2.5f : 75f;
-    final static String DEFAULT_STEP_UNIT = Locale.getDefault() == Locale.US ? "ft" : "cm";
+    public final static String DEFAULT_STEP_UNIT = Locale.getDefault() == Locale.US ? "ft" : "cm";
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
 
         addPreferencesFromResource(R.xml.settings);
 //        findPreference("import").setOnPreferenceClickListener(this);
-  //      findPreference("export").setOnPreferenceClickListener(this);
+//        findPreference("export").setOnPreferenceClickListener(this);
 
 //        findPreference("notification")
 //                .setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -98,13 +99,14 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
 //        Preference account = findPreference("account");
 //        account.setSummary("This feature is not available on the F-Droid version of the app");
 //        account.setEnabled(false);
-//
+
         final SharedPreferences prefs =
                 getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
 
         Preference goal = findPreference("goal");
         goal.setOnPreferenceClickListener(this);
         goal.setSummary(getString(R.string.goal_summary, prefs.getInt("goal", DEFAULT_GOAL)));
+
 
         Preference stepsize = findPreference("stepsize");
         stepsize.setOnPreferenceClickListener(this);
@@ -118,9 +120,16 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        getView().setBackgroundColor(Color.WHITE);
+        getView().setClickable(true);
+    }
     @Override
     public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
         inflater.inflate(R.menu.main, menu);
@@ -149,30 +158,36 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
             case R.string.goal:
                 builder = new AlertDialog.Builder(getActivity());
                 final NumberPicker np = new NumberPicker(getActivity());
+
                 np.setMinValue(1);
-                np.setMaxValue(100000);
+                np.setMaxValue(10000);
                 np.setValue(prefs.getInt("goal", 10000));
                 builder.setView(np);
-                builder.setTitle(R.string.set_goal);
+
+                String text = getString(R.string.set_goal);
+                SpannableString spannable = new SpannableString(text);
+                // here we set the color
+                spannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, text.length(), 0);
+                builder.setTitle(spannable);
                 builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                np.clearFocus();
-                                prefs.edit().putInt("goal", np.getValue()).commit();
-                                preference.setSummary(
-                                        getString(R.string.goal_summary, np.getValue()));
-                                dialog.dismiss();
-                                getActivity().startService(
-                                        new Intent(getActivity(), SensorListener.class)
-                                                .putExtra("updateNotificationState", true));
-                            }
-                        });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        np.clearFocus();
+                        prefs.edit().putInt("goal", np.getValue()).commit();
+                        preference.setSummary(
+                                getString(R.string.goal_summary, np.getValue()));
+                        dialog.dismiss();
+                        getActivity().startService(
+                                new Intent(getActivity(), SensorListener.class)
+                                        .putExtra("updateNotificationState", true));
+                    }
+                });
                 builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
                 Dialog dialog = builder.create();
                 dialog.getWindow().setSoftInputMode(
                         WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -190,30 +205,30 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
                 builder.setView(v);
                 builder.setTitle(R.string.set_step_size);
                 builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                try {
-                                    prefs.edit().putFloat("stepsize_value",
-                                            Float.valueOf(value.getText().toString()))
-                                            .putString("stepsize_unit",
-                                                    unit.getCheckedRadioButtonId() == R.id.cm ?
-                                                            "cm" : "ft").apply();
-                                    preference.setSummary(getString(R.string.step_size_summary,
-                                            Float.valueOf(value.getText().toString()),
-                                            unit.getCheckedRadioButtonId() == R.id.cm ? "cm" :
-                                                    "ft"));
-                                } catch (NumberFormatException nfe) {
-                                    nfe.printStackTrace();
-                                }
-                                dialog.dismiss();
-                            }
-                        });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            prefs.edit().putFloat("stepsize_value",
+                                    Float.valueOf(value.getText().toString()))
+                                    .putString("stepsize_unit",
+                                            unit.getCheckedRadioButtonId() == R.id.cm ?
+                                                    "cm" : "ft").apply();
+                            preference.setSummary(getString(R.string.step_size_summary,
+                                    Float.valueOf(value.getText().toString()),
+                                    unit.getCheckedRadioButtonId() == R.id.cm ? "cm" :
+                                            "ft"));
+                        } catch (NumberFormatException nfe) {
+                            nfe.printStackTrace();
+                        }
+                        dialog.dismiss();
+                    }
+                });
                 builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
                 builder.create().show();
                 break;
 //            case R.string.import_title:
@@ -226,11 +241,11 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
         return false;
     }
 
-    /**
-     * Creates the CSV file containing data about past days and the steps taken on them
-     * <p/>
-     * Requires external storage to be writeable
-     */
+//    /**
+//     * Creates the CSV file containing data about past days and the steps taken on them
+//     * <p/>
+//     * Requires external storage to be writeable
+//     */
 //    private void exportCsv() {
 //        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 //            final File f = new File(Environment.getExternalStorageDirectory(), "Pedometer.csv");

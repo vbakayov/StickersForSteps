@@ -272,8 +272,18 @@ public class MainActivity extends AppCompatActivity  {
             frag. onOptionsItemSelectedPrivate(item);
 
     return true;
-
     }
+
+    @Override
+    public void onBackPressed() {
+        //so that pressing back arrou on settings fragmen does not go out of the activity
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStackImmediate();
+        } else {
+            finish();
+        }
+    }
+
 
 
     public boolean optionsItemSelected(final MenuItem item) {
@@ -288,11 +298,11 @@ public class MainActivity extends AppCompatActivity  {
                 }
                 break;
             case R.id.action_settings:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+
                     getFragmentManager().beginTransaction()
                             .replace(android.R.id.content, new Fragment_Settings()).addToBackStack(null)
                             .commit();
-                }
+
                 break;
         }
         return true;

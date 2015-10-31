@@ -95,7 +95,7 @@ public class SensorListener extends Service implements SensorEventListener {
                 Intent intent = new Intent();
                 intent.setAction(ACTION_STEPS);
 
-                intent.putExtra("DATAPASSED", steps_today);
+                intent.putExtra("stepsToday", steps_today);
 
                  sendBroadcast(intent);
 
