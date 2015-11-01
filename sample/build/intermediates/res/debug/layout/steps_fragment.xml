@@ -72,15 +72,26 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="2222"/>
+            android:text="@string/average"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="2222"/>
+            android:text="@string/total"/>
+
     </LinearLayout>
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="On"
+        android:id="@+id/toggleButton"
+        android:checked="true"
+        android:layout_below="@+id/averageandtotaltext"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="128dp" />
 
 
 </RelativeLayout><!-- From: file:/C:/StickersForSteps/sample/res/layout/steps_fragment.xml -->

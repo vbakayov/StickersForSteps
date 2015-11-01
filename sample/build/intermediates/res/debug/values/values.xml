@@ -269,6 +269,7 @@
     <string name="account">Account</string>
     <string name="action_contact">Contact</string>
     <string name="app_name">Stickers For Steps</string>
+    <string name="average">Average</string>
     <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
     <string name="button_scan">Scan for devices</string>
     <string name="close">close</string>
@@ -334,6 +335,7 @@
     <string name="title_not_connected">not connected</string>
     <string name="title_other_devices">Other Available Devices</string>
     <string name="title_paired_devices">Paired Devices</string>
+    <string name="total">Total</string>
     <string name="your_progress_will_be_shown_here_soon">Your progress will be shown here soon</string>
     <!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
     <eat-comment/>
