@@ -50,6 +50,18 @@
                 android:value="Displays the steps taken today" />
         </service>
         <service android:name="com.astuetz.viewpager.extensions.fragment.SensorListener" />
+
+        <receiver android:name="com.astuetz.viewpager.extensions.fragment.BootReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.astuetz.viewpager.extensions.fragment.ShutdownRecevier" >
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+                <action android:name="de.j4velin.ACTION_SHUTDOWN" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

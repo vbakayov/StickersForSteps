@@ -115,3 +115,27 @@ service#com.astuetz.viewpager.extensions.fragment.SensorListener
 ADDED from AndroidManifest.xml:50:9
 	android:name
 		ADDED from AndroidManifest.xml:51:13
+receiver#com.astuetz.viewpager.extensions.fragment.BootReceiver
+ADDED from AndroidManifest.xml:54:9
+	android:name
+		ADDED from AndroidManifest.xml:54:19
+intent-filter#android.intent.action.BOOT_COMPLETED
+ADDED from AndroidManifest.xml:55:13
+action#android.intent.action.BOOT_COMPLETED
+ADDED from AndroidManifest.xml:56:17
+	android:name
+		ADDED from AndroidManifest.xml:56:25
+receiver#com.astuetz.viewpager.extensions.fragment.ShutdownRecevier
+ADDED from AndroidManifest.xml:60:9
+	android:name
+		ADDED from AndroidManifest.xml:61:13
+intent-filter#android.intent.action.ACTION_SHUTDOWN+de.j4velin.ACTION_SHUTDOWN
+ADDED from AndroidManifest.xml:62:13
+action#android.intent.action.ACTION_SHUTDOWN
+ADDED from AndroidManifest.xml:63:17
+	android:name
+		ADDED from AndroidManifest.xml:63:25
+action#de.j4velin.ACTION_SHUTDOWN
+ADDED from AndroidManifest.xml:64:17
+	android:name
+		ADDED from AndroidManifest.xml:64:25
