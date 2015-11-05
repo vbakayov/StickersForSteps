@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/StickersForSteps/sample/res/values-v11/themes.xml -->
+    <!-- From: file:/C:/StickersForSteps/sample/res/values-v11/styles.xml -->
     <eat-comment/>
-    <style name="AppTheme" parent="AppBaseTheme">
-        <item name="android:dialogTheme">@style/DialogStyle</item>
-    </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+            <item name="colorPrimary">@color/green</item>
+            //change the most upper bar
+            <item name="colorPrimaryDark">@color/ColorPrimary</item>
+        </style>
     <!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values-v11/values-v11.xml -->
     <eat-comment/>
     <style name="Base.TextAppearance.AppCompat.Inverse">
@@ -64,13 +67,6 @@
         <item name="android:dropDownSelector">?attr/listChoiceBackgroundIndicator</item>
         <item name="android:popupBackground">@drawable/abc_popup_background_mtrl_mult</item>
     </style>
-    <!-- From: file:/C:/StickersForSteps/sample/res/values-v11/styles.xml -->
-    <eat-comment/>
-    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:textColorPrimary">@color/green</item>
-    </style>
-    <!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values-v11/values-v11.xml -->
-    <eat-comment/>
     <style name="Platform.AppCompat" parent="Platform.V11.AppCompat"/>
     <style name="Platform.AppCompat.Light" parent="Platform.V11.AppCompat.Light"/>
     <style name="Platform.V11.AppCompat" parent="android:Theme.Holo">

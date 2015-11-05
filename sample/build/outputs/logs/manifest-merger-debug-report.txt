@@ -77,8 +77,6 @@ ADDED from AndroidManifest.xml:25:9
 		ADDED from AndroidManifest.xml:28:13
 	android:configChanges
 		ADDED from AndroidManifest.xml:27:13
-	android:theme
-		ADDED from AndroidManifest.xml:29:13
 	android:name
 		ADDED from AndroidManifest.xml:26:13
 service#com.astuetz.viewpager.extensions.fragment.DashClock

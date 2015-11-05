@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- From: file:/C:/StickersForSteps/sample/res/values-v19/themes.xml -->
-    <eat-comment/>
-    <style name="AppTheme" parent="AppBaseTheme">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:dialogTheme">@style/DialogStyle</item>
-    </style>
-</resources>

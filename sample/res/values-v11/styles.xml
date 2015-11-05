@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:textColorPrimary">@color/green</item>
-    </style>
+        <!-- Base application theme. -->
+        <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+            <item name="colorPrimary">@color/green</item>
+            //change the most upper bar
+            <item name="colorPrimaryDark">@color/ColorPrimary</item>
+        </style>
+
 </resources>
+
