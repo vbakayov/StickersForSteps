@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/C:/StickersForSteps/sample/res/values-v19/ids.xml -->
+    <eat-comment/>
+    <item name="action_flip" type="id"/>
+    <item name="action_next" type="id"/>
+</resources>

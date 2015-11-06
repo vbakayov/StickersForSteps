@@ -268,6 +268,9 @@
     <string name="about">About</string>
     <string name="account">Account</string>
     <string name="action_contact">Contact</string>
+    <string name="action_finish">Finish</string>
+    <string name="action_next">Next</string>
+    <string name="action_previous">Previous</string>
     <string name="app_name">Stickers For Steps</string>
     <string name="average">Average</string>
     <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
@@ -298,6 +301,7 @@
     <!-- From: file:/C:/StickersForSteps/sample/res/values/strings.xml -->
     <eat-comment/>
     <string name="ispaused">Pedometer is paused</string>
+    <string name="lorem_ipsum"><![CDATA[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris et magna ut erat elementum cursus in quis ipsum. Nam faucibus ultrices eros, vel tempor leo semper sit amet. Duis magna quam, congue vitae interdum nec, condimentum ut lectus. Sed commodo venenatis eros a dignissim. Nunc adipiscing turpis nec magna venenatis at ultricies ipsum bibendum. Sed volutpat urna quis nisi vulputate egestas. Etiam eu dui a enim lacinia dapibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.\n\nPhasellus orci mi, eleifend nec congue id, volutpat at neque. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer semper velit vel leo rutrum sed fermentum elit porta.]]></string>
     <string name="no_split_active">No split counter active. Click start to count the steps from now on</string>
     <string name="none_found">No devices found</string>
     <string name="none_paired">No devices have been paired</string>
@@ -335,6 +339,8 @@
     <string name="title_not_connected">not connected</string>
     <string name="title_other_devices">Other Available Devices</string>
     <string name="title_paired_devices">Paired Devices</string>
+    <string name="title_template_step">Step <ns1:g id="step_number">%1$d</ns1:g>: Lorem
+        Ipsum</string>
     <string name="total">Total</string>
     <string name="your_progress_will_be_shown_here_soon">Your progress will be shown here soon</string>
     <!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->

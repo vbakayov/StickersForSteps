@@ -16,22 +16,15 @@
 
 package com.astuetz.viewpager.extensions.fragment;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,17 +38,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
 import android.util.TypedValue;
 
-import bluetoothchat.DeviceListActivity;
 import logger.Log;
 
 
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.astuetz.SlidingTabLayout;
 import com.astuetz.viewpager.extensions.sample.R;
@@ -408,11 +398,13 @@ public class MainActivity extends AppCompatActivity  {
                 case 0: // Fragment # 1 - This will show Steps Fragment
                     return StepsFragment.newInstance(0);
                 case 1: // Fragment # 2 - This will show  Album
-                    return AlbumFragment.newInstance(1);
+                    return AlbumFragmentMain.newInstance(3);
                 case 2: // Fragment # 3 - This will show Stickers
                     return StickersFragment.newInstance(2);
                 case 3 : //Fragmern 4 - Swapping
-                    return BluetoothChatFragment.newInstance(3);
+                    return  BluetoothChatFragment.newInstance(3);
+
+                    //startActivity(new Intent(MainActivity.this, AlbumFragmentMain.class));
                 default:
                     return null;
             }

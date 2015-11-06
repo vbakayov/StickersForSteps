@@ -7,7 +7,7 @@ import butterknife.ButterKnife.Finder;
 public class StickersFragment$$ViewInjector {
   public static void inject(Finder finder, final com.astuetz.viewpager.extensions.fragment.StickersFragment target, Object source) {
     View view;
-    view = finder.findRequiredView(source, 2131492969, "field 'textView'");
+    view = finder.findRequiredView(source, 2131427433, "field 'textView'");
     target.textView = (android.widget.TextView) view;
   }
 

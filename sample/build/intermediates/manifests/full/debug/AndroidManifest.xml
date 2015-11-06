@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.astuetz.viewpager.extensions.sample"
-    android:versionCode="3"
-    android:versionName="1.0.2" >
+    android:versionCode="100"
+    android:versionName="100.0" >
 
     <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="22" />
+        android:minSdkVersion="18"
+        android:targetSdkVersion="20" />
 
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />

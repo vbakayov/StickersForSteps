@@ -4,7 +4,6 @@
     package="com.astuetz.viewpager.extensions.sample">
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-sdk tools:overrideLibrary="com.astuetz.pagerslidingtabstrip"/>
 
     <application
         android:allowBackup="true"
