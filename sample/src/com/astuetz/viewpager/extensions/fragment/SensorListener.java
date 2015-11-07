@@ -30,6 +30,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.astuetz.viewpager.extensions.sample.R;
 
@@ -165,13 +166,6 @@ public class SensorListener extends Service implements SensorEventListener, Step
     @Override
     public void onCreate() {
         super.onCreate();
-        // Start detecting code handling accelometer
-        mStepDetector = new StepDetector(this);
-        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        registerDetector();
-
-
-        //code handling hardware counting
         reRegisterSensor();
         updateNotificationState();
     }
@@ -244,35 +238,31 @@ public class SensorListener extends Service implements SensorEventListener, Step
     }
 
     private void reRegisterSensor() {
-       Log.w(" ","re-register sensor listener");
+       Log.w("s ","re-register sensor listener");
         SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
         try {
             sm.unregisterListener(this);
         } catch (Exception e) {
-            //if (BuildConfig.DEBUG) Logger.log(e);
             e.printStackTrace();
         }
+//            if (sm.getSensorList(Sensor.TYPE_STEP_COUNTER).size() < 1) return; // emulator
 
-        //if (BuildConfig.DEBUG) {
-            Log.w("step sensors: " , Integer.toString(sm.getSensorList(Sensor.TYPE_STEP_COUNTER).size()));
-            if (sm.getSensorList(Sensor.TYPE_STEP_COUNTER).size() < 1) return; // emulator
-            Log.w("default: " ,sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER).getName());
-     //   }
+        if(sm.getSensorList(Sensor.TYPE_STEP_COUNTER).size() != 0) {
+            // enable batching
+            sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER), SensorManager.SENSOR_DELAY_UI);
+        }else{
+            Toast.makeText(this, "Count sensor not available!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Using accelerometer instead!", Toast.LENGTH_LONG).show();
+            Log.w("CountSenssor", "NOT Avialble");
+            StepDetector  mStepDetector = new StepDetector(this);
+            SensorManager mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+            Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            mSensorManager.registerListener(mStepDetector, mSensor, SensorManager.SENSOR_DELAY_FASTEST);
+        }
 
         // enable batching
         sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER),
                 SensorManager.SENSOR_DELAY_UI);
-    }
-
-
-
-
-    private void registerDetector() {
-        mSensor = mSensorManager.getDefaultSensor(
-                Sensor.TYPE_ACCELEROMETER );
-        mSensorManager.registerListener(mStepDetector,
-                mSensor,
-                SensorManager.SENSOR_DELAY_FASTEST);
     }
 
 
