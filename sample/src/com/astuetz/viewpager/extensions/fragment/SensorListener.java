@@ -34,6 +34,7 @@ import android.util.Log;
 import com.astuetz.viewpager.extensions.sample.R;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 
@@ -45,7 +46,7 @@ import java.util.Locale;
  * This service won't be needed any more if there is a way to read the
  * step-value without waiting for a sensor event
  */
-public class SensorListener extends Service implements SensorEventListener {
+public class SensorListener extends Service implements SensorEventListener, StepListener {
 
     private final static int NOTIFICATION_ID = 1;
 
@@ -58,13 +59,18 @@ public class SensorListener extends Service implements SensorEventListener {
     private int since_boot;
     private int todayOffset;
 
+    private SensorManager mSensorManager;
+    private StepDetector mStepDetector;
+    private Sensor mSensor;
+
     private final static int MICROSECONDS_IN_ONE_MINUTE = 60000000;
+
+
 
     @Override
     public void onAccuracyChanged(final Sensor sensor, int accuracy) {
         // nobody knows what happens here: step value might magically decrease
         // when this method is called...
-
     }
 
     @Override
@@ -92,11 +98,10 @@ public class SensorListener extends Service implements SensorEventListener {
               //   frag.updateCountView(steps_today);
                 db.close();
 
+                //send broadcast so that Steps can be updated dynamically
                 Intent intent = new Intent();
                 intent.setAction(ACTION_STEPS);
-
                 intent.putExtra("stepsToday", steps_today);
-
                  sendBroadcast(intent);
 
             }
@@ -108,6 +113,7 @@ public class SensorListener extends Service implements SensorEventListener {
     @Override
     public IBinder onBind(final Intent intent) {
         return null;
+
     }
 
     @Override
@@ -159,7 +165,13 @@ public class SensorListener extends Service implements SensorEventListener {
     @Override
     public void onCreate() {
         super.onCreate();
-       // if (BuildConfig.DEBUG) Logger.log("SensorListener onCreate");
+        // Start detecting code handling accelometer
+        mStepDetector = new StepDetector(this);
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        registerDetector();
+
+
+        //code handling hardware counting
         reRegisterSensor();
         updateNotificationState();
     }
@@ -188,7 +200,7 @@ public class SensorListener extends Service implements SensorEventListener {
     }
 
     private void updateNotificationState() {
-        Log.w("SensorListener"," updateNotificationState");
+        Log.w("SensorListener", " updateNotificationState");
         SharedPreferences prefs = getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
         NotificationManager nm =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -254,4 +266,28 @@ public class SensorListener extends Service implements SensorEventListener {
 
 
 
+
+    private void registerDetector() {
+        mSensor = mSensorManager.getDefaultSensor(
+                Sensor.TYPE_ACCELEROMETER );
+        mSensorManager.registerListener(mStepDetector,
+                mSensor,
+                SensorManager.SENSOR_DELAY_FASTEST);
+    }
+
+
+    @Override
+    public void onStep() {
+        Log.w("Step from the Servier","Step from the Service");
+        Intent intent = new Intent();
+        intent.setAction(ACTION_STEPS);
+        intent.putExtra("stepsToday", steps++);
+        sendBroadcast(intent);
+
+    }
+
+    @Override
+    public void passValue() {
+
+    }
 }

@@ -84,12 +84,5 @@ public class AlbumScreenSlide extends Fragment {
         return mPageNumber;
     }
 
-    public static AlbumScreenSlide newInstance(int position) {
-       AlbumScreenSlide f = new AlbumScreenSlide();
-        Bundle b = new Bundle();
-        b.putInt("Position", position);
-        f.setArguments(b);
 
-        return f;
-    }
 }

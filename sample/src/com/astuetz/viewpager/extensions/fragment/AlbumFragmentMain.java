@@ -147,7 +147,21 @@ public class AlbumFragmentMain extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return AlbumScreenSlide.create(position);
+
+            switch (position) {
+                case 0: // Fragment # 1 - This will show Steps Fragment
+                    return PageOneAlbum.newInstance(0);
+                case 1: // Fragment # 2 - This will show  Album
+                    return PageTwoAlbum.newInstance(1);
+                case 2: // Fragment # 3 - This will show Stickers
+                    return AlbumScreenSlide.create(2);
+                case 3 : //Fragmern 4 - Swapping
+                    return AlbumScreenSlide.create(3);
+                case 4 : //Fragmern 4 - Swapping
+                    return AlbumScreenSlide.create(4);
+                default:
+                    return null;
+            }
         }
 
         @Override

@@ -25,6 +25,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
 
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -73,6 +75,10 @@ public class MainActivity extends AppCompatActivity  {
     private View.OnClickListener myhandler1;
     private int steps;
     private Database db;
+//    private SensorManager mSensorManager;
+//    private StepDetector mStepDetector;
+//    private Sensor mSensor;
+
     private MyReceiver myReceiver;
 
 
@@ -184,7 +190,6 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     public void onResume() {
         super.onResume();
-      // getActionBar().setDisplayHomeAsUpEnabled(false);
 
         Database db = Database.getInstance(this);
         // read todays offset
@@ -198,7 +203,11 @@ public class MainActivity extends AppCompatActivity  {
         int pauseDifference = since_boot - prefs.getInt("pauseCount", since_boot);
 
         // register a sensorlistener to live update the UI if a step is taken
-
+        // Start detecting
+//        mStepDetector = new StepDetector();
+//        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+//        registerDetector();
+//        mStepDetector.setSensitivity(10);
 
         since_boot -= pauseDifference;
 
@@ -207,10 +216,15 @@ public class MainActivity extends AppCompatActivity  {
 
         db.close();
 
-      //  stepsDistanceChanged();
     }
 
-
+//    private void registerDetector() {
+//        mSensor = mSensorManager.getDefaultSensor(
+//                Sensor.TYPE_ACCELEROMETER );
+//        mSensorManager.registerListener(mStepDetector,
+//                mSensor,
+//                SensorManager.SENSOR_DELAY_FASTEST);
+//    }
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
