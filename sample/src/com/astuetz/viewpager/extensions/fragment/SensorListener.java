@@ -63,6 +63,7 @@ public class SensorListener extends Service implements SensorEventListener, Step
     private SensorManager mSensorManager;
     private StepDetector mStepDetector;
     private Sensor mSensor;
+    private Database    db;
 
     private final static int MICROSECONDS_IN_ONE_MINUTE = 60000000;
 
@@ -76,36 +77,18 @@ public class SensorListener extends Service implements SensorEventListener, Step
 
     @Override
     public void onSensorChanged(final SensorEvent event) {
-        Log.w("CHAAANGE","Chhange");
-             Database    db = Database.getInstance(this);
+        Log.w("CHAAANGE", "Chhange");
+        steps=  (int) event.values[0];
+        saveSteps(true,steps);
 
-            steps=  (int) event.values[0];
-
-            android.util.Log.w("CountActivity", Integer.toString(steps));
-         //   StepsFragment frag = (StepsFragment) adapter.getRegisteredFragment(0);
-          //  if(frag != null){
-                if (db.getSteps(Util.getToday()) == Integer.MIN_VALUE)
-                    db.insertNewDay(Util.getToday(), steps);
+    }
 
 
-                db.saveCurrentSteps(steps);
-                todayOffset = db.getSteps(Util.getToday());
-                Log.w("TodayOfset", Integer.toString(todayOffset));
-                since_boot = db.getCurrentSteps();
-                Log.w("StepsSinceReboot", Integer.toString(since_boot));
-                // todayOffset might still be Integer.MIN_VALUE on first start
-                int steps_today = Math.max(todayOffset + since_boot, 0);
-                Log.w("StepsToday", Integer.toString(steps_today));
-              //   frag.updateCountView(steps_today);
-                db.close();
-
-                //send broadcast so that Steps can be updated dynamically
-                Intent intent = new Intent();
-                intent.setAction(ACTION_STEPS);
-                intent.putExtra("stepsToday", steps_today);
-                 sendBroadcast(intent);
-
-            }
+    @Override
+    public void onStep() {
+        steps++;
+        saveSteps(false,steps);
+    }
 
 
 
@@ -260,18 +243,31 @@ public class SensorListener extends Service implements SensorEventListener, Step
             mSensorManager.registerListener(mStepDetector, mSensor, SensorManager.SENSOR_DELAY_FASTEST);
         }
 
-        // enable batching
-        sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER),
-                SensorManager.SENSOR_DELAY_UI);
     }
 
 
-    @Override
-    public void onStep() {
-        Log.w("Step from the Servier","Step from the Service");
+    private void saveSteps(boolean isHardwareCount, int steps) {
+        db = Database.getInstance(this);
+        android.util.Log.w("CountActivity", Integer.toString(steps));
+        if (db.getSteps(Util.getToday()) == Integer.MIN_VALUE)
+            db.insertNewDay(Util.getToday(), steps);
+
+
+        db.saveCurrentSteps(steps);
+        todayOffset = db.getSteps(Util.getToday());
+        Log.w("TodayOfset", Integer.toString(todayOffset));
+        since_boot = db.getCurrentSteps();
+        Log.w("StepsSinceReboot", Integer.toString(since_boot));
+        // todayOffset might still be Integer.MIN_VALUE on first start
+        int steps_today = Math.max(todayOffset + since_boot, 0);
+        Log.w("StepsToday", Integer.toString(steps_today));
+        //   frag.updateCountView(steps_today);
+        db.close();
+
+        //send broadcast so that Steps can be updated dynamically
         Intent intent = new Intent();
         intent.setAction(ACTION_STEPS);
-        intent.putExtra("stepsToday", steps++);
+        intent.putExtra("stepsToday", steps_today);
         sendBroadcast(intent);
 
     }

@@ -218,48 +218,6 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
-//    private void registerDetector() {
-//        mSensor = mSensorManager.getDefaultSensor(
-//                Sensor.TYPE_ACCELEROMETER );
-//        mSensorManager.registerListener(mStepDetector,
-//                mSensor,
-//                SensorManager.SENSOR_DELAY_FASTEST);
-//    }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        menu.clear();
-//        getMenuInflater().inflate(R.menu.bluetooth_chat, menu);
-//        menu.findItem(R.id.secure_connect_scan).setVisible(false);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        MenuItem logToggle = menu.findItem(R.id.menu_toggle_log);
-//        logToggle.setVisible(findViewById(R.id.sample_output) instanceof ViewAnimator);
-//        logToggle.setTitle(mLogShown ? R.string.sample_hide_log : R.string.sample_show_log);
-//
-//        return super.onPrepareOptionsMenu(menu);
-//    }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(final Menu menu) {
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-     //   MenuItem pause = menu.getItem(0);
-       // Drawable d;
-//        if (getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS)
-//                .contains("pauseCount")) { // currently paused
-//            pause.setTitle(R.string.resume);
-//            d = getResources().getDrawable(R.drawable.ic_resume);
-//        } else {
-//            pause.setTitle(R.string.pause);
-//            d = getResources().getDrawable(R.drawable.ic_pause);
-//        }
-        //d.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-      //  pause.setIcon(d);
-  //  }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
