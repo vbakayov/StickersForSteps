@@ -1,24 +1,74 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/first_fragment"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="#ff4063ff">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="First Page"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:id="@+id/firstFragmentTextView"
-        android:layout_gravity="center_horizontal|top" />
 
-</LinearLayout><!-- From: file:/C:/StickersForSteps/sample/res/layout/pageone_fragment.xml -->
+    <LinearLayout
+        android:id="@+id/top_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:layout_weight=".5"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:tag="top_container"
+        >
+
+        <ImageView
+            android:id="@+id/rugby"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/rugby"
+            />
+
+        <ImageView
+            android:id="@+id/sherman"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/sherman"
+            android:layout_gravity="center_vertical" />
+
+        <ImageView
+            android:id="@+id/soccer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/soccer"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:layout_weight=".5"
+        android:gravity="left"
+        android:orientation="horizontal"
+
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/menu_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="#1"
+            android:lines="1" />
+
+
+        <ImageView
+            android:id="@+id/Sticker1Container"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.16" />
+
+    </LinearLayout>
+
+</LinearLayout>
+<!-- From: file:/C:/StickersForSteps/sample/res/layout/pageone_fragment.xml -->
