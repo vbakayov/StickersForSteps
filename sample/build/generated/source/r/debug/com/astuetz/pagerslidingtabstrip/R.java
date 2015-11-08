@@ -36,7 +36,7 @@ public final class R {
 		public static final int tabsScrollColor = 0x7f0c0040;
 	}
 	public static final class drawable {
-		public static final int psts_background_tab = 0x7f020049;
+		public static final int psts_background_tab = 0x7f02004b;
 	}
 	public static final class id {
 		public static final int bold = 0x7f0b001d;

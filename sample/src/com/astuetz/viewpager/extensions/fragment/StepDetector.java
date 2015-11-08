@@ -1,9 +1,6 @@
 package com.astuetz.viewpager.extensions.fragment;
 
 
-        import java.util.ArrayList;
-
-        import android.content.Intent;
         import android.hardware.Sensor;
         import android.hardware.SensorEvent;
         import android.hardware.SensorEventListener;
@@ -12,7 +9,7 @@ package com.astuetz.viewpager.extensions.fragment;
 
 /**
  * Detects steps and notifies all listeners (that implement StepListener).
- * @author Levente Bagi
+\
  * @todo REFACTOR: SensorListener is deprecated
  */
 public class StepDetector implements SensorEventListener
@@ -30,7 +27,7 @@ public class StepDetector implements SensorEventListener
     private int     mLastMatch = -1;
     private StepListener stepListener;
 
-    private ArrayList<StepListener> mStepListeners = new ArrayList<StepListener>();
+
 
     public StepDetector(StepListener stepListener) {
         int h = 480; // TODO: remove this constant
@@ -46,9 +43,7 @@ public class StepDetector implements SensorEventListener
         mLimit = sensitivity; // 1.97  2.96  4.44  6.66  10.00  15.00  22.50  33.75  50.62
     }
 
-    public void addStepListener(StepListener sl) {
-        mStepListeners.add(sl);
-    }
+
 
     //public void onSensorChanged(int sensor, float[] values) {
     public void onSensorChanged(SensorEvent event) {

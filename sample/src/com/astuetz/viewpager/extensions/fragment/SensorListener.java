@@ -63,7 +63,7 @@ public class SensorListener extends Service implements SensorEventListener, Step
     private SensorManager mSensorManager;
     private StepDetector mStepDetector;
     private Sensor mSensor;
-    private Database    db;
+
 
     private final static int MICROSECONDS_IN_ONE_MINUTE = 60000000;
 
@@ -247,7 +247,7 @@ public class SensorListener extends Service implements SensorEventListener, Step
 
 
     private void saveSteps(boolean isHardwareCount, int steps) {
-        db = Database.getInstance(this);
+         Database db = Database.getInstance(this);
         android.util.Log.w("CountActivity", Integer.toString(steps));
         if (db.getSteps(Util.getToday()) == Integer.MIN_VALUE)
             db.insertNewDay(Util.getToday(), steps);
