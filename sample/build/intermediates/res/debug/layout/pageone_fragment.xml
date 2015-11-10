@@ -4,7 +4,8 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/top_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,55 +21,102 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:src="@drawable/rugby"
-            />
+            android:scaleType="fitCenter"
+            android:src="@drawable/rugby" />
 
         <ImageView
             android:id="@+id/sherman"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:src="@drawable/sherman"
-            android:layout_gravity="center_vertical" />
+            android:src="@drawable/sherman" />
 
         <ImageView
-            android:id="@+id/soccer"
+            android:id="@+id/girl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:src="@drawable/soccer"
-            />
+            android:src="@drawable/girl"
+            android:layout_gravity="center_vertical" />
 
-    </LinearLayout>
+    </FrameLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/bottom_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:layout_weight=".5"
         android:gravity="left"
-        android:orientation="horizontal"
+        android:orientation="vertical"
 
         android:weightSum="1">
 
-        <TextView
-            android:id="@+id/menu_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="#1"
-            android:lines="1" />
 
 
         <ImageView
             android:id="@+id/Sticker1Container"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/shermanblack"
             android:layout_weight="0.16" />
 
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/myImageViewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/Sticker1Container"
+            android:layout_alignTop="@+id/Sticker1Container"
+            android:layout_alignRight="@+id/Sticker1Container"
+            android:layout_alignBottom="@+id/Sticker1Container"
+            android:layout_margin="1dp"
+            android:gravity="center"
+            android:text="#1"
+            android:textSize= "25dp"
+            android:textStyle="bold"
+            android:textColor="#ffffff" />
+        </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_container2"
+        android:layout_width="118dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="left"
+        android:orientation="vertical"
+
+        android:weightSum="1"
+        android:layout_gravity="right">
+
+        <ImageView
+            android:id="@+id/Sticker2Container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/girlblack"
+            android:layout_weight="0.16"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+
+        <TextView
+            android:id="@+id/myImageViewText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/Sticker2Container"
+            android:layout_alignTop="@+id/Sticker2Container"
+            android:layout_alignRight="@+id/Sticker2Container"
+            android:layout_alignBottom="@+id/Sticker2Container"
+            android:layout_margin="1dp"
+            android:gravity="center"
+            android:text="#1"
+            android:textSize= "25dp"
+            android:textStyle="bold"
+            android:textColor="#ffffff" />
+
+
+
+
+    </RelativeLayout>
 
 </LinearLayout>
 <!-- From: file:/C:/StickersForSteps/sample/res/layout/pageone_fragment.xml -->

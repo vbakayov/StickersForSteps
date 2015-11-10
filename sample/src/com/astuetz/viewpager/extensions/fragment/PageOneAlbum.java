@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 
 import com.astuetz.viewpager.extensions.sample.R;
@@ -24,8 +25,9 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
     private static final String TAG = "Drag";
     private static final String ARG_POSITION = "position";
     private  ImageView target;
-    private  Bitmap image;
-    private  Bitmap image2;
+    private  ImageView image;
+    private  ImageView image2;
+    private ImageView target2;
 
 
     public static PageOneAlbum newInstance(int position) {
@@ -48,19 +50,23 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
         View view = inflater.inflate(R.layout.pageone_fragment, container, false);
         Log.w("I AM HEREEE", "HEEE");
         //        register a long click listener for the balls
-       view.findViewById(R.id.soccer).setOnLongClickListener(this);
-        view. findViewById(R.id.sherman).setOnLongClickListener(this);
-        view.findViewById(R.id.rugby).setOnLongClickListener(this);
+        image = (ImageView) view.findViewById(R.id.girl);
+        image.setOnLongClickListener(this);
+    //    image.setImageResource(R.drawable.girl);
 
-//        register drag event listeners for the target layout containers
+        image2 = (ImageView) view.findViewById(R.id.sherman);
+        image2.setOnLongClickListener(this);
+     //   image2.setImageResource(R.drawable.sherman);
+
+        ImageView image3 = (ImageView) view.findViewById(R.id.rugby);
+        image3.setOnLongClickListener(this);
+      //  image3.setImageResource(R.drawable.rugby);
+
+
+//      register drag event listeners for the target layout containers
         view.findViewById(R.id.top_container).setOnDragListener(this);
+        view.findViewById(R.id.bottom_container2).setOnDragListener(this);
         view.findViewById(R.id.bottom_container).setOnDragListener(this);
-        target=  (ImageView) view.findViewById((R.id.Sticker1Container));
-       image = BitmapFactory.decodeResource(getResources(), R.drawable.sherman);
-        //then create a copy of bitmap bmp1 into bmp2
-         image2 = image.copy(image.getConfig(), true);
-        convertImage();
-        target.setImageBitmap(image2);
 
         return view;
     }
@@ -137,19 +143,34 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
             the action only sent here if ACTION_DRAG_STARTED returned true
             return true if successfully handled the drop else false*/
                 switch (draggedImageView.getId()) {
-                    case R.id.soccer:
-                        Log.i(TAG, "Soccer ball");
+                    case R.id.girl:
+                        Log.i(TAG, "Girl sticker");
+                        if(receivingLayoutView.getId()== R.id.bottom_container2) {
+                            ViewGroup draggedImageViewParentLayout
+                                    = (ViewGroup) draggedImageView.getParent();
+                            draggedImageViewParentLayout.removeView(draggedImageView);
+                            RelativeLayout bottomLinearLayout = (RelativeLayout) receivingLayoutView;
+                            bottomLinearLayout.removeView(target);
+                            bottomLinearLayout.addView(draggedImageView);
+                            draggedImageView.setVisibility(View.VISIBLE);
+                            draggedImageView.setOnLongClickListener(null);
+                            return true;
+                        }
                         return false;
                     case R.id.sherman:
                         Log.i(TAG, "Sherman head");
-                        ViewGroup draggedImageViewParentLayout
-                                = (ViewGroup) draggedImageView.getParent();
-                        draggedImageViewParentLayout.removeView(draggedImageView);
-                        LinearLayout bottomLinearLayout = (LinearLayout) receivingLayoutView;
-                        bottomLinearLayout.removeView(target);
-                        bottomLinearLayout.addView(draggedImageView);
-                        draggedImageView.setVisibility(View.VISIBLE);
-                        return true;
+                        if(receivingLayoutView.getId()== R.id.bottom_container) {
+                            ViewGroup draggedImageViewParentLayout
+                                    = (ViewGroup) draggedImageView.getParent();
+                            draggedImageViewParentLayout.removeView(draggedImageView);
+                            RelativeLayout bottomLinearLayout = (RelativeLayout) receivingLayoutView;
+                            bottomLinearLayout.removeView(target);
+                            bottomLinearLayout.addView(draggedImageView);
+                            draggedImageView.setVisibility(View.VISIBLE);
+                            draggedImageView.setOnLongClickListener(null);
+                            return true;
+                        }
+                        return false;
                     case R.id.rugby:
                         Log.i(TAG, "Rugby ball");
                         return false;
@@ -178,14 +199,5 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
         return false;
     }
 
-   private void convertImage() {
-       
-       for (int x = 0; x < image.getWidth(); x++) {
-           for (int y = 0; y < image.getHeight(); y++) {
-               if (image.getPixel(x, y) != Color.TRANSPARENT) {
-                   image2.setPixel(x, y, Color.BLACK);
-               }
-           }
-       }
-   }
+
 }
