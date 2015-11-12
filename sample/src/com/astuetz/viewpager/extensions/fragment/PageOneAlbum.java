@@ -8,17 +8,23 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
 import com.astuetz.viewpager.extensions.sample.R;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 public class PageOneAlbum extends Fragment  implements View.OnDragListener, View.OnLongClickListener {
 
@@ -28,6 +34,7 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
     private  ImageView image;
     private  ImageView image2;
     private ImageView target2;
+    private FrameLayout root;
 
 
     public static PageOneAlbum newInstance(int position) {
@@ -64,9 +71,11 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
 
 
 //      register drag event listeners for the target layout containers
-        view.findViewById(R.id.top_container).setOnDragListener(this);
-        view.findViewById(R.id.bottom_container2).setOnDragListener(this);
-        view.findViewById(R.id.bottom_container).setOnDragListener(this);
+        view.findViewById(R.id.stick_container).setOnDragListener(this);
+        view.findViewById(R.id.container_2).setOnDragListener(this);
+        view.findViewById(R.id.container_1).setOnDragListener(this);
+        
+        root = (FrameLayout) view.findViewById(R.id.stick_container);
 
         return view;
     }
@@ -97,6 +106,10 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
     @Override
     public boolean onDrag(View receivingLayoutView, DragEvent dragEvent) {
         View draggedImageView = (View) dragEvent.getLocalState();
+        int offsetX = (int)receivingLayoutView.getX();//(int)motionEvent.getX();
+        int offsetY = (int)receivingLayoutView.getY();//motionEvent.getY();
+        int originalPos[] = new int[2];
+        draggedImageView.getLocationOnScreen( originalPos );
 
         // Handles each of the expected events
         switch (dragEvent.getAction()) {
@@ -128,8 +141,10 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
 
             case DragEvent.ACTION_DRAG_LOCATION:
                 Log.i(TAG, "drag action location");
-                /*triggered after ACTION_DRAG_ENTERED
-                stops after ACTION_DRAG_EXITED*/
+                offsetX = (int)receivingLayoutView.getX();//(int)motionEvent.getX();
+                 offsetY = (int)receivingLayoutView.getY();//motionEvent.getY();
+                Log.i("MEASUREMENTS X",Integer.toString(offsetX));
+                            Log.i("MEASUREMENTS  Y",Integer.toString(offsetX));
                 return true;
 
             case DragEvent.ACTION_DRAG_EXITED:
@@ -145,7 +160,7 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
                 switch (draggedImageView.getId()) {
                     case R.id.girl:
                         Log.i(TAG, "Girl sticker");
-                        if(receivingLayoutView.getId()== R.id.bottom_container2) {
+                        if(receivingLayoutView.getId()== R.id.container_2) {
                             ViewGroup draggedImageViewParentLayout
                                     = (ViewGroup) draggedImageView.getParent();
                             draggedImageViewParentLayout.removeView(draggedImageView);
@@ -153,22 +168,37 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
                             bottomLinearLayout.removeView(target);
                             bottomLinearLayout.addView(draggedImageView);
                             draggedImageView.setVisibility(View.VISIBLE);
+                            YoYo.with(Techniques.BounceIn).duration(700).playOn(image);
                             draggedImageView.setOnLongClickListener(null);
                             return true;
+                        }else{
+                            //TranslateAnimation(-(x-oldX), 0,-(y-oldY),0)
+                            Animation animation = new TranslateAnimation(offsetX-originalPos[0], 0,offsetY-originalPos[1]+450,0);
+                            animation.setDuration(1000);
+                            image.startAnimation(animation);
                         }
                         return false;
                     case R.id.sherman:
                         Log.i(TAG, "Sherman head");
-                        if(receivingLayoutView.getId()== R.id.bottom_container) {
+                        if(receivingLayoutView.getId()== R.id.container_1) {
                             ViewGroup draggedImageViewParentLayout
                                     = (ViewGroup) draggedImageView.getParent();
                             draggedImageViewParentLayout.removeView(draggedImageView);
                             RelativeLayout bottomLinearLayout = (RelativeLayout) receivingLayoutView;
                             bottomLinearLayout.removeView(target);
+
                             bottomLinearLayout.addView(draggedImageView);
+                            YoYo.with(Techniques.BounceIn).duration(700).playOn(image2);
                             draggedImageView.setVisibility(View.VISIBLE);
                             draggedImageView.setOnLongClickListener(null);
                             return true;
+                        }else{
+//                            Log.i("MEASUREMENTS X",Integer.toString(originalPos[0]));
+//                            Log.i("MEASUREMENTS  Y",Integer.toString(originalPos[1]));
+                            Animation animation = new TranslateAnimation(offsetX-originalPos[0], 0,offsetY-originalPos[1]+450,0);
+                            animation.setDuration(1000);
+                            image2.startAnimation(animation);
+           //                moveViewToScreenCenter( image2,offsetX,offsetY);
                         }
                         return false;
                     case R.id.rugby:
@@ -198,6 +228,26 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
         }
         return false;
     }
+
+//    private void moveViewToScreenCenter( View view, int OffSetX, int OffsetY )
+//    {
+//
+//        DisplayMetrics dm = new DisplayMetrics();
+//        getActivity().getWindowManager().getDefaultDisplay().getMetrics( dm );
+//        int statusBarOffset = dm.heightPixels - root.getMeasuredHeight();
+//
+//        int originalPos[] = new int[2]; view.getLocationOnScreen( originalPos );
+//
+//        int xDest = dm.widthPixels/2;
+//        xDest -= (view.getMeasuredWidth()/2);
+//        int yDest = dm.heightPixels/2 - (view.getMeasuredHeight()/2) - statusBarOffset;
+//
+//
+//        TranslateAnimation anim = new TranslateAnimation( OffSetX- originalPos[0],0 ,OffsetY- originalPos[1]+450, 0 );
+//        anim.setDuration(1000);
+//        anim.setFillAfter( true );
+//        view.startAnimation(anim);
+//    }
 
 
 }

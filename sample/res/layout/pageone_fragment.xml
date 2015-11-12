@@ -1,35 +1,24 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" android:id="@+id/rootLayout">
 
 
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/top_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="20dp"
-        android:layout_weight=".5"
+        android:id="@+id/stick_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
         android:tag="top_container"
-        >
-
-        <ImageView
-            android:id="@+id/rugby"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/rugby" />
-
-        <ImageView
-            android:id="@+id/sherman"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:src="@drawable/sherman" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="-30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true">
 
         <ImageView
             android:id="@+id/girl"
@@ -37,64 +26,86 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:src="@drawable/girl"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="left|bottom" />
+
+        <ImageView
+            android:id="@+id/rugby"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/rugby"
+            android:layout_gravity="left|bottom" />
+
+        <ImageView
+            android:id="@+id/sherman"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/sherman"
+            android:layout_gravity="left|bottom" />
+
+        <RelativeLayout
+            android:id="@+id/container_1"
+            android:layout_width="118dp"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="vertical"
+
+            android:weightSum="1"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/stick_container">
+
+
+
+            <ImageView
+                android:id="@+id/Sticker1Container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/shermanblack"
+                android:layout_alignParentEnd="true" />
+
+
+            <TextView
+                android:id="@+id/myImageViewText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/Sticker1Container"
+                android:layout_alignTop="@+id/Sticker1Container"
+                android:layout_alignRight="@+id/Sticker1Container"
+                android:layout_alignBottom="@+id/Sticker1Container"
+                android:layout_margin="1dp"
+                android:gravity="center"
+                android:text="#1"
+                android:textSize= "25dp"
+                android:textStyle="bold"
+                android:textColor="#ffffff" />
+            </RelativeLayout>
 
     </FrameLayout>
 
     <RelativeLayout
-        android:id="@+id/bottom_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="left"
-        android:orientation="vertical"
-
-        android:weightSum="1">
-
-
-
-        <ImageView
-            android:id="@+id/Sticker1Container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/shermanblack"
-            android:layout_weight="0.16" />
-
-
-        <TextView
-            android:id="@+id/myImageViewText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/Sticker1Container"
-            android:layout_alignTop="@+id/Sticker1Container"
-            android:layout_alignRight="@+id/Sticker1Container"
-            android:layout_alignBottom="@+id/Sticker1Container"
-            android:layout_margin="1dp"
-            android:gravity="center"
-            android:text="#1"
-            android:textSize= "25dp"
-            android:textStyle="bold"
-            android:textColor="#ffffff" />
-        </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/bottom_container2"
+        android:id="@+id/container_2"
         android:layout_width="118dp"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
         android:gravity="left"
         android:orientation="vertical"
 
         android:weightSum="1"
-        android:layout_gravity="right">
+        android:layout_gravity="right"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/stick_container">
 
         <ImageView
             android:id="@+id/Sticker2Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/girlblack"
-            android:layout_weight="0.16"
-            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
 
 
@@ -103,19 +114,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/Sticker2Container"
-            android:layout_alignTop="@+id/Sticker2Container"
             android:layout_alignRight="@+id/Sticker2Container"
             android:layout_alignBottom="@+id/Sticker2Container"
-            android:layout_margin="1dp"
             android:gravity="center"
-            android:text="#1"
+            android:text="#2"
             android:textSize= "25dp"
             android:textStyle="bold"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_alignParentTop="true" />
 
 
 
 
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>
