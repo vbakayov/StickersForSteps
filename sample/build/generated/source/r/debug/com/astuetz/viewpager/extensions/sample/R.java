@@ -2386,7 +2386,7 @@ containing a value of this type.
         public static final int firstFragmentTextView=0x7f0b0084;
         public static final int first_fragment=0x7f0b0083;
         public static final int ft=0x7f0b0090;
-        public static final int girl=0x7f0b007a;
+        public static final int girl=0x7f0b007b;
         public static final int graph=0x7f0b0087;
         public static final int gridView1=0x7f0b006a;
         public static final int home=0x7f0b0006;
@@ -2422,7 +2422,7 @@ containing a value of this type.
         public static final int radio=0x7f0b003e;
         public static final int ripple_wrap=0x7f0b005a;
         public static final int rootLayout=0x7f0b0078;
-        public static final int rugby=0x7f0b007b;
+        public static final int rugby=0x7f0b007a;
         public static final int screen=0x7f0b0023;
         public static final int scrollView=0x7f0b0036;
         public static final int search_badge=0x7f0b0048;

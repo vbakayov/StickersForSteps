@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -106,8 +107,8 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
     @Override
     public boolean onDrag(View receivingLayoutView, DragEvent dragEvent) {
         View draggedImageView = (View) dragEvent.getLocalState();
-        int offsetX = (int)receivingLayoutView.getX();//(int)motionEvent.getX();
-        int offsetY = (int)receivingLayoutView.getY();//motionEvent.getY();
+        int offsetX = (int)dragEvent.getX();//(int)motionEvent.getX();
+        int offsetY = (int)dragEvent.getY();//motionEvent.getY();
         int originalPos[] = new int[2];
         draggedImageView.getLocationOnScreen( originalPos );
 
@@ -141,8 +142,8 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
 
             case DragEvent.ACTION_DRAG_LOCATION:
                 Log.i(TAG, "drag action location");
-                offsetX = (int)receivingLayoutView.getX();//(int)motionEvent.getX();
-                 offsetY = (int)receivingLayoutView.getY();//motionEvent.getY();
+                offsetX = (int)dragEvent.getX();//(int)motionEvent.getX();
+                offsetY = (int)dragEvent.getY();//motionEvent.getY();
                 Log.i("MEASUREMENTS X",Integer.toString(offsetX));
                             Log.i("MEASUREMENTS  Y",Integer.toString(offsetX));
                 return true;
@@ -173,9 +174,7 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
                             return true;
                         }else{
                             //TranslateAnimation(-(x-oldX), 0,-(y-oldY),0)
-                            Animation animation = new TranslateAnimation(offsetX-originalPos[0], 0,offsetY-originalPos[1]+450,0);
-                            animation.setDuration(1000);
-                            image.startAnimation(animation);
+                            AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
                         }
                         return false;
                     case R.id.sherman:
@@ -193,12 +192,7 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
                             draggedImageView.setOnLongClickListener(null);
                             return true;
                         }else{
-//                            Log.i("MEASUREMENTS X",Integer.toString(originalPos[0]));
-//                            Log.i("MEASUREMENTS  Y",Integer.toString(originalPos[1]));
-                            Animation animation = new TranslateAnimation(offsetX-originalPos[0], 0,offsetY-originalPos[1]+450,0);
-                            animation.setDuration(1000);
-                            image2.startAnimation(animation);
-           //                moveViewToScreenCenter( image2,offsetX,offsetY);
+                            AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
                         }
                         return false;
                     case R.id.rugby:
@@ -229,25 +223,13 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
         return false;
     }
 
-//    private void moveViewToScreenCenter( View view, int OffSetX, int OffsetY )
-//    {
-//
-//        DisplayMetrics dm = new DisplayMetrics();
-//        getActivity().getWindowManager().getDefaultDisplay().getMetrics( dm );
-//        int statusBarOffset = dm.heightPixels - root.getMeasuredHeight();
-//
-//        int originalPos[] = new int[2]; view.getLocationOnScreen( originalPos );
-//
-//        int xDest = dm.widthPixels/2;
-//        xDest -= (view.getMeasuredWidth()/2);
-//        int yDest = dm.heightPixels/2 - (view.getMeasuredHeight()/2) - statusBarOffset;
-//
-//
-//        TranslateAnimation anim = new TranslateAnimation( OffSetX- originalPos[0],0 ,OffsetY- originalPos[1]+450, 0 );
-//        anim.setDuration(1000);
-//        anim.setFillAfter( true );
-//        view.startAnimation(anim);
-//    }
+    private void AnimateStickerBack( View view, int offsetX, int offsetY, int originalPosX, int originalPosY ) {
+
+        Animation animation = new TranslateAnimation(offsetX - originalPosX - 160, 0, offsetY -  originalPosY + 240, 0);
+        animation.setDuration(1000);
+        animation.setInterpolator(new DecelerateInterpolator(1));
+        view.startAnimation(animation);
+    }
 
 
 }

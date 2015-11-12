@@ -21,20 +21,20 @@
         android:layout_alignParentEnd="true">
 
         <ImageView
-            android:id="@+id/girl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:src="@drawable/girl"
-            android:layout_gravity="left|bottom" />
-
-        <ImageView
             android:id="@+id/rugby"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:scaleType="fitCenter"
             android:src="@drawable/rugby"
+            android:layout_gravity="left|bottom" />
+
+        <ImageView
+            android:id="@+id/girl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/girl"
             android:layout_gravity="left|bottom" />
 
         <ImageView
