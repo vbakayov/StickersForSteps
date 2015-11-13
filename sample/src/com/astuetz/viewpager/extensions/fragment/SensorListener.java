@@ -86,7 +86,9 @@ public class SensorListener extends Service implements SensorEventListener, Step
 
     @Override
     public void onStep() {
+
         steps++;
+      //  Toast.makeText(this, "Step  taken  "+ Integer.toString(steps), Toast.).show();
         saveSteps(false,steps);
     }
 
@@ -234,8 +236,7 @@ public class SensorListener extends Service implements SensorEventListener, Step
             // enable batching
             sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER), SensorManager.SENSOR_DELAY_UI);
         }else{
-            Toast.makeText(this, "Count sensor not available!", Toast.LENGTH_LONG).show();
-            Toast.makeText(this, "Using accelerometer instead!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Step detector not available! Don't worry Accelerometer is available", Toast.LENGTH_LONG).show();
             Log.w("CountSenssor", "NOT Avialble");
             StepDetector  mStepDetector = new StepDetector(this);
             SensorManager mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
