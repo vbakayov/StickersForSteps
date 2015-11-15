@@ -47,12 +47,20 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.viewpager.extensions.fragment.MainActivity;
 import com.astuetz.viewpager.extensions.fragment.StepsFragment;
 import com.astuetz.viewpager.extensions.sample.R;
+import com.mingle.entity.MenuEntity;
+import com.mingle.sweetpick.CustomDelegate;
+import com.mingle.sweetpick.DimEffect;
+import com.mingle.sweetpick.SweetSheet;
+import com.mingle.sweetpick.ViewPagerDelegate;
+
+import java.util.ArrayList;
 
 
 /**
@@ -73,6 +81,7 @@ public class BluetoothChatFragment extends Fragment {
     private ListView mConversationView;
     private EditText mOutEditText;
     private Button mSendButton;
+    private SweetSheet mSweetSheet3;
 
     /**
      * Name of the connected device
@@ -98,6 +107,8 @@ public class BluetoothChatFragment extends Fragment {
      * Member object for the chat services
      */
     private BluetoothChatService mChatService = null;
+    private TextView statusTextView;
+    private RelativeLayout rl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -164,6 +175,22 @@ public class BluetoothChatFragment extends Fragment {
         mConversationView = (ListView) view.findViewById(R.id.in);
         mOutEditText = (EditText) view.findViewById(R.id.edit_text_out);
         mSendButton = (Button) view.findViewById(R.id.button_send);
+        statusTextView= (TextView) view.findViewById(R.id.bluetoothStatus);
+        rl = (RelativeLayout) view.findViewById(R.id.rlBlth);
+        if(rl == null) android.util.Log.d("HEREEEE","IT IS NUULLL");
+        else{
+            android.util.Log.d("HEREEEE"," not null");
+        }
+        view.findViewById(R.id.imageViewGive).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setupCustomView();
+                if(mSweetSheet3.isShow()){
+                    mSweetSheet3.dismiss();
+                }else {
+                    mSweetSheet3.toggle();}
+            }
+        });
     }
 
     /**
@@ -257,15 +284,8 @@ public class BluetoothChatFragment extends Fragment {
      * @param resId a string resource ID
      */
     private void setStatus(int resId) {
-        FragmentActivity activity = getActivity();
-        if (null == activity) {
-            return;
-        }
-        final ActionBar actionBar = activity.getActionBar();
-        if (null == actionBar) {
-            return;
-        }
-        actionBar.setSubtitle(resId);
+        android.util.Log.i("BLUETOOTH","SubTitle2");
+        statusTextView.setText(resId);
     }
 
     /**
@@ -274,15 +294,8 @@ public class BluetoothChatFragment extends Fragment {
      * @param subTitle status
      */
     private void setStatus(CharSequence subTitle) {
-        FragmentActivity activity = getActivity();
-        if (null == activity) {
-            return;
-        }
-        final ActionBar actionBar = activity.getActionBar();
-        if (null == actionBar) {
-            return;
-        }
-        actionBar.setSubtitle(subTitle);
+        android.util.Log.i("BLUETOOTH","SubTitle");
+        statusTextView.setText(subTitle);
     }
 
     /**
@@ -423,5 +436,45 @@ public class BluetoothChatFragment extends Fragment {
         return f;
     }
 
+
+    public void setupCustomView() {
+
+
+        mSweetSheet3 = new SweetSheet(rl);
+                ArrayList<MenuEntity> list = new ArrayList<>();
+        //添加假数据
+        MenuEntity menuEntity1 = new MenuEntity();
+        menuEntity1.iconId = R.drawable.sherman;
+        menuEntity1.title = "code";
+        MenuEntity menuEntity = new MenuEntity();
+        menuEntity.iconId = R.drawable.girl;
+        menuEntity.title = "QQ";
+        list.add(menuEntity1);
+        list.add(menuEntity);
+        list.add(menuEntity);
+        list.add(menuEntity);
+        list.add(menuEntity);
+        list.add(menuEntity);
+        list.add(menuEntity);
+        list.add(menuEntity);
+        list.add(menuEntity);
+        list.add(menuEntity);
+        list.add(menuEntity);
+        list.add(menuEntity);
+        list.add(menuEntity);
+
+        //从menu 中设置数据源
+        mSweetSheet3.setMenuList(list);
+        mSweetSheet3.setDelegate(new ViewPagerDelegate());
+        mSweetSheet3.setBackgroundEffect(new DimEffect(8f));
+        mSweetSheet3.setOnMenuItemClickListener(new SweetSheet.OnMenuItemClickListener() {
+            @Override
+            public boolean onItemClick(int position, MenuEntity menuEntity1) {
+
+                Toast.makeText(getActivity(), menuEntity1.title + "  " + position, Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+    }
 
 }

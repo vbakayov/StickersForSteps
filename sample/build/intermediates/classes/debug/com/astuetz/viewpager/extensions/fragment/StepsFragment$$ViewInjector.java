@@ -7,7 +7,7 @@ import butterknife.ButterKnife.Finder;
 public class StepsFragment$$ViewInjector {
   public static void inject(Finder finder, final com.astuetz.viewpager.extensions.fragment.StepsFragment target, Object source) {
     View view;
-    view = finder.findRequiredView(source, 2131427426, "field 'textView'");
+    view = finder.findRequiredView(source, 2131427427, "field 'textView'");
     target.textView = (android.widget.TextView) view;
   }
 

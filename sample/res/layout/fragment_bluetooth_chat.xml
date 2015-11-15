@@ -14,10 +14,61 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:id="@+id/rlBlth"
               android:orientation="vertical" >
+
+
+
+    <TextView
+        android:layout_width="265dp"
+        android:layout_height="48dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Not Connected"
+        android:id="@+id/bluetoothStatus"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="137dp"
+        android:layout_height="185dp"
+        android:id="@+id/imageViewGive"
+        android:src="@drawable/questionmark"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/bluetoothStatus"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="140dp"
+        android:layout_height="189dp"
+        android:id="@+id/imageView2"
+        android:src="@drawable/questionmark"
+        android:layout_below="@+id/bluetoothStatus"
+        android:layout_alignParentEnd="true" />
+
+
+        <EditText
+            android:id="@+id/edit_text_out"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/button_send" />
+
+        <Button
+            android:id="@+id/button_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true" />
+
 
     <ListView
         android:id="@+id/in"
@@ -25,25 +76,9 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:stackFromBottom="true"
-        android:transcriptMode="alwaysScroll" />
+        android:transcriptMode="alwaysScroll"
+        android:layout_below="@+id/imageViewGive"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/edit_text_out" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <EditText
-            android:id="@+id/edit_text_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/button_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/send" />
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>
