@@ -106,7 +106,7 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
 //    used by top and bottom layout containers
     @Override
     public boolean onDrag(View receivingLayoutView, DragEvent dragEvent) {
-        View draggedImageView = (View) dragEvent.getLocalState();
+        final View draggedImageView = (View) dragEvent.getLocalState();
         int offsetX = (int)dragEvent.getX();//(int)motionEvent.getX();
         int offsetY = (int)dragEvent.getY();//motionEvent.getY();
         int originalPos[] = new int[2];
@@ -210,8 +210,13 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
 
 //                if the drop was not successful, set the ball to visible
                 if (!dragEvent.getResult()) {
-                    Log.i(TAG, "setting visible");
-                    draggedImageView.setVisibility(View.VISIBLE);
+                    draggedImageView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            draggedImageView.setVisibility(View.VISIBLE);
+                        }
+                    });
+
                 }
 
                 return true;
