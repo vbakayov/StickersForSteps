@@ -28,6 +28,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -46,6 +47,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -59,6 +61,9 @@ import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.DimEffect;
 import com.mingle.sweetpick.SweetSheet;
 import com.mingle.sweetpick.ViewPagerDelegate;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -82,6 +87,8 @@ public class BluetoothChatFragment extends Fragment {
     private EditText mOutEditText;
     private Button mSendButton;
     private SweetSheet mSweetSheet3;
+    private ImageView imageGive;
+    private ImageView imageReceive ;
 
     /**
      * Name of the connected device
@@ -176,7 +183,10 @@ public class BluetoothChatFragment extends Fragment {
         mOutEditText = (EditText) view.findViewById(R.id.edit_text_out);
         mSendButton = (Button) view.findViewById(R.id.button_send);
         statusTextView= (TextView) view.findViewById(R.id.bluetoothStatus);
-        rl = (RelativeLayout) view.findViewById(R.id.rlBlth);
+        rl = (RelativeLayout) view.findViewById(R.id.rlBlth );
+        imageGive = (ImageView) view.findViewById(R.id.imageViewGive);
+        imageReceive = (ImageView) view.findViewById(R.id.imageView2);
+
         if(rl == null) android.util.Log.d("HEREEEE","IT IS NUULLL");
         else{
             android.util.Log.d("HEREEEE"," not null");
@@ -331,6 +341,8 @@ public class BluetoothChatFragment extends Fragment {
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
+                    String message = fromJSon(readMessage);
+                    imageReceive.setImageResource(Integer.parseInt(message));
                     mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
@@ -442,7 +454,6 @@ public class BluetoothChatFragment extends Fragment {
 
         mSweetSheet3 = new SweetSheet(rl);
                 ArrayList<MenuEntity> list = new ArrayList<>();
-        //添加假数据
         MenuEntity menuEntity1 = new MenuEntity();
         menuEntity1.iconId = R.drawable.sherman;
         menuEntity1.title = "code";
@@ -463,18 +474,43 @@ public class BluetoothChatFragment extends Fragment {
         list.add(menuEntity);
         list.add(menuEntity);
 
-        //从menu 中设置数据源
+        //从menu
         mSweetSheet3.setMenuList(list);
         mSweetSheet3.setDelegate(new ViewPagerDelegate());
         mSweetSheet3.setBackgroundEffect(new DimEffect(8f));
         mSweetSheet3.setOnMenuItemClickListener(new SweetSheet.OnMenuItemClickListener() {
             @Override
             public boolean onItemClick(int position, MenuEntity menuEntity1) {
-
+                imageGive.setImageResource(menuEntity1.iconId);
+                //send message, make it Json object and convert id to string
+                sendMessage( toJSon(Integer.toString(menuEntity1.iconId)));
                 Toast.makeText(getActivity(), menuEntity1.title + "  " + position, Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
+    }
+
+    public  String toJSon(String str){
+        JSONObject jsonObject= new JSONObject();
+        try {
+            jsonObject.put("giveSticker",str);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  jsonObject.toString();
+
+    }
+
+    public  String fromJSon( String data){
+        String stickerID=null;
+        try {
+            JSONObject jObj =  new JSONObject(data);
+           stickerID = jObj.getString("giveSticker");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  stickerID;
     }
 
 }

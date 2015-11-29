@@ -13,9 +13,33 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
+<!-- Dummy content. -->
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
 <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pager"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
-<!-- From: file:/C:/StickersForSteps/sample/res/layout/activity_screen_slide.xml -->
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true" />
+
+<ImageView
+android:layout_width="40dp"
+android:layout_height="40dp"
+android:src="@drawable/left_arrow"
+android:id="@+id/imageView3"
+android:layout_marginTop="199dp"
+android:layout_below="@android:id/text1"
+android:layout_alignParentStart="true" />
+
+<ImageView
+android:layout_width="40dp"
+android:layout_height="40dp"
+android:id="@+id/imageView4"
+android:src="@drawable/right_arrow"
+    android:layout_alignTop="@+id/imageView3"
+    android:layout_alignEnd="@+id/pager" />
+</RelativeLayout><!-- From: file:/C:/StickersForSteps/sample/res/layout/activity_screen_slide.xml -->
