@@ -16,8 +16,10 @@
 
 package com.astuetz.viewpager.extensions.fragment;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity  {
     private int since_boot;
     private int todayOffset;
     private int total_start;
+    private static BluetoothChatFragment fragmentBlt;
 
     @Override
     protected void onCreate(Bundle b) {
@@ -239,12 +242,25 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     public void onBackPressed() {
-        //so that pressing back arrou on settings fragmen does not go out of the activity
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStackImmediate();
-        } else {
-            finish();
+        if (fragmentBlt.backPressed()) { // and then you define a method allowBackPressed with the logic to allow back pressed or not
+            new AlertDialog.Builder(this)
+                    .setTitle("Really Exit?")
+                    .setMessage("Are you sure you want to exit?")
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            MainActivity.super.onBackPressed();
+                        }
+                    }).create().show();
         }
+
+//        else{        //so that pressing back arrou on settings fragmen does not go out of the activity
+//        if (getFragmentManager().getBackStackEntryCount() > 0) {
+//            getFragmentManager().popBackStackImmediate();
+//        } else {
+//            finish();
+//        }
     }
 
 
@@ -374,9 +390,9 @@ public class MainActivity extends AppCompatActivity  {
                 case 2: // Fragment # 3 - This will show Stickers
                     return StickersFragment.newInstance(2);
                 case 3 : //Fragmern 4 - Swapping
-                    return  BluetoothChatFragment.newInstance(3);
+                       fragmentBlt =BluetoothChatFragment.newInstance(3);return fragmentBlt;
 
-                    //startActivity(new Intent(MainActivity.this, AlbumFragmentMain.class));
+
                 default:
                     return null;
             }

@@ -28,6 +28,12 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.PorterDuff;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
@@ -88,6 +94,10 @@ public class BluetoothChatFragment extends Fragment {
     private Button mSendButton;
     private SweetSheet mSweetSheet3;
     private ImageView imageGive;
+    private boolean givePic;
+    private boolean getPic;
+    private boolean otherAccepted;
+    private boolean Iaccepted;
     private ImageView imageReceive ;
 
     /**
@@ -116,6 +126,8 @@ public class BluetoothChatFragment extends Fragment {
     private BluetoothChatService mChatService = null;
     private TextView statusTextView;
     private RelativeLayout rl;
+    private Button btnAccept;
+    private Button btnDecline;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,6 +135,10 @@ public class BluetoothChatFragment extends Fragment {
         setHasOptionsMenu(true);
         // Get local Bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        givePic=false;
+        getPic=false;
+        otherAccepted=false;
+        Iaccepted=false;
 
         // If the adapter is null, then Bluetooth is not supported
         if (mBluetoothAdapter == null) {
@@ -183,9 +199,45 @@ public class BluetoothChatFragment extends Fragment {
         mOutEditText = (EditText) view.findViewById(R.id.edit_text_out);
         mSendButton = (Button) view.findViewById(R.id.button_send);
         statusTextView= (TextView) view.findViewById(R.id.bluetoothStatus);
-        rl = (RelativeLayout) view.findViewById(R.id.rlBlth );
         imageGive = (ImageView) view.findViewById(R.id.imageViewGive);
         imageReceive = (ImageView) view.findViewById(R.id.imageView2);
+        btnAccept= (Button) view.findViewById(R.id.imageButton);
+        btnDecline = (Button) view.findViewById(R.id.imageButton2);
+        rl = (RelativeLayout) view.findViewById(R.id.rlBlth );
+
+        btnAccept.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view) {
+                    Iaccepted=true;
+                    imageGive.buildDrawingCache();
+                    imageGive.setImageBitmap(bitmapOverlay(imageGive.getDrawingCache()));
+                    sendMessage(toJSon("accept", null, true));
+
+            }
+        });
+
+        btnDecline.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view) {
+                declineGUI();
+                sendMessage(toJSon("accept", null, false));
+
+            }
+        });
+
+        rl.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Hello World!",
+                        Toast.LENGTH_LONG).show();
+//                btnAccept.setVisibility(View.VISIBLE);
+//                btnDecline.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        btnAccept.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        btnDecline.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        btnAccept.setEnabled(false);
+        btnDecline.setEnabled(false);
+
 
         if(rl == null) android.util.Log.d("HEREEEE","IT IS NUULLL");
         else{
@@ -194,13 +246,28 @@ public class BluetoothChatFragment extends Fragment {
         view.findViewById(R.id.imageViewGive).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setupCustomView();
-                if(mSweetSheet3.isShow()){
-                    mSweetSheet3.dismiss();
-                }else {
-                    mSweetSheet3.toggle();}
-            }
-        });
+
+                if(!otherAccepted && (!Iaccepted || otherAccepted)) {
+                    setupCustomView();
+//                btnAccept.setVisibility(View.INVISIBLE);
+//                btnDecline.setVisibility(View.INVISIBLE);
+                    mSweetSheet3.toggle();
+                }
+
+        };
+    });}
+
+    private void declineGUI() {
+        givePic= false;
+        getPic= false;
+        otherAccepted=false;
+        Iaccepted=false;
+        imageGive.setImageResource(R.drawable.questionmark);
+        imageReceive.setImageResource(R.drawable.questionmark);
+        btnAccept.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        btnDecline.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        btnAccept.setEnabled(false);
+        btnDecline.setEnabled(false);
     }
 
     /**
@@ -341,9 +408,7 @@ public class BluetoothChatFragment extends Fragment {
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    String message = fromJSon(readMessage);
-                    imageReceive.setImageResource(Integer.parseInt(message));
-                    mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
+                    fromJSon(readMessage);
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name
@@ -449,6 +514,16 @@ public class BluetoothChatFragment extends Fragment {
     }
 
 
+    private Bitmap bitmapOverlay(Bitmap bmp1)
+    {
+        Bitmap bmp2 = BitmapFactory.decodeResource(getResources(), R.drawable.accept2);
+        Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
+        Canvas canvas = new Canvas(bmOverlay);
+        canvas.drawBitmap(bmp1,new Matrix(), null);
+        canvas.drawBitmap(bmp2, new Matrix(), null);
+        return bmOverlay;
+    }
+
     public void setupCustomView() {
 
 
@@ -482,18 +557,47 @@ public class BluetoothChatFragment extends Fragment {
             @Override
             public boolean onItemClick(int position, MenuEntity menuEntity1) {
                 imageGive.setImageResource(menuEntity1.iconId);
+                imageGive.buildDrawingCache();
+                givePic=true;
                 //send message, make it Json object and convert id to string
-                sendMessage( toJSon(Integer.toString(menuEntity1.iconId)));
+                sendMessage( toJSon("giveSticker",Integer.toString(menuEntity1.iconId),null));
                 Toast.makeText(getActivity(), menuEntity1.title + "  " + position, Toast.LENGTH_SHORT).show();
+//                btnAccept.setVisibility(View.VISIBLE);
+//                btnDecline.setVisibility(View.VISIBLE);
+
+
                 return true;
             }
         });
     }
 
-    public  String toJSon(String str){
+    public boolean backPressed() {
+        if (mSweetSheet3.isShow()) {
+            mSweetSheet3.dismiss();
+//            btnAccept.setVisibility(View.VISIBLE);
+//            btnDecline.setVisibility(View.VISIBLE);
+            return false;
+        }else {
+            return true;
+        }
+
+    }
+
+    public  String toJSon(String type, String str,Boolean accept){
         JSONObject jsonObject= new JSONObject();
         try {
-            jsonObject.put("giveSticker",str);
+            if( type.equals("giveSticker")) {
+                jsonObject.put("giveSticker",str);
+                givePic=true;
+                if (givePic && getPic){
+                    btnAccept.getBackground().setColorFilter(null);
+                    btnDecline.getBackground().setColorFilter(null);
+                    btnAccept.setEnabled(true);
+                    btnDecline.setEnabled(true);
+
+                }
+            }
+            if( type.equals("accept"))  jsonObject.put("accept",accept);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -503,9 +607,35 @@ public class BluetoothChatFragment extends Fragment {
 
     public  String fromJSon( String data){
         String stickerID=null;
+        Boolean accept = null;
         try {
             JSONObject jObj =  new JSONObject(data);
-           stickerID = jObj.getString("giveSticker");
+            if(jObj.has("giveSticker")){
+                getPic=true;
+                stickerID = jObj.getString("giveSticker");
+                imageReceive.setImageResource(Integer.parseInt(stickerID));
+                imageReceive.buildDrawingCache();
+                mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + data);
+                if (givePic && getPic){
+                    btnAccept.getBackground().setColorFilter(null);
+                    btnDecline.getBackground().setColorFilter(null);
+                    btnAccept.setEnabled(true);
+                    btnDecline.setEnabled(true);
+                }
+                if ( getPic){ btnDecline.setEnabled(true);  btnDecline.getBackground().setColorFilter(null);}
+            }
+            if(jObj.has("accept")){
+                accept = jObj.getBoolean("accept");
+                if (accept){
+                    otherAccepted=true;
+                    mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + data);
+                    imageReceive.buildDrawingCache();
+                    imageReceive.setImageBitmap(bitmapOverlay(imageReceive.getDrawingCache()));
+                }else{
+                    declineGUI();
+                }
+
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
