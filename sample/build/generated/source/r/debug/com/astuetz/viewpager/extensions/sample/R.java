@@ -2390,8 +2390,8 @@ containing a value of this type.
         public static final int tile=0x7f020068;
     }
     public static final class id {
-        public static final int Sticker1Container=0x7f0b0092;
-        public static final int Sticker2Container=0x7f0b0095;
+        public static final int Sticker1Container=0x7f0b0095;
+        public static final int Sticker2Container=0x7f0b0092;
         public static final int action0=0x7f0b007f;
         public static final int action_about=0x7f0b00ab;
         public static final int action_bar=0x7f0b0045;
@@ -2433,8 +2433,8 @@ containing a value of this type.
         public static final int close=0x7f0b0067;
         public static final int cm=0x7f0b00a3;
         public static final int collapseActionView=0x7f0b001a;
-        public static final int container_1=0x7f0b0091;
-        public static final int container_2=0x7f0b0094;
+        public static final int container_1=0x7f0b0094;
+        public static final int container_2=0x7f0b0091;
         public static final int content=0x7f0b0073;
         public static final int contentPanel=0x7f0b0036;
         public static final int custom=0x7f0b003a;
@@ -2491,8 +2491,8 @@ containing a value of this type.
         public static final int media_actions=0x7f0b0082;
         public static final int middle=0x7f0b0018;
         public static final int multiply=0x7f0b0023;
-        public static final int myImageViewText=0x7f0b0093;
-        public static final int myImageViewText2=0x7f0b0096;
+        public static final int myImageViewText=0x7f0b0096;
+        public static final int myImageViewText2=0x7f0b0093;
         public static final int nameTV=0x7f0b0077;
         public static final int never=0x7f0b001c;
         public static final int new_devices=0x7f0b0057;

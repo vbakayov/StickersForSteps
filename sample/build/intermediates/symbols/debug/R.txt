@@ -584,8 +584,8 @@ int drawable tabs_pattern 0x7f020065
 int drawable tabs_pattern_diagonal 0x7f020066
 int drawable tennis 0x7f020067
 int drawable tile 0x7f020068
-int id Sticker1Container 0x7f0b0092
-int id Sticker2Container 0x7f0b0095
+int id Sticker1Container 0x7f0b0095
+int id Sticker2Container 0x7f0b0092
 int id action0 0x7f0b007f
 int id action_about 0x7f0b00ab
 int id action_bar 0x7f0b0045
@@ -627,8 +627,8 @@ int id chronometer 0x7f0b0086
 int id close 0x7f0b0067
 int id cm 0x7f0b00a3
 int id collapseActionView 0x7f0b001a
-int id container_1 0x7f0b0091
-int id container_2 0x7f0b0094
+int id container_1 0x7f0b0094
+int id container_2 0x7f0b0091
 int id content 0x7f0b0073
 int id contentPanel 0x7f0b0036
 int id custom 0x7f0b003a
@@ -685,8 +685,8 @@ int id list_item 0x7f0b002f
 int id media_actions 0x7f0b0082
 int id middle 0x7f0b0018
 int id multiply 0x7f0b0023
-int id myImageViewText 0x7f0b0093
-int id myImageViewText2 0x7f0b0096
+int id myImageViewText 0x7f0b0096
+int id myImageViewText2 0x7f0b0093
 int id nameTV 0x7f0b0077
 int id never 0x7f0b001c
 int id new_devices 0x7f0b0057

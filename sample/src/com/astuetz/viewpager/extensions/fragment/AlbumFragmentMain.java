@@ -32,6 +32,9 @@ import android.widget.ImageView;
 
 import com.astuetz.viewpager.extensions.sample.R;
 
+import album.PageOneAlbum;
+import album.PageTwoAlbum;
+
 /**
  * Demonstrates a "screen-slide" animation using a {@link ViewPager}. Because {@link ViewPager}
  * automatically plays such an animation when calling {@link ViewPager#setCurrentItem(int)}, there

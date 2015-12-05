@@ -1,4 +1,4 @@
-package com.astuetz.viewpager.extensions.fragment;
+package album;
 
 /**
  * Created by Viktor on 11/4/2015.
