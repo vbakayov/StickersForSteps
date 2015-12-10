@@ -44,7 +44,10 @@ import com.hookedonplay.decoviewlib.events.DecoEvent;
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 
+import java.util.HashMap;
+
 import butterknife.InjectView;
+import stickers.DistributedRandomNumberGenerator;
 
 
 public class StepsFragment extends Fragment {
@@ -69,6 +72,7 @@ public class StepsFragment extends Fragment {
 	private TextView textGoal;
 	private boolean isChecked;
 	private boolean goalAnimationPlaying;
+	private DistributedRandomNumberGenerator rg;
 
 
 	public static StepsFragment newInstance(int position) {
@@ -92,6 +96,9 @@ public class StepsFragment extends Fragment {
 		steps = Math.max(todayOffset + since_boot, 0);
 		total_start = db.getTotalWithoutToday();
 		total_days = db.getDays();
+
+		rg= new DistributedRandomNumberGenerator(getActivity());
+
 		db.close();
 
 	}
@@ -114,13 +121,9 @@ public class StepsFragment extends Fragment {
 
 
 		mDecoView = (DecoView) rootView.findViewById(R.id.dynamicArcView);
-		//update th view on start up when the view is created
 		createBackSeries();
 		createDataSeries1();
-		updatePie();
-		updateViews();
 
-		//	createEvents();
 
 
 		mDecoView.executeReset();
@@ -131,9 +134,9 @@ public class StepsFragment extends Fragment {
 				.setDelay(100)
 				.build());
 
-		mDecoView.addEvent(new DecoEvent.Builder(DecoDrawEffect.EffectType.EFFECT_SPIRAL_OUT)
+		mDecoView.addEvent(new DecoEvent.Builder(DecoDrawEffect.EffectType.EFFECT_SPIRAL_OUT_FILL)
 				.setIndex(mSeries1Index)
-				.setDuration(2000)
+				.setDuration(3000)
 				.setDelay(1250)
 				.build());
 
@@ -157,6 +160,12 @@ public class StepsFragment extends Fragment {
 
 		return rootView;
 	}
+	private void saveNextGoal(int nextGoal) {
+		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putInt("goal", nextGoal);
+		editor.commit();
+	}
 
 	@Override
 	public void onResume(){
@@ -172,14 +181,11 @@ public class StepsFragment extends Fragment {
 	}
 
 	public void updateCountView(float steps_today) {
-		Log.w("Count", Float.toString(steps));
 		this.steps=Math.round(steps_today);
-		Log.w("steps",Integer.toString(steps));
-		Log.w("steps",Float.toString(goal));
-		Log.w("compare", Boolean.toString(steps >= (int) goal));
 		if(steps>= (int)goal){
 			Log.w("GOOOAL", "ACHIEVED");
 			goal= goal+goal;
+			saveNextGoal((int)goal);
 			playGoalAnimation();
 		}else {
 			updatePie();
@@ -246,29 +252,31 @@ public class StepsFragment extends Fragment {
 
 
 	private void updateViews() {
-
-		if(isChecked) {
-			totalView.setText(Integer.toString(total_start + steps));
-			textSteps.setText(Integer.toString( steps)+ "steps");
-			averageView.setText(Integer.toString((total_start + steps / total_days)));
-		}else{
-			SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
-			float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_STEP_SIZE);
-			float distance_today = steps * stepsize;
-			float distance_total = (total_start + steps) * stepsize;
-			if (prefs.getString("stepsize_unit", Fragment_Settings.DEFAULT_STEP_UNIT)
-					.equals("cm")) {
-				distance_today /= 100000;
-				distance_total /= 100000;
+		Log.w("updateView", "updateViews");
+		//Log.w("update  VIew", Integer.toString(total_start + steps));
+		if(!goalAnimationPlaying) {
+			if (isChecked) {
+				totalView.setText(Integer.toString(total_start + steps));
+				textSteps.setText(Integer.toString(steps) + " steps");
+				averageView.setText(Integer.toString((total_start + steps / total_days)));
 			} else {
-				distance_today /= 5280;
-				distance_total /= 5280;
+				SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+				float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_STEP_SIZE);
+				float distance_today = steps * stepsize;
+				float distance_total = (total_start + steps) * stepsize;
+				if (prefs.getString("stepsize_unit", Fragment_Settings.DEFAULT_STEP_UNIT)
+						.equals("cm")) {
+					distance_today /= 100000;
+					distance_total /= 100000;
+				} else {
+					distance_today /= 5280;
+					distance_total /= 5280;
+				}
+				textSteps.setText(String.format("%.3f km.", distance_today));
+				totalView.setText(String.format("%.3f", distance_total));
+				averageView.setText(String.format("%.3f", distance_total / total_days));
 			}
-			textSteps.setText( String.format("%.3f km.", distance_today));
-			totalView.setText( String.format("%.3f", distance_total));
-			averageView.setText( String.format("%.3f", distance_total / total_days));
 		}
-
 	}
 
 	/**
@@ -307,8 +315,9 @@ public class StepsFragment extends Fragment {
 	}
 
 	private void createDataSeries1() {
+
 		final SeriesItem seriesItem = new SeriesItem.Builder(Color.parseColor("#FFFF8800"))
-				.setRange(0, goal, 0)
+				.setRange(0, goal, steps)
 				.setInitialVisibility(false)
 				.build();
 
@@ -318,34 +327,20 @@ public class StepsFragment extends Fragment {
 			public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
 				float percentFilled = ((currentPosition - seriesItem.getMinValue()) / (seriesItem.getMaxValue() - seriesItem.getMinValue()));
 				textPercentage.setText(String.format("%.0f%%", percentFilled * 100f));
-			}
-
-			@Override
-			public void onSeriesItemDisplayProgress(float percentComplete) {
-
-			}
-		});
-
-
-		seriesItem.addArcSeriesItemListener(new SeriesItem.SeriesItemListener() {
-			@Override
-			public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
+				totalView.setText(Integer.toString(total_start + steps));
+				textSteps.setText(Integer.toString(steps) + " steps");
+				averageView.setText(Integer.toString((total_start + steps / total_days)));
 				textToGo.setText(String.format("%.1f steps to goal", seriesItem.getMaxValue() - currentPosition));
 				textSteps.setText(String.format("%.0f steps", currentPosition));
 				textGoal.setText(String.format("Goal: %.0f steps", seriesItem.getMaxValue()));
-				//      animateTextView(0,(int)seriesItem.getMaxValue(),textGoal);
-
 			}
 
 			@Override
 			public void onSeriesItemDisplayProgress(float percentComplete) {
-				//  animateTextView(0,(int)seriesItem.getMaxValue(),textGoal);
+
 			}
 		});
-
-
-
-
+		
 		mSeries1Index = mDecoView.addSeries(seriesItem);
 	}
 

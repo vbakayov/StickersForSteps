@@ -153,8 +153,7 @@ public class MainActivity extends AppCompatActivity  {
                 .getDisplayMetrics());
         pager.setPageMargin(pageMargin);
         pager.setOffscreenPageLimit(3);
-        pager.setCurrentItem(1);
-        //changeColor(getResources().getColor(R.color.green));
+        pager.setCurrentItem(0);
         tabs.setBackgroundColor(getResources().getColor(R.color.green));
 
 //        tabs.setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
