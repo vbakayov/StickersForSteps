@@ -18,31 +18,61 @@ package com.astuetz.viewpager.extensions.fragment;/*
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.util.Pair;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import au.com.bytecode.opencsv.CSVReader;
 
 
 public class Database extends SQLiteOpenHelper {
 
+    private String DB_PATH = context.getApplicationContext().getPackageName()+"/databases/";
     private final static String DB_NAME = "steps";
+    private final static String  TABLE_STICKERS = "stickers";
     private final static int DB_VERSION = 2;
-
     private static Database instance;
     private static final AtomicInteger openCounter = new AtomicInteger();
 
+    // Sticker Table Columns names
+    private static final String KEY_ID = "id";
+    private static final String KEY_NAME = "name";
+    private static final String KEY_MOVIE = "movie";
+    private static final String KEY_POPULARITY = "popularity";
+    private static final String KEY_DESCRIPTION = "description";
+    private static final String KEY_COUNT = "count";
+    private static final String KEY_STATUS = "status";
+    private static final String[] COLUMNS = {KEY_ID,KEY_NAME,KEY_MOVIE,KEY_POPULARITY,KEY_DESCRIPTION,KEY_COUNT,KEY_STATUS};
+    private static Context context;
+
+
     private Database(final Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+       createdatabase();
+
     }
 
     public static synchronized Database getInstance(final Context c) {
         if (instance == null) {
+            context = c;
             instance = new Database(c.getApplicationContext());
         }
         openCounter.incrementAndGet();
@@ -59,6 +89,8 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(final SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + DB_NAME + " (date INTEGER, steps INTEGER)");
+        db.execSQL("CREATE TABLE "+ TABLE_STICKERS+ "(id INTEGER, name TEXT, movie TEXT, "+
+                "popularity TEXT, description TEXT, count INTEGER, status INTEGER  )");
     }
 
     @Override
@@ -70,8 +102,187 @@ public class Database extends SQLiteOpenHelper {
                     DB_NAME);
             db.execSQL("DROP TABLE " + DB_NAME);
             db.execSQL("ALTER TABLE " + DB_NAME + "2 RENAME TO " + DB_NAME + "");
+
+            // Drop older stickers table if existed
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_STICKERS);
+
+            // create fresh stickers table
+            db.execSQL("CREATE TABLE "+ TABLE_STICKERS + "(id INTEGER PRIMARY KEY, name TEXT, movie TEXT, "+
+                    "popularity TEXT, description TEXT, count INTEGER, status INTEGER  )");
+
         }
     }
+
+
+    public void populateStickers()  {
+
+       AssetManager assetManager = context.getAssets();
+        InputStream is = null;
+
+        try {
+            is = assetManager.open("stickers.csv");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            Log.d("hEREE","Exception");
+            e.printStackTrace();
+        }
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+        CSVReader csvReader = new CSVReader(reader);
+
+        try {
+            int iteration = 0;
+            String [] nextLine;
+            while ((nextLine = csvReader.readNext()) != null) {
+                // nextLine[] is an array of values from the line
+
+                //skip fist line
+                if(iteration == 0) {iteration++;continue;}
+
+                Sticker sticker = new Sticker();
+                sticker.setId(Integer.parseInt(nextLine[0]));
+                sticker.setName(nextLine[1]);
+                sticker.setMovie(nextLine[2]);
+                sticker.setPopularity(nextLine[3]);
+                sticker.setDescription(nextLine[4]);
+                sticker.setCount(0);
+                sticker.setStatus(0);
+                addSticker(sticker);
+            }
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void addSticker(Sticker sticker){
+        //for logging
+        Log.d("addSticker", sticker.toString());
+
+        // 1. get reference to writable DB
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // 2. create ContentValues to add key "column"/value
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID, sticker.getId()); // get id
+        values.put(KEY_NAME, sticker.getName()); // get name etc, etc
+        values.put(KEY_MOVIE, sticker.getMovie());
+        values.put(KEY_POPULARITY,sticker.getPopularity());
+        values.put(KEY_DESCRIPTION, sticker.getDescription());
+        values.put(KEY_COUNT,sticker.getCount());
+        values.put(KEY_STATUS, sticker.getStatus());
+
+
+        // 3. insert
+        db.insert(TABLE_STICKERS, // table
+                null, //nullColumnHack
+                values); // key/value -> keys = column names/ values = column values
+
+        // 4. close
+        db.close();
+    }
+
+    public void createdatabase(){
+        boolean dbexist = checkdatabase();
+        if(!dbexist)
+            populateStickers();
+    }
+
+
+    private boolean checkdatabase() {
+        boolean checkdb = false;
+
+        try{
+            String myPath = DB_PATH + DB_NAME;
+            Log.d("calcualte Path", myPath);
+            File db = context.getDatabasePath("steps");
+            checkdb = db.exists();
+        }
+        catch(Exception e){
+            Log.d("Check","Database doesn't exist");
+        }
+        return checkdb;
+    }
+
+    public Sticker getSticker(int id){
+
+        // 1. get reference to readable DB
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // 2. build query
+        Cursor cursor =
+                db.query(TABLE_STICKERS, // a. table
+                        COLUMNS, // b. column names
+                        " id = ?", // c. selections
+                        new String[] { String.valueOf(id) }, // d. selections args
+                        null, // e. group by
+                        null, // f. having
+                        null, // g. order by
+                        null); // h. limit
+
+        // 3. if we got results get the first one
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        // 4. build sticker object
+        Sticker sticker = new Sticker();
+        sticker = new Sticker();
+        sticker.setId(Integer.parseInt(cursor.getString(0)));
+        sticker.setName(cursor.getString(1));
+        sticker.setMovie(cursor.getString(2));
+        sticker.setPopularity(cursor.getString(3));
+        sticker.setDescription(cursor.getString(4));
+        sticker.setCount(Integer.parseInt(cursor.getString(5)));
+        sticker.setStatus(Integer.parseInt(cursor.getString(5)));
+
+        //log
+        Log.d("getSticker(" + id + ")", sticker.toString());
+
+        // 5. return book
+        return sticker;
+    }
+
+    public List<Sticker> getAllStickers() {
+        List<Sticker> stickers = new LinkedList<Sticker>();
+
+        // 1. build the query
+        String query = "SELECT  * FROM " + TABLE_STICKERS;
+
+        // 2. get reference to writable DB
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        // 3. go over each row, build book and add it to list
+        Sticker sticker = null;
+        if (cursor.moveToFirst()) {
+            do {
+                sticker = new Sticker();
+                sticker.setId(Integer.parseInt(cursor.getString(0)));
+                sticker.setName(cursor.getString(1));
+                sticker.setMovie(cursor.getString(2));
+                sticker.setPopularity(cursor.getString(3));
+                sticker.setDescription(cursor.getString(4));
+                sticker.setCount(Integer.parseInt(cursor.getString(5)));
+                sticker.setStatus(Integer.parseInt(cursor.getString(5)));
+
+                // Add stickers
+                stickers.add(sticker);
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("getAllBooks()", stickers.toString());
+
+        // return stickers
+        return stickers;
+    }
+
+
+
+
+
+
 
     /**
      * Query the 'steps' table. Remember to close the cursor!
@@ -405,5 +616,6 @@ public class Database extends SQLiteOpenHelper {
         c.close();
         return re;
     }
+
 
 }

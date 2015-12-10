@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -25,11 +24,15 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
 
     private static final String TAG = "Drag";
     private static final String ARG_POSITION = "position";
-    private  ImageView target;
-    private  ImageView image;
-    private  ImageView image2;
-    private ImageView target2;
-    private FrameLayout root;
+
+    private  ImageView adam;
+    private  ImageView berry;
+    private ImageView janet;
+    private ImageView larry;
+    private ImageView layton;
+    private ImageView mooseblood;
+    private ImageView lou;
+    private ImageView fergus;
 
 
     public static PageOneAlbum newInstance(int position) {
@@ -52,25 +55,31 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
         View view = inflater.inflate(R.layout.pageone_fragment, container, false);
         Log.w("I AM HEREEE", "HEEE");
         //        register a long click listener for the balls
-        image = (ImageView) view.findViewById(R.id.girl);
-        image.setOnLongClickListener(this);
-    //    image.setImageResource(R.drawable.girl);
-
-        image2 = (ImageView) view.findViewById(R.id.sherman);
-        image2.setOnLongClickListener(this);
-     //   image2.setImageResource(R.drawable.sherman);
-
-        ImageView image3 = (ImageView) view.findViewById(R.id.rugby);
-        image3.setOnLongClickListener(this);
-      //  image3.setImageResource(R.drawable.rugby);
-
+        adam = (ImageView) view.findViewById(R.id.adam_flayman_o);
+        adam.setOnLongClickListener(this);;
+        berry = (ImageView) view.findViewById(R.id.berry_b_benson_o);
+        berry.setOnLongClickListener(this);
+        janet = (ImageView) view.findViewById(R.id.janet_o);
+        janet.setOnLongClickListener(this);
+        larry = (ImageView) view.findViewById(R.id.larry_king_o);
+        larry.setOnLongClickListener(this);
+        layton = (ImageView) view.findViewById(R.id.layton_o);
+        layton.setOnLongClickListener(this);
+        mooseblood = (ImageView) view.findViewById(R.id.mooseblood_o);
+        mooseblood.setOnLongClickListener(this);
+        lou = (ImageView) view.findViewById(R.id.lou_o);
+        lou.setOnLongClickListener(this);
 
 //      register drag event listeners for the target layout containers
+        view.findViewById(R.id.lou).setOnDragListener(this);
+        view.findViewById(R.id.adam_flayman).setOnDragListener(this);
+        view.findViewById(R.id.berry_b_benson).setOnDragListener(this);
+        view.findViewById(R.id.janetContainer).setOnDragListener(this);
+        view.findViewById(R.id.larry_king).setOnDragListener(this);
+        view.findViewById(R.id.layton).setOnDragListener(this);
+        view.findViewById(R.id.mooseblood).setOnDragListener(this);
         view.findViewById(R.id.stick_container).setOnDragListener(this);
-        view.findViewById(R.id.container_2).setOnDragListener(this);
-        view.findViewById(R.id.container_1).setOnDragListener(this);
-        
-        root = (FrameLayout) view.findViewById(R.id.stick_container);
+
 
         return view;
     }
@@ -104,7 +113,7 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
         int offsetX = (int)dragEvent.getX();//(int)motionEvent.getX();
         int offsetY = (int)dragEvent.getY();//motionEvent.getY();
         int originalPos[] = new int[2];
-        draggedImageView.getLocationOnScreen( originalPos );
+        draggedImageView.getLocationOnScreen(originalPos);
 
         // Handles each of the expected events
         switch (dragEvent.getAction()) {
@@ -135,11 +144,11 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
                 return true;
 
             case DragEvent.ACTION_DRAG_LOCATION:
-                Log.i(TAG, "drag action location");
+                //  Log.i(TAG, "drag action location");
                 offsetX = (int)dragEvent.getX();//(int)motionEvent.getX();
                 offsetY = (int)dragEvent.getY();//motionEvent.getY();
-                Log.i("MEASUREMENTS X",Integer.toString(offsetX));
-                            Log.i("MEASUREMENTS  Y",Integer.toString(offsetX));
+//                Log.i("MEASUREMENTS X",Integer.toString(offsetX));
+//                Log.i("MEASUREMENTS  Y",Integer.toString(offsetX));
                 return true;
 
             case DragEvent.ACTION_DRAG_EXITED:
@@ -153,45 +162,72 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
             the action only sent here if ACTION_DRAG_STARTED returned true
             return true if successfully handled the drop else false*/
                 switch (draggedImageView.getId()) {
-                    case R.id.girl:
-                        Log.i(TAG, "Girl sticker");
-                        if(receivingLayoutView.getId()== R.id.container_2) {
-                            ViewGroup draggedImageViewParentLayout
-                                    = (ViewGroup) draggedImageView.getParent();
-                            draggedImageViewParentLayout.removeView(draggedImageView);
-                            RelativeLayout bottomLinearLayout = (RelativeLayout) receivingLayoutView;
-                            bottomLinearLayout.removeView(target);
-                            bottomLinearLayout.addView(draggedImageView);
-                            draggedImageView.setVisibility(View.VISIBLE);
-                            YoYo.with(Techniques.BounceIn).duration(700).playOn(image);
-                            draggedImageView.setOnLongClickListener(null);
+                    case R.id.adam_flayman_o:
+                        Log.i(TAG, "adam");
+                        if(receivingLayoutView.getId()== R.id.adam_flayman) {
+                            stickSticker(adam,draggedImageView,receivingLayoutView);
                             return true;
                         }else{
-                            //TranslateAnimation(-(x-oldX), 0,-(y-oldY),0)
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
+                            return false;
                         }
-                        return false;
-                    case R.id.sherman:
-                        Log.i(TAG, "Sherman head");
-                        if(receivingLayoutView.getId()== R.id.container_1) {
-                            ViewGroup draggedImageViewParentLayout
-                                    = (ViewGroup) draggedImageView.getParent();
-                            draggedImageViewParentLayout.removeView(draggedImageView);
-                            RelativeLayout bottomLinearLayout = (RelativeLayout) receivingLayoutView;
-                            bottomLinearLayout.removeView(target);
 
-                            bottomLinearLayout.addView(draggedImageView);
-                            YoYo.with(Techniques.BounceIn).duration(700).playOn(image2);
-                            draggedImageView.setVisibility(View.VISIBLE);
-                            draggedImageView.setOnLongClickListener(null);
+                    case R.id.berry_b_benson_o:
+                        Log.i(TAG, "berry");
+                        if(receivingLayoutView.getId()== R.id.berry_b_benson) {
+                            stickSticker(berry,draggedImageView,receivingLayoutView);
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
+                            return false;
                         }
-                        return false;
-                    case R.id.rugby:
-                        Log.i(TAG, "Rugby ball");
-                        return false;
+                    case R.id.janet_o:
+                        Log.i(TAG, "janet");
+                        if(receivingLayoutView.getId()== R.id.janetContainer) {
+                            stickSticker(janet,draggedImageView,receivingLayoutView);
+                            return true;
+                        }else{
+                            AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
+                            return false;
+                        }
+                    case R.id.larry_king_o:
+                        Log.i(TAG, "larry");
+                        if(receivingLayoutView.getId()== R.id.larry_king) {
+                            stickSticker(larry,draggedImageView,receivingLayoutView);
+                            return true;
+                        }else{
+                            AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
+                            return false;
+                        }
+                    case R.id.layton_o:
+                        Log.i(TAG, "layton");
+                        if(receivingLayoutView.getId()== R.id.layton) {
+                            stickSticker(layton,draggedImageView,receivingLayoutView);
+                            return true;
+                        }else{
+                            AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
+                            return false;
+                        }
+                    case R.id.mooseblood_o:
+                        Log.i(TAG, "mooseblood");
+                        if(receivingLayoutView.getId()== R.id.mooseblood) {
+                            stickSticker(mooseblood,draggedImageView,receivingLayoutView);
+                            return true;
+                        }else{
+                            AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
+                            return false;
+                        }
+
+                    case R.id.lou_o:
+                        Log.i(TAG, "lou_o");
+                        if(receivingLayoutView.getId()== R.id.lou) {
+                            stickSticker(lou,draggedImageView,receivingLayoutView);
+                            return true;
+                        }else{
+                            AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
+                            return false;
+                        }
+
                     default:
                         Log.i(TAG, "in default");
                         return false;
@@ -220,6 +256,17 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
                 break;
         }
         return false;
+    }
+
+    private void stickSticker(ImageView sticker, View draggedImageView, View receivingLayoutView){
+        ViewGroup draggedImageViewParentLayout = (ViewGroup) draggedImageView.getParent();
+        draggedImageViewParentLayout.removeView(draggedImageView);
+        RelativeLayout bottomLinearLayout = (RelativeLayout) receivingLayoutView;
+        bottomLinearLayout.addView(draggedImageView);
+        draggedImageView.setVisibility(View.VISIBLE);
+        YoYo.with(Techniques.BounceIn).duration(700).playOn(sticker);
+        draggedImageView.setOnLongClickListener(null);
+
     }
 
     private void AnimateStickerBack( View view, int offsetX, int offsetY, int originalPosX, int originalPosY ) {

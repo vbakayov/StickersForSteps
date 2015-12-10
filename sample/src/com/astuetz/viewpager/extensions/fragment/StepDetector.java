@@ -15,18 +15,7 @@ package com.astuetz.viewpager.extensions.fragment;
  */
 public class StepDetector implements SensorEventListener
 {
-//    private final static String TAG = "StepDetector";
-//    public final static String ACTION_STEPS = "ACTION_STEPS";
-//    private float   mLimit = 10;
-//    private float   mLastValues[] = new float[3*2];
-//    private float   mScale[] = new float[2];
-//    private float   mYOffset;
-//    private int     count=0;
-//    private float   mLastDirections[] = new float[3*2];
-//    private float   mLastExtremes[][] = { new float[3*2], new float[3*2] };
-//    private float   mLastDiff[] = new float[3*2];
-//    private int     mLastMatch = -1;
-//    private StepListener stepListener;
+
 
     private static final String TAG = "Pedometer";
     private static final String PREFS_NAME = "PedometerPrefs";
