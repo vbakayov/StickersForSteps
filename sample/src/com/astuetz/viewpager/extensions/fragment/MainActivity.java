@@ -54,6 +54,10 @@ import android.widget.Button;
 import com.astuetz.SlidingTabLayout;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+
+import java.io.File;
+import java.io.IOException;
+
 import ui.*;
 
 import bluetoothchat.BluetoothChatFragment;
@@ -169,6 +173,9 @@ public class MainActivity extends AppCompatActivity  {
         });
 
 
+        Database db = Database.getInstance(this);
+       db.getSticker(3);
+
     }
 
     @Override
@@ -201,7 +208,6 @@ public class MainActivity extends AppCompatActivity  {
         SharedPreferences prefs =
                 MainActivity.this.getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
 
-        //goal = prefs.getInt("goal", Fragment_Settings.DEFAULT_GOAL);
         since_boot = db.getCurrentSteps(); // do not use the value from the sharedPreferences
         int pauseDifference = since_boot - prefs.getInt("pauseCount", since_boot);
 
@@ -213,9 +219,7 @@ public class MainActivity extends AppCompatActivity  {
 //        mStepDetector.setSensitivity(10);
 
         since_boot -= pauseDifference;
-
         total_start = db.getTotalWithoutToday();
-        //total_days = db.getDays();
 
         db.close();
 
@@ -348,11 +352,6 @@ public class MainActivity extends AppCompatActivity  {
             StepsFragment frag = (StepsFragment) adapter.getRegisteredFragment(0);
             if(frag != null) {
                 int datapassed = arg1.getIntExtra("stepsToday", 0);
-//                Toast.makeText(MainActivity.this,
-//                        "Triggered by Service!\n"
-//                                + "Data passed: " + String.valueOf(datapassed),
-//                        Toast.LENGTH_LONG).show();
-//                Log.w("TRIGGED BY SERVICE", String.valueOf(datapassed));
                 todayOffset= arg1.getIntExtra("todayOffset",0);
                 since_boot= arg1.getIntExtra("since_boot",0);
                 frag.updateCountView(datapassed);

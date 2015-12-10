@@ -57,7 +57,7 @@ import java.util.Locale;
 
 public class Fragment_Settings extends PreferenceFragment implements OnPreferenceClickListener {
 
-    public final static int DEFAULT_GOAL = 10000;
+    public final static int DEFAULT_GOAL = 250;
     final static float DEFAULT_STEP_SIZE = Locale.getDefault() == Locale.US ? 2.5f : 75f;
     public final static String DEFAULT_STEP_UNIT = Locale.getDefault() == Locale.US ? "ft" : "cm";
 
