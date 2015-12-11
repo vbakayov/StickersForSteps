@@ -56,11 +56,12 @@ public class Database extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_MOVIE = "movie";
+    private static final String KEY_IMAGESRC= "img";
     private static final String KEY_POPULARITY = "popularity";
     private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_COUNT = "count";
     private static final String KEY_STATUS = "status";
-    private static final String[] COLUMNS = {KEY_ID,KEY_NAME,KEY_MOVIE,KEY_POPULARITY,KEY_DESCRIPTION,KEY_COUNT,KEY_STATUS};
+    private static final String[] COLUMNS = {KEY_ID,KEY_NAME,KEY_MOVIE,KEY_IMAGESRC,KEY_POPULARITY,KEY_DESCRIPTION,KEY_COUNT,KEY_STATUS};
     private static Context context;
 
 
@@ -89,7 +90,7 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(final SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + DB_NAME + " (date INTEGER, steps INTEGER)");
-        db.execSQL("CREATE TABLE "+ TABLE_STICKERS+ "(id INTEGER, name TEXT, movie TEXT, "+
+        db.execSQL("CREATE TABLE "+ TABLE_STICKERS+ "(id INTEGER, name TEXT, movie TEXT, img TEXT, "+
                 "popularity TEXT, description TEXT, count INTEGER, status INTEGER  )");
     }
 
@@ -107,7 +108,7 @@ public class Database extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_STICKERS);
 
             // create fresh stickers table
-            db.execSQL("CREATE TABLE "+ TABLE_STICKERS + "(id INTEGER PRIMARY KEY, name TEXT, movie TEXT, "+
+            db.execSQL("CREATE TABLE "+ TABLE_STICKERS + "(id INTEGER PRIMARY KEY, name TEXT, movie TEXT, img TEXT, "+
                     "popularity TEXT, description TEXT, count INTEGER, status INTEGER  )");
 
         }
@@ -144,9 +145,10 @@ public class Database extends SQLiteOpenHelper {
                 sticker.setName(nextLine[1]);
                 sticker.setMovie(nextLine[2]);
                 sticker.setPopularity(nextLine[3]);
-                sticker.setDescription(nextLine[4]);
-                sticker.setCount(0);
-                sticker.setStatus(0);
+                sticker.setImagesrc(nextLine[4]);
+                sticker.setDescription(nextLine[5]);
+                sticker.setCount(1);
+                sticker.setStatus(2);
                 addSticker(sticker);
             }
         } catch (IOException e) {
@@ -170,6 +172,7 @@ public class Database extends SQLiteOpenHelper {
         values.put(KEY_NAME, sticker.getName()); // get name etc, etc
         values.put(KEY_MOVIE, sticker.getMovie());
         values.put(KEY_POPULARITY,sticker.getPopularity());
+        values.put(KEY_IMAGESRC, sticker.getImagesrc());
         values.put(KEY_DESCRIPTION, sticker.getDescription());
         values.put(KEY_COUNT,sticker.getCount());
         values.put(KEY_STATUS, sticker.getStatus());
@@ -232,10 +235,14 @@ public class Database extends SQLiteOpenHelper {
         sticker.setId(Integer.parseInt(cursor.getString(0)));
         sticker.setName(cursor.getString(1));
         sticker.setMovie(cursor.getString(2));
-        sticker.setPopularity(cursor.getString(3));
-        sticker.setDescription(cursor.getString(4));
-        sticker.setCount(Integer.parseInt(cursor.getString(5)));
-        sticker.setStatus(Integer.parseInt(cursor.getString(5)));
+        sticker.setPopularity(cursor.getString(4));
+        sticker.setImagesrc(cursor.getString(3));
+        sticker.setDescription(cursor.getString(5));
+        sticker.setCount(Integer.parseInt(cursor.getString(6)));
+        sticker.setStatus(Integer.parseInt(cursor.getString(7)));
+
+
+
 
         //log
         Log.d("getSticker(" + id + ")", sticker.toString());
@@ -263,9 +270,10 @@ public class Database extends SQLiteOpenHelper {
                 sticker.setName(cursor.getString(1));
                 sticker.setMovie(cursor.getString(2));
                 sticker.setPopularity(cursor.getString(3));
-                sticker.setDescription(cursor.getString(4));
-                sticker.setCount(Integer.parseInt(cursor.getString(5)));
-                sticker.setStatus(Integer.parseInt(cursor.getString(5)));
+                sticker.setPopularity(cursor.getString(4));
+                sticker.setDescription(cursor.getString(5));
+                sticker.setCount(Integer.parseInt(cursor.getString(6)));
+                sticker.setStatus(Integer.parseInt(cursor.getString(7)));
 
                 // Add stickers
                 stickers.add(sticker);

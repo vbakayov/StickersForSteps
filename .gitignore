@@ -218,3 +218,8 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+*.ap_
+sample/build/intermediates/resources/resources-debug.ap_
+sample/build/outputs/apk/sample-debug.apk
+*.bin
+*.lock

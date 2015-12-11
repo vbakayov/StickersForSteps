@@ -13,11 +13,22 @@ public class Sticker {
     //0 for not active, 1 for selected, 2 for glued
     private Integer status;
 
-    public Sticker(Integer id, String name, String movie, String popularity, String description, Integer count, Integer status) {
+    public String getImagesrc() {
+        return imagesrc;
+    }
+
+    public void setImagesrc(String imagesrc) {
+        this.imagesrc = imagesrc;
+    }
+
+    private String imagesrc;
+
+    public Sticker(Integer id, String name, String movie, String popularity,String imgsrc, String description, Integer count, Integer status) {
         this.id = id;
         this.name = name;
         this.movie = movie;
         this.popularity = popularity;
+        this.imagesrc=imgsrc;
         this.description = description;
         this.count = count;
         this.status = status;
@@ -87,7 +98,7 @@ public class Sticker {
     @Override
     public String toString() {
         return "Sticker [id=" + id + ", title=" + name + ", movie=" + movie +", description="+ description
-                +", status="+ status+", count="+ count+", popularity="+ popularity
+                +", status="+ status+", count="+ count+", popularity="+ popularity+ ", img="+imagesrc
                 + "]";
     }
 }
