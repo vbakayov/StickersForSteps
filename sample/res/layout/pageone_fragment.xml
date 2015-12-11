@@ -3,6 +3,18 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" android:id="@+id/rootLayout">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="BEE"
+        android:textSize="30dp"
+        android:typeface="monospace"
+
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
 
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,132 +28,345 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="-30dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentEnd="true">
 
-        <ImageView
-            android:id="@+id/rugby"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/rugby"
-            android:layout_gravity="left|bottom" />
-
-        <ImageView
-            android:id="@+id/girl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:src="@drawable/girl"
-            android:layout_gravity="left|bottom" />
-
-        <ImageView
-            android:id="@+id/sherman"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:src="@drawable/sherman"
-            android:layout_gravity="left|bottom" />
-
-    </FrameLayout>
-
-
-    <RelativeLayout
-            android:id="@+id/container_2"
+        <RelativeLayout
+            android:id="@+id/adam_flayman"
             android:layout_width="118dp"
             android:layout_height="wrap_content"
             android:gravity="left"
             android:orientation="vertical"
 
             android:weightSum="1"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="left|top"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-        android:layout_below="@+id/textView"
-        android:layout_alignStart="@+id/container_1">
+            android:layout_below="@+id/textView"
+            android:layout_alignStart="@+id/stick_container"
+            android:layout_marginTop="15dp">
 
             <ImageView
-                android:id="@+id/Sticker2Container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/girlblack"
-                android:layout_alignParentEnd="true" />
+                android:id="@+id/sticker_9"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/bee_adam_flayman_bg"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true" />
 
 
             <TextView
-                android:id="@+id/myImageViewText2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/Sticker2Container"
-                android:layout_alignRight="@+id/Sticker2Container"
-                android:layout_alignBottom="@+id/Sticker2Container"
                 android:gravity="center"
-                android:text="#2"
+                android:text="#9"
                 android:textSize= "25dp"
                 android:textStyle="bold"
                 android:textColor="#ffffff"
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
-                android:layout_marginBottom="1dp"
-                android:layout_alignParentTop="true" />
-
-
-
-
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/container_1"
-            android:layout_width="118dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/berry_b_benson"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:gravity="right"
             android:orientation="vertical"
-
             android:weightSum="1"
-            android:layout_gravity="left|top"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="66dp"
-            android:layout_below="@+id/container_2"
-            android:layout_alignEnd="@+id/stick_container">
+            android:layout_gravity="left|center_vertical"
+            android:layout_below="@+id/janet"
+            android:layout_toStartOf="@+id/textView"
+            android:layout_marginTop="30dp">
 
 
 
             <ImageView
-                android:id="@+id/Sticker1Container"
+                android:id="@+id/sticker_10"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/bee_berry_b_benson_burned_bg"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true" />
+
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/shermanblack"
-                android:layout_alignParentEnd="true" />
+                android:gravity="center"
+                android:text="#10"
+                android:textSize= "25dp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/janetContainer"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:orientation="vertical"
+            android:layout_gravity="right|bottom"
+
+            android:layout_alignTop="@+id/container_4"
+            android:layout_toStartOf="@+id/textView"
+            android:layout_marginBottom="70dp"
+            android:layout_marginRight="40dp">
+
+            <ImageView
+                android:id="@+id/janet"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/bee_janet_benson_bg"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
 
 
             <TextView
                 android:id="@+id/myImageViewText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/Sticker1Container"
-                android:layout_alignTop="@+id/Sticker1Container"
-                android:layout_alignRight="@+id/Sticker1Container"
-                android:layout_alignBottom="@+id/Sticker1Container"
-                android:layout_margin="1dp"
+                android:layout_alignLeft="@+id/janet"
+                android:layout_alignTop="@+id/janet"
+                android:layout_alignRight="@+id/janet"
+                android:layout_alignBottom="@+id/janet"
                 android:gravity="center"
-                android:text="#1"
+                android:text="#11"
                 android:textSize= "25dp"
                 android:textStyle="bold"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentStart="false"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentRight="false"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="20dp" />
         </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Brave"
-        android:textSize="30dp"
-        android:typeface="monospace"
+        <RelativeLayout
+            android:id="@+id/larry_king"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="right"
+            android:orientation="vertical"
+            android:weightSum="1"
+            android:layout_gravity="right|center_vertical"
+            android:layout_below="@+id/mooseblood"
+            android:layout_alignParentEnd="true">
 
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
 
 
+            <ImageView
+                android:id="@+id/sticker_12"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:src="@drawable/bee_larry_king_bg"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/sticker_8"
+                android:gravity="center"
+                android:text="#12"
+                android:textSize= "25dp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignBottom="@+id/sticker_8"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layton"
+            android:layout_width="140dp"
+            android:layout_height="128dp"
+            android:gravity="right"
+            android:orientation="vertical"
+            android:weightSum="1"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_below="@+id/mooseblood"
+            android:layout_alignStart="@+id/mooseblood"
+            android:layout_alignBottom="@+id/container_3"
+            android:layout_alignEnd="@+id/mooseblood"
+            android:layout_marginRight="10dp">
+
+
+
+            <ImageView
+                android:id="@+id/sticker_13"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:src="@drawable/bee_layton_t_montgomery_bg"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="#13"
+                android:textSize= "25dp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="1dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/lou"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:gravity="right"
+            android:orientation="vertical"
+            android:weightSum="1"
+            android:layout_gravity="right|top"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="30dp">
+
+
+
+            <ImageView
+                android:id="@+id/sticker_14"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:src="@drawable/bee_lou_lo_luca_bg"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="#14"
+                android:textSize= "25dp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="1dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/mooseblood"
+            android:layout_width="170dp"
+            android:layout_height="127dp"
+            android:gravity="right"
+            android:orientation="vertical"
+            android:weightSum="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_above="@+id/container_3"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-40dp">
+
+            <ImageView
+                android:id="@+id/sticker_15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bee_mooseblood_burned_bg"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="#15"
+                android:textSize= "25dp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="32dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+
+
+        <ImageView
+            android:id="@+id/berry_b_benson_o"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/bee_berry_b_benson_burned"
+            android:layout_gravity="left|bottom" />
+
+        <ImageView
+            android:id="@+id/adam_flayman_o"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/bee_adam_flayman"
+            android:layout_gravity="left|bottom" />
+
+        <ImageView
+            android:id="@+id/layton_o"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/bee_layton_t_montgomery"
+            android:layout_gravity="left|bottom" />
+
+        <ImageView
+            android:id="@+id/larry_king_o"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/bee_larry_king"
+            android:layout_gravity="left|bottom" />
+
+        <ImageView
+            android:id="@+id/lou_o"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/bee_lou_lo_luca"
+            android:layout_gravity="left|bottom" />
+
+        <ImageView
+            android:id="@+id/mooseblood_o"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/bee_mooseblood_burned"
+            android:layout_gravity="left|bottom" />
+
+        <ImageView
+            android:id="@+id/janet_o"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/bee_janet_benson"
+            android:layout_gravity="left|bottom" />
+
+    </FrameLayout>
 </RelativeLayout>

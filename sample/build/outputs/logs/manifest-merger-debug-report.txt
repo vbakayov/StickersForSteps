@@ -24,16 +24,18 @@ ADDED from AndroidManifest.xml:6:5
 application
 ADDED from AndroidManifest.xml:8:5
 MERGED from com.jpardogo.materialtabstrip:library:1.1.0:9:5
-MERGED from com.android.support:support-v4:22.2.0:22:5
-MERGED from com.android.support:appcompat-v7:22.2.0:22:5
-MERGED from com.android.support:support-v4:22.2.0:22:5
+MERGED from com.android.support:support-v4:22.2.1:22:5
+MERGED from com.android.support:appcompat-v7:22.2.1:22:5
+MERGED from com.android.support:support-v4:22.2.1:22:5
 MERGED from com.android.support:cardview-v7:22.2.0:22:5
-MERGED from com.github.blackfizz:eazegraph:1.2.2:11:5
 MERGED from com.android.support:support-v13:21.0.3:16:5
-MERGED from com.android.support:support-v4:22.2.0:22:5
-MERGED from com.android.support:appcompat-v7:22.2.0:22:5
-MERGED from com.android.support:support-v4:22.2.0:22:5
-MERGED from com.android.support:support-v4:22.2.0:22:5
+MERGED from com.android.support:support-v4:22.2.1:22:5
+MERGED from com.github.bmarrdev:android-DecoView-charting:v0.9.4:11:5
+MERGED from com.android.support:appcompat-v7:22.2.1:22:5
+MERGED from com.android.support:support-v4:22.2.1:22:5
+MERGED from com.android.support:appcompat-v7:22.2.1:22:5
+MERGED from com.android.support:support-v4:22.2.1:22:5
+MERGED from com.android.support:support-v4:22.2.1:22:5
 	android:label
 		ADDED from AndroidManifest.xml:11:9
 	android:allowBackup
@@ -129,20 +131,23 @@ ADDED from AndroidManifest.xml:63:17
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.jpardogo.materialtabstrip:library:1.1.0:5:5
-MERGED from com.android.support:support-v4:22.2.0:20:5
-MERGED from com.android.support:appcompat-v7:22.2.0:20:5
-MERGED from com.android.support:support-v4:22.2.0:20:5
+MERGED from com.android.support:support-v4:22.2.1:20:5
+MERGED from com.android.support:appcompat-v7:22.2.1:20:5
+MERGED from com.android.support:support-v4:22.2.1:20:5
 MERGED from com.android.support:cardview-v7:22.2.0:20:5
-MERGED from com.github.blackfizz:eazegraph:1.2.2:7:5
 MERGED from com.android.support:support-v13:21.0.3:15:5
-MERGED from com.android.support:support-v4:22.2.0:20:5
+MERGED from com.android.support:support-v4:22.2.1:20:5
+MERGED from com.daimajia.numberprogressbar:library:1.2:7:5
+MERGED from com.github.bmarrdev:android-DecoView-charting:v0.9.4:7:5
+MERGED from com.android.support:appcompat-v7:22.2.1:20:5
+MERGED from com.android.support:support-v4:22.2.1:20:5
 MERGED from com.daimajia.easing:library:1.0.1:8:5
 MERGED from com.daimajia.androidanimations:library:1.1.3:8:5
 MERGED from com.github.zzz40500:AndroidSweetSheet:1.1.0:7:5
-MERGED from com.android.support:appcompat-v7:22.2.0:20:5
-MERGED from com.android.support:support-v4:22.2.0:20:5
+MERGED from com.android.support:appcompat-v7:22.2.1:20:5
+MERGED from com.android.support:support-v4:22.2.1:20:5
 MERGED from com.android.support:recyclerview-v7:22.2.0:20:5
-MERGED from com.android.support:support-v4:22.2.0:20:5
+MERGED from com.android.support:support-v4:22.2.1:20:5
 	android:targetSdkVersion
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0

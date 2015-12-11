@@ -2,45 +2,118 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:padding="5dp"
     tools:context=".Activity_Main">
 
-    <org.eazegraph.lib.charts.PieChart
-        xmlns:eaze="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
         android:id="@+id/graph"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
-        eaze:egLegendHeight="0dp"
-        eaze:egInnerPadding="75"
-        eaze:egHighlightStrength="1"/>
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/number_progress_bar"
+        android:layout_marginTop="20dp">
+
+        <com.hookedonplay.decoviewlib.DecoView
+            xmlns:custom="http://schemas.android.com/apk/res-auto"
+            custom:dv_lineWidth="26dp"
+            android:id="@+id/dynamicArcView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.hookedonplay.decoviewlib.DecoView>
+
+        <TextView
+            android:id="@+id/textSteps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="2015 steps"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="35sp"/>
+
+        <TextView
+            android:id="@+id/textPercentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20% completed"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="20sp"
+            android:layout_below="@+id/textSteps"
+            android:layout_centerHorizontal="true" />
 
 
-    <TextView
-        android:id="@+id/steps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
-        android:gravity="center"
-        android:textSize="45sp"
-        android:text="10.000"/>
+        <TextView
+            android:id="@+id/textRemaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="200dp"
+            android:text="200 steps to next goal"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_below="@+id/textPercentage"
+            android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/unit"
+        <TextView
+            android:id="@+id/textCurrentGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="200dp"
+            android:text="Goal : 18000"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_below="@+id/textRemaining"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+    <com.daimajia.numberprogressbar.NumberProgressBar
+        android:id="@+id/number_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/steps"
-        android:layout_centerHorizontal="true"
-        android:text="@string/steps"
-        android:textSize="20sp"/>
+        custom:progress_unreached_color="#CCCCCC"
+        custom:progress_reached_color="#3498DB"
+
+        custom:progress_unreached_bar_height="10.75dp"
+        custom:progress_reached_bar_height="11.5dp"
+        custom:progress_text_size="20sp"
+        custom:progress_text_color="#3498DB"
+        custom:progress_text_offset="1dp"
+        custom:progress_text_visibility="visible"
+
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentStart="true" />
+
+
+    <LinearLayout
+        android:id="@+id/averageandtotaltext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/averageandtotal"
+        android:layout_alignParentRight="true">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/average"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/total"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/averageandtotal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_below="@+id/graph"
-        android:layout_marginTop="20dp">
+        android:layout_alignParentEnd="true">
 
         <TextView
             android:id="@+id/average"
@@ -61,37 +134,14 @@
             android:textStyle="bold"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/averageandtotaltext"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/averageandtotal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/average"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/total"/>
-
-    </LinearLayout>
-
-    <ToggleButton
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="On"
-        android:id="@+id/toggleButton"
-        android:checked="true"
-        android:layout_below="@+id/averageandtotaltext"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="128dp" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="120/144 Stickers"
+        android:id="@+id/textView3"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout><!-- From: file:/C:/StickersForSteps/sample/res/layout/steps_fragment.xml -->

@@ -35,14 +35,13 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.astuetz.viewpager.extensions.sample.R;
+import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.DecoDrawEffect;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
 
 
-import org.eazegraph.lib.charts.PieChart;
-import org.eazegraph.lib.models.PieModel;
 
 import java.util.HashMap;
 
@@ -73,6 +72,7 @@ public class StepsFragment extends Fragment {
 	private boolean isChecked;
 	private boolean goalAnimationPlaying;
 	private DistributedRandomNumberGenerator rg;
+	private NumberProgressBar bnp;
 
 
 	public static StepsFragment newInstance(int position) {
@@ -117,6 +117,11 @@ public class StepsFragment extends Fragment {
 		textGoal = (TextView) rootView.findViewById(R.id.textCurrentGoal);
 		isChecked=true;
 		goalAnimationPlaying=false;
+
+
+		bnp = (NumberProgressBar)rootView.findViewById(R.id.number_progress_bar);
+		bnp.setMax(144);
+		bnp.setProgress(20);
 
 
 
