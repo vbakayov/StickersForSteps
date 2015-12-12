@@ -295,6 +295,48 @@ public class Database extends SQLiteOpenHelper {
         return sticker;
     }
 
+
+    public Sticker getStickerForName(String name){
+        // 1. get reference to readable DB
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // 2. build query
+        Cursor cursor =
+                db.query(TABLE_STICKERS, // a. table
+                        COLUMNS, // b. column names
+                        " name = ?", // c. selections
+                        new String[] { name }, // d. selections args
+                        null, // e. group by
+                        null, // f. having
+                        null, // g. order by
+                        null); // h. limit
+
+        // 3. if we got results get the first one
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        // 4. build sticker object
+        Sticker sticker = new Sticker();
+        sticker = new Sticker();
+        sticker.setId(Integer.parseInt(cursor.getString(0)));
+        sticker.setName(cursor.getString(1));
+        sticker.setMovie(cursor.getString(2));
+        sticker.setPopularity(cursor.getString(4));
+        sticker.setImagesrc(cursor.getString(3));
+        sticker.setDescription(cursor.getString(5));
+        sticker.setCount(Integer.parseInt(cursor.getString(6)));
+        sticker.setStatus(Integer.parseInt(cursor.getString(7)));
+
+
+
+
+        //log
+        Log.d("getStickerForName(" + name + ")", sticker.toString());
+
+        // 5. return book
+        return sticker;
+    }
+
     public List<Sticker> getAllStickers() {
         List<Sticker> stickers = new LinkedList<Sticker>();
 

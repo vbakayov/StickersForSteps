@@ -223,3 +223,6 @@ sample/build/intermediates/resources/resources-debug.ap_
 sample/build/outputs/apk/sample-debug.apk
 *.bin
 *.lock
+sample/build/outputs/apk/sample-debug-unaligned.apk
+sample/build/outputs/apk/sample-debug-unaligned.apk
+sample/build/outputs/apk/sample-debug.apk

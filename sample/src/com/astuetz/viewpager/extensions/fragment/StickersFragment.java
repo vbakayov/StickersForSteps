@@ -21,9 +21,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import album.SampleImage;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -64,9 +70,7 @@ public class StickersFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         position = getArguments().getInt(ARG_POSITION);
-        //set grid view item
-        Bitmap smek = BitmapFactory.decodeResource(this.getResources(), R.drawable.smek);
-        Bitmap skiper = BitmapFactory.decodeResource(this.getResources(), R.drawable.skiper);
+
 
 
         WindowManager manager = (WindowManager) getActivity().getSystemService(Activity.WINDOW_SERVICE);
@@ -90,7 +94,8 @@ public class StickersFragment extends Fragment {
                     getActivity().getPackageName());
 
             //set the sampled sized of the image with the given dimensions
-            Bitmap image=  decodeSampledBitmapFromResource(getResources(),resourceId, 70, 70);
+            Bitmap image= SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 70, 70);
+            //set grid view item
             gridArray.add(new Item(image,element.getName()));
 
 
@@ -101,44 +106,9 @@ public class StickersFragment extends Fragment {
     }
 
 
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
-                                                         int reqWidth, int reqHeight) {
 
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(res, resId, options);
 
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
 
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
-    }
-
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_stickers,container,false);
@@ -149,36 +119,65 @@ public class StickersFragment extends Fragment {
         customGridAdapter = new CustomGridViewAdapter(getActivity(), R.layout.row_grid, gridArray);
         gridView.setAdapter(customGridAdapter);
 
-        // custom dialog
-        final Dialog dialog = new Dialog(getActivity());
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.sticker_dialog);
-        dialog.setTitle("Title...");
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = width;
-        lp.height = height;
 
-        dialog.getWindow().setAttributes(lp);
-        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        // if button is clicked, close the custom dialog
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
 
+                String stickerName = ((TextView) v.findViewById(R.id.item_text)).getText().toString();
+                View picture = v.findViewById(R.id.test);
+                int test2[] = new int[2];
+                picture.getLocationOnScreen(test2);
+                animateStickerBack( picture, 300, 300, test2[0], test2[1] );
+            //    showSticker(stickerName);
 
-                dialog.show();
-                Toast.makeText(getActivity(), "" + position,
-                        Toast.LENGTH_SHORT).show();
             }
         });
         return rootView;
+    }
+
+    private void animateStickerBack( View view, int offsetX, int offsetY, int originalPosX, int originalPosY ) {
+
+        Animation animation = new TranslateAnimation(offsetX - originalPosX - 160, 0, offsetY -  originalPosY + 240, 0);
+        animation.setDuration(1000);
+        animation.setInterpolator(new DecelerateInterpolator(1));
+        view.startAnimation(animation);
+    }
+
+    private void showSticker(String name) {
+        // custom dialog
+        Database db= Database.getInstance(getActivity());
+        Sticker clickerStikcer = db.getStickerForName(name);
+        clickerStikcer.getName();
+        Log.d("NAMe", clickerStikcer.getName());
+
+
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.sticker_dialog);
+        ImageView image = (ImageView) (dialog).findViewById(R.id.image);
+
+        //get the correct image
+        String file= clickerStikcer.getImagesrc();
+        file = file.substring(0, file.lastIndexOf(".")); //trim the extension
+        Resources resources = getActivity().getResources();
+        int resourceId = resources.getIdentifier(file, "drawable", getActivity().getPackageName());
+        image.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 250, 250));
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = width;
+        lp.height = height;
+        dialog.getWindow().setAttributes(lp);
+        RelativeLayout mainLayout = (RelativeLayout) dialog.findViewById(R.id.showStickerLayout);
+        dialog.show();
+        // if button is clicked, close the custom dialog
+        mainLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 }
