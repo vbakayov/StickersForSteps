@@ -632,10 +632,8 @@ public class BluetoothChatFragment extends Fragment {
     }
 
     public boolean backPressed() {
-        if (mSweetSheet3.isShow()) {
+        if (mSweetSheet3!= null && mSweetSheet3.isShow()) {
             mSweetSheet3.dismiss();
-//            btnAccept.setVisibility(View.VISIBLE);
-//            btnDecline.setVisibility(View.VISIBLE);
             return false;
         }else {
             return true;
