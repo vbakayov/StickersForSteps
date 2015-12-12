@@ -29,7 +29,7 @@
         android:layout_marginBottom="-30dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/container_8"
+
         android:layout_below="@+id/textView"
         android:layout_alignParentEnd="true">
 
@@ -49,7 +49,7 @@
             android:layout_marginTop="15dp">
 
             <ImageView
-                android:id="@+id/sticker_2"
+                android:id="@+id/angus_img"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:src="@drawable/brave_angus_bg"
@@ -60,7 +60,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/sticker_2"
+                android:layout_alignLeft="@+id/angus_img"
                 android:gravity="center"
                 android:text="#2"
                 android:textSize= "25dp"
@@ -69,8 +69,9 @@
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:layout_alignParentTop="true"
-                android:layout_alignBottom="@+id/sticker_2"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignBottom="@+id/angus_img"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/angus_txt" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -87,7 +88,7 @@
 
 
             <ImageView
-                android:id="@+id/sticker_3"
+                android:id="@+id/macguffin_img"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:src="@drawable/brave_lord_macguffin_bg"
@@ -97,12 +98,13 @@
 
 
             <TextView
+                android:id="@+id/macguffin_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/sticker_3"
-                android:layout_alignTop="@+id/sticker_3"
-                android:layout_alignRight="@+id/sticker_3"
-                android:layout_alignBottom="@+id/sticker_3"
+                android:layout_alignLeft="@+id/macguffin_img"
+                android:layout_alignTop="@+id/macguffin_img"
+                android:layout_alignRight="@+id/macguffin_img"
+                android:layout_alignBottom="@+id/macguffin_img"
                 android:layout_margin="1dp"
                 android:gravity="center"
                 android:text="#3"
@@ -124,7 +126,7 @@
             android:layout_marginRight="-30dp">
 
             <ImageView
-                android:id="@+id/sticker_1"
+                android:id="@+id/fergus_img"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:src="@drawable/brave_king_fergus_bg"
@@ -134,13 +136,13 @@
 
 
             <TextView
-                android:id="@+id/myImageViewText"
+                android:id="@+id/fergus_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/sticker_1"
-                android:layout_alignTop="@+id/sticker_1"
-                android:layout_alignRight="@+id/sticker_1"
-                android:layout_alignBottom="@+id/sticker_1"
+                android:layout_alignLeft="@+id/fergus_img"
+                android:layout_alignTop="@+id/fergus_img"
+                android:layout_alignRight="@+id/fergus_img"
+                android:layout_alignBottom="@+id/fergus_img"
                 android:gravity="center"
                 android:text="#1"
                 android:textSize= "25dp"
@@ -169,7 +171,7 @@
 
 
             <ImageView
-                android:id="@+id/sticker_8"
+                android:id="@+id/dingwall_img"
                 android:layout_width="160dp"
                 android:layout_height="160dp"
                 android:src="@drawable/brave_wee_dingwall_bg"
@@ -179,6 +181,7 @@
 
 
             <TextView
+                android:id="@+id/dingwall_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/sticker_8"
@@ -211,7 +214,7 @@
 
 
             <ImageView
-                android:id="@+id/sticker_6"
+                android:id="@+id/elinor_img"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:src="@drawable/brave_queen_elinor_bg"
@@ -221,9 +224,10 @@
 
 
             <TextView
+                android:id="@+id/elinor_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/sticker_6"
+                android:layout_alignTop="@+id/elinor_img"
                 android:gravity="center"
                 android:text="#6"
                 android:textSize= "25dp"
@@ -233,7 +237,7 @@
                 android:layout_marginRight="1dp"
                 android:layout_marginTop="20dp"
                 android:layout_alignParentStart="true"
-                android:layout_alignBottom="@+id/sticker_6"
+                android:layout_alignBottom="@+id/elinor_img"
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
@@ -252,7 +256,7 @@
 
 
             <ImageView
-                android:id="@+id/sticker_7"
+                android:id="@+id/triplets_img"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:src="@drawable/brave_triplets_bg"
@@ -262,9 +266,10 @@
 
 
             <TextView
+                android:id="@+id/triplets_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/sticker_7"
+                android:layout_alignTop="@+id/triplets_img"
                 android:gravity="center"
                 android:text="#7"
                 android:textSize= "25dp"
@@ -274,14 +279,14 @@
                 android:layout_marginRight="1dp"
                 android:layout_marginTop="1dp"
                 android:layout_alignParentStart="true"
-                android:layout_alignBottom="@+id/sticker_7"
+                android:layout_alignBottom="@+id/triplets_img"
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/container_5"
-            android:layout_width="170dp"
-            android:layout_height="170dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:gravity="right"
             android:orientation="vertical"
             android:weightSum="1"
@@ -293,9 +298,9 @@
             android:layout_marginTop="-40dp">
 
             <ImageView
-                android:id="@+id/sticker_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/merida_img"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:src="@drawable/brave_merida_bg"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
@@ -304,10 +309,11 @@
 
             <TextView
                 android:layout_width="wrap_content"
+                android:id="@+id/merida_txt"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/sticker_5"
-                android:layout_alignRight="@+id/sticker_5"
-                android:layout_alignBottom="@+id/sticker_5"
+                android:layout_alignTop="@+id/merida_img"
+                android:layout_alignRight="@+id/merida_img"
+                android:layout_alignBottom="@+id/merida_img"
                 android:gravity="center"
                 android:text="#5"
                 android:textSize= "25dp"
@@ -337,7 +343,7 @@
 
 
             <ImageView
-                android:id="@+id/sticker_4"
+                android:id="@+id/macintosh_img"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:src="@drawable/brave_lord_macintosh_bg"
@@ -347,6 +353,7 @@
 
 
             <TextView
+                android:id="@+id/macintosh_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -368,7 +375,6 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_margin="5dp"
-            android:src="@drawable/brave_lord_macguffin"
             android:layout_gravity="left|bottom" />
 
         <ImageView
@@ -376,7 +382,6 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_margin="5dp"
-            android:src="@drawable/brave_lord_macintosh"
             android:layout_gravity="left|bottom" />
 
         <ImageView
@@ -384,7 +389,6 @@
             android:layout_width="170dp"
             android:layout_height="170dp"
             android:layout_margin="5dp"
-            android:src="@drawable/brave_merida"
             android:layout_gravity="left|bottom" />
 
         <ImageView
@@ -392,7 +396,6 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_margin="5dp"
-            android:src="@drawable/brave_angus"
             android:layout_gravity="left|bottom" />
 
         <ImageView
@@ -400,7 +403,6 @@
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_margin="5dp"
-            android:src="@drawable/brave_wee_dingwall"
             android:layout_gravity="left|bottom" />
 
         <ImageView
@@ -408,7 +410,6 @@
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_margin="5dp"
-            android:src="@drawable/brave_triplets"
             android:layout_gravity="left|bottom" />
 
         <ImageView
@@ -416,7 +417,6 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_margin="5dp"
-            android:src="@drawable/brave_queen_elinor"
             android:layout_gravity="left|bottom" />
 
         <ImageView
@@ -424,7 +424,6 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_margin="5dp"
-            android:src="@drawable/brave_king_fergus"
             android:layout_gravity="left|bottom" />
     </FrameLayout>
 </RelativeLayout>
