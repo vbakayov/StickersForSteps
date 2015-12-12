@@ -6,14 +6,17 @@ package com.astuetz.viewpager.extensions.fragment;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +30,11 @@ import android.widget.Toast;
 import com.astuetz.viewpager.extensions.sample.R;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-
 
 
 /**
@@ -72,24 +76,69 @@ public class StickersFragment extends Fragment {
             width = point.x;
             height = point.y;
 
+        Database db = Database.getInstance(getActivity());
+        List<Sticker> stickers = db.getStickersWithStatus(2);
+        Log.d("File id ", Integer.toString(stickers.size()));
+        for (ListIterator<Sticker > iter = stickers.listIterator(); iter.hasNext(); ) {
+            Sticker element = iter.next();
+            String file= element.getImagesrc();
+            file = file.substring(0, file.lastIndexOf(".")); //trim the extension
+            Log.d("File ", file);
 
-        gridArray.add(new Item(smek,"Smek"));
-        gridArray.add(new Item(skiper,"Skipper"));
-        gridArray.add(new Item(smek,"Smek"));
-        gridArray.add(new Item(skiper,"Skipper"));
-        gridArray.add(new Item(smek,"Smek"));
-        gridArray.add(new Item(skiper,"Skipper"));
-        gridArray.add(new Item(smek,"Smek"));
-        gridArray.add(new Item(skiper,"Skipper"));
-        gridArray.add(new Item(smek,"Smek"));
-        gridArray.add(new Item(skiper,"Skipper"));
-        gridArray.add(new Item(smek,"Smek"));
-        gridArray.add(new Item(skiper, "Skipper"));
+            Resources resources = getActivity().getResources();
+            int resourceId = resources.getIdentifier(file, "drawable",
+                    getActivity().getPackageName());
+
+            //set the sampled sized of the image with the given dimensions
+            Bitmap image=  decodeSampledBitmapFromResource(getResources(),resourceId, 70, 70);
+            gridArray.add(new Item(image,element.getName()));
 
 
+        }
+
+        db.close();
 
     }
 
+
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_stickers,container,false);

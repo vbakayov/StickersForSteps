@@ -2,6 +2,7 @@ package album;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,13 +15,15 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 
+import com.astuetz.viewpager.extensions.fragment.Database;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
-public class PageTwoAlbum extends Fragment  implements View.OnDragListener, View.OnLongClickListener {
+public class PageTwoAlbum extends Fragment  implements View.OnDragListener, View.OnLongClickListener, View.OnClickListener {
 
     private static final String TAG = "Drag";
     private static final String ARG_POSITION = "position";
@@ -33,6 +36,11 @@ public class PageTwoAlbum extends Fragment  implements View.OnDragListener, View
     private ImageView macintosh;
     private ImageView macguffin;
     private ImageView fergus;
+    private int dimension=80;
+    private int glued = 2;
+    private Database db;
+    private Bitmap currentImg;
+    private Integer status;
 
 
     public static PageTwoAlbum newInstance(int position) {
@@ -47,7 +55,9 @@ public class PageTwoAlbum extends Fragment  implements View.OnDragListener, View
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        db = Database.getInstance(getActivity());
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -55,22 +65,99 @@ public class PageTwoAlbum extends Fragment  implements View.OnDragListener, View
         View view = inflater.inflate(R.layout.pagetwo_fragment, container, false);
         Log.w("I AM HEREEE", "HEEE");
         //        register a long click listener for the balls
+
+        status = db.getSticker(2).getStatus();
         angus = (ImageView) view.findViewById(R.id.angus);
-        angus.setOnLongClickListener(this);;
+        angus.setOnLongClickListener(this);
+        currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), R.drawable.brave_angus, dimension, dimension);
+        if( status == glued)
+            angus.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.angus_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.angus_txt)).setText("");
+        }
+
+        status = db.getSticker(5).getStatus();
         merida = (ImageView) view.findViewById(R.id.merida);
         merida.setOnLongClickListener(this);
+        currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), R.drawable.brave_merida, dimension, dimension);
+        if( status == glued)
+            merida.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.merida_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.merida_txt)).setText("");
+        }
+
+
+
+        status = db.getSticker(8).getStatus();
         dingwall = (ImageView) view.findViewById(R.id.dingwall);
         dingwall.setOnLongClickListener(this);
+        currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), R.drawable.brave_wee_dingwall, dimension, dimension);
+        if( status == glued)
+            dingwall.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.dingwall_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.dingwall_txt)).setText("");
+        }
+
+        status = db.getSticker(7).getStatus();
         triplets = (ImageView) view.findViewById(R.id.triplets);
         triplets.setOnLongClickListener(this);
+        currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), R.drawable.brave_triplets, dimension, dimension);
+        if( status == glued)
+            triplets.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.triplets_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.triplets_txt)).setText("");
+        }
+
+
+
+        status = db.getSticker(6).getStatus();
         elinor = (ImageView) view.findViewById(R.id.elinor);
         elinor.setOnLongClickListener(this);
+        currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), R.drawable.brave_queen_elinor, dimension, dimension);
+        if( status == glued)
+            elinor.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.elinor_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.elinor_txt)).setText("");
+        }
+
+        status = db.getSticker(4).getStatus();
         macintosh = (ImageView) view.findViewById(R.id.lord_macintosh);
         macintosh.setOnLongClickListener(this);
+        currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), R.drawable.brave_lord_macintosh, dimension, dimension);
+        if( status == glued)
+            macintosh.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.macintosh_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.macintosh_txt)).setText("");
+        }
+
+        status = db.getSticker(3).getStatus();
         macguffin = (ImageView) view.findViewById(R.id.macguffin);
         macguffin.setOnLongClickListener(this);
+        currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), R.drawable.brave_lord_macguffin, dimension, dimension);
+        if( status == glued)
+            macguffin.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.macguffin_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.macguffin_txt)).setText("");
+        }
+
+        status = db.getSticker(1).getStatus();
         fergus = (ImageView) view.findViewById(R.id.fergus);
         fergus.setOnLongClickListener(this);
+        currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), R.drawable.brave_king_fergus, dimension, dimension);
+        if( status == glued)
+            fergus.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id. fergus_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id. fergus_txt)).setText("");
+        }
+
 
 
 //      register drag event listeners for the target layout containers
@@ -83,6 +170,15 @@ public class PageTwoAlbum extends Fragment  implements View.OnDragListener, View
         view.findViewById(R.id.container_6).setOnDragListener(this);
         view.findViewById(R.id.container_7).setOnDragListener(this);
         view.findViewById(R.id.container_8).setOnDragListener(this);
+
+        view.findViewById(R.id.container_1).setOnClickListener(this);
+        view.findViewById(R.id.container_2).setOnClickListener(this);
+        view.findViewById(R.id.container_3).setOnClickListener(this);
+        view.findViewById(R.id.container_4).setOnClickListener(this);
+        view.findViewById(R.id.container_5).setOnClickListener(this);
+        view.findViewById(R.id.container_6).setOnClickListener(this);
+        view.findViewById(R.id.container_7).setOnClickListener(this);
+        view.findViewById(R.id.container_8).setOnClickListener(this);
 
 
 
@@ -292,4 +388,8 @@ public class PageTwoAlbum extends Fragment  implements View.OnDragListener, View
     }
 
 
+    @Override
+    public void onClick(View view) {
+
+    }
 }

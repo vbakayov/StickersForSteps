@@ -2,6 +2,9 @@ package album;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,13 +17,15 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 
+import com.astuetz.viewpager.extensions.fragment.Database;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
-public class PageOneAlbum extends Fragment  implements View.OnDragListener, View.OnLongClickListener {
+public class PageOneAlbum extends Fragment  implements View.OnDragListener, View.OnLongClickListener ,  View.OnClickListener{
 
     private static final String TAG = "Drag";
     private static final String ARG_POSITION = "position";
@@ -33,6 +38,11 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
     private ImageView mooseblood;
     private ImageView lou;
     private ImageView fergus;
+    private int dimension=80;
+    private int glued = 2;
+    private Database db;
+    private Bitmap currentImg;
+    private Integer status;
 
 
     public static PageOneAlbum newInstance(int position) {
@@ -47,6 +57,7 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+         db = Database.getInstance(getActivity());
     }
 
     @Override
@@ -54,23 +65,90 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
     {
         View view = inflater.inflate(R.layout.pageone_fragment, container, false);
         Log.w("I AM HEREEE", "HEEE");
-        //        register a long click listener for the balls
+
+        status = db.getSticker(9).getStatus();
         adam = (ImageView) view.findViewById(R.id.adam_flayman_o);
-        adam.setOnLongClickListener(this);;
+        adam.setOnLongClickListener(this);
+         currentImg = decodeSampledBitmapFromResource(getResources(), R.drawable.bee_adam_flayman, dimension, dimension);
+        if( status == glued)
+            adam.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.adam_flayman_pic)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.adam_flayman_text)).setText("");
+        }
+
+        status = db.getSticker(10).getStatus();
         berry = (ImageView) view.findViewById(R.id.berry_b_benson_o);
         berry.setOnLongClickListener(this);
+        currentImg= decodeSampledBitmapFromResource(getResources(), R.drawable.bee_berry_b_benson_burned, dimension, dimension);
+        if( status == glued)
+            berry.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.berry_b_benson_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.berry_b_benson_txt)).setText("");
+        }
+        status = db.getSticker(11).getStatus();
         janet = (ImageView) view.findViewById(R.id.janet_o);
         janet.setOnLongClickListener(this);
+        currentImg =decodeSampledBitmapFromResource(getResources(), R.drawable.bee_janet_benson, dimension, dimension);
+        if( status == glued)
+            janet.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.janet_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.janet_txt)).setText("");
+        }
+
+        status = db.getSticker(12).getStatus();
         larry = (ImageView) view.findViewById(R.id.larry_king_o);
         larry.setOnLongClickListener(this);
+        currentImg =decodeSampledBitmapFromResource(getResources(), R.drawable.bee_larry_king, dimension, dimension);
+        if( status == glued)
+            larry.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.larry_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.larry_txt)).setText("");
+        }
+
+
+
+
+        status = db.getSticker(13).getStatus();
         layton = (ImageView) view.findViewById(R.id.layton_o);
         layton.setOnLongClickListener(this);
-        mooseblood = (ImageView) view.findViewById(R.id.mooseblood_o);
-        mooseblood.setOnLongClickListener(this);
+        currentImg =decodeSampledBitmapFromResource(getResources(), R.drawable.bee_layton_t_montgomery, dimension, dimension);
+        if( status == glued)
+            layton.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.layton_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.layton_txt)).setText("");
+        }
+
+
+        status = db.getSticker(14).getStatus();
         lou = (ImageView) view.findViewById(R.id.lou_o);
         lou.setOnLongClickListener(this);
+        currentImg =decodeSampledBitmapFromResource(getResources(), R.drawable.bee_lou_lo_luca, dimension, dimension);
+        if( status == glued)
+            lou.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.lou_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.lou_txt)).setText("");
+        }
 
-//      register drag event listeners for the target layout containers
+
+        status = db.getSticker(15).getStatus();
+        mooseblood = (ImageView) view.findViewById(R.id.mooseblood_o);
+        mooseblood.setOnLongClickListener(this);
+        currentImg =decodeSampledBitmapFromResource(getResources(), R.drawable.bee_mooseblood_burned, dimension, dimension);
+        if( status == glued)
+            mooseblood.setImageBitmap(currentImg);
+        else{
+            ((ImageView) view.findViewById(R.id.mooseblood_img)).setImageBitmap(currentImg);
+            ((TextView) view.findViewById(R.id.mooseblood_txt)).setText("");
+        }
+
+
+
         view.findViewById(R.id.lou).setOnDragListener(this);
         view.findViewById(R.id.adam_flayman).setOnDragListener(this);
         view.findViewById(R.id.berry_b_benson).setOnDragListener(this);
@@ -80,8 +158,57 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
         view.findViewById(R.id.mooseblood).setOnDragListener(this);
         view.findViewById(R.id.stick_container).setOnDragListener(this);
 
+        view.findViewById(R.id.lou).setOnClickListener(this);
+        view.findViewById(R.id.adam_flayman).setOnClickListener(this);
+        view.findViewById(R.id.berry_b_benson).setOnClickListener(this);
+        view.findViewById(R.id.janetContainer).setOnClickListener(this);
+        view.findViewById(R.id.larry_king).setOnClickListener(this);
+        view.findViewById(R.id.layton).setOnClickListener(this);
+        view.findViewById(R.id.mooseblood).setOnClickListener(this);
+        view.findViewById(R.id.stick_container).setOnClickListener(this);
 
+
+        db.close();
         return view;
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 
     @Override
@@ -278,4 +405,39 @@ public class PageOneAlbum extends Fragment  implements View.OnDragListener, View
     }
 
 
+    @Override
+    public void onClick(View view) {
+        db = Database.getInstance(getActivity());
+        switch (view.getId()) {
+            case R.id.adam_flayman:
+               Log.w("click", "adam");
+                db.getSticker(9);
+                break;
+            case R.id.berry_b_benson:
+                Log.w("click", "berry");
+                db.getSticker(10);
+                break;
+            case R.id.janetContainer:
+                Log.w("click", "janet");
+                db.getSticker(11);
+                break;
+            case R.id.larry_king:
+                Log.w("click", "larry");
+                db.getSticker(12);
+                break;
+            case R.id.layton:
+                Log.w("click", "layton");
+                db.getSticker(13);
+                break;
+            case R.id.mooseblood:
+                Log.w("click", "mooseblood");
+                db.getSticker(15);
+                break;
+            case R.id.lou:
+                Log.w("click", "sticker");
+                db.getSticker(14);
+                break;
+        }
+        db.close();
+    }
 }

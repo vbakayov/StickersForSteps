@@ -209,8 +209,52 @@ public class Database extends SQLiteOpenHelper {
         return checkdb;
     }
 
-    public Sticker getSticker(int id){
+    public  List<Sticker> getStickersWithStatus(int status){
+        List<Sticker> stickers = new LinkedList<Sticker>();
 
+
+        // 2. get reference to writable DB
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor =
+                db.query(TABLE_STICKERS, // a. table
+                        COLUMNS, // b. column names
+                        " status = ?", // c. selections
+                        new String[]{String.valueOf(status)}, // d. selections args
+                        null, // e. group by
+                        null, // f. having
+                        null, // g. order by
+                        null); // h. limit
+
+
+
+
+        // 3. go over each row, build book and add it to list
+        Sticker sticker = null;
+        if (cursor.moveToFirst()) {
+            do {
+                sticker = new Sticker();
+                sticker.setId(Integer.parseInt(cursor.getString(0)));
+                sticker.setName(cursor.getString(1));
+                sticker.setMovie(cursor.getString(2));
+                sticker.setImagesrc(cursor.getString(3));
+                sticker.setPopularity(cursor.getString(4));
+                sticker.setDescription(cursor.getString(5));
+                sticker.setCount(Integer.parseInt(cursor.getString(6)));
+                sticker.setStatus(Integer.parseInt(cursor.getString(7)));
+
+                // Add stickers
+                stickers.add(sticker);
+            } while (cursor.moveToNext());
+        }
+
+       // Log.d("getStickersWithStatus()", stickers.toString());
+
+        // return stickers
+        return stickers;
+    }
+
+
+    public Sticker getSticker(int id){
         // 1. get reference to readable DB
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -269,7 +313,7 @@ public class Database extends SQLiteOpenHelper {
                 sticker.setId(Integer.parseInt(cursor.getString(0)));
                 sticker.setName(cursor.getString(1));
                 sticker.setMovie(cursor.getString(2));
-                sticker.setPopularity(cursor.getString(3));
+                sticker.setImagesrc(cursor.getString(3));
                 sticker.setPopularity(cursor.getString(4));
                 sticker.setDescription(cursor.getString(5));
                 sticker.setCount(Integer.parseInt(cursor.getString(6)));

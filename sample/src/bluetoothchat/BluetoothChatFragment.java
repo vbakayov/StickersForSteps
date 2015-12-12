@@ -28,12 +28,15 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
@@ -59,8 +62,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.astuetz.viewpager.extensions.fragment.Database;
+import com.astuetz.viewpager.extensions.fragment.Item;
 import com.astuetz.viewpager.extensions.fragment.MainActivity;
 import com.astuetz.viewpager.extensions.fragment.StepsFragment;
+import com.astuetz.viewpager.extensions.fragment.Sticker;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.mingle.entity.MenuEntity;
 import com.mingle.sweetpick.CustomDelegate;
@@ -72,6 +78,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 
 /**
@@ -87,6 +95,7 @@ public class BluetoothChatFragment extends Fragment {
     private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
     private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
     private static final int REQUEST_ENABLE_BT = 3;
+    private ArrayList<MenuEntity> list = new ArrayList<>();
 
     // Layout Views
     private ListView mConversationView;
@@ -139,6 +148,7 @@ public class BluetoothChatFragment extends Fragment {
         getPic=false;
         otherAccepted=false;
         Iaccepted=false;
+        setUpListStickers();
 
         // If the adapter is null, then Bluetooth is not supported
         if (mBluetoothAdapter == null) {
@@ -256,6 +266,37 @@ public class BluetoothChatFragment extends Fragment {
 
         };
     });}
+
+
+    private void setUpListStickers(){
+
+        Database db = Database.getInstance(getActivity());
+        List<Sticker> stickers = db.getStickersWithStatus(2);
+        android.util.Log.d("File id ", Integer.toString(stickers.size()));
+        for (ListIterator<Sticker > iter = stickers.listIterator(); iter.hasNext(); ) {
+            Sticker element = iter.next();
+            String file= element.getImagesrc();
+            file = file.substring(0, file.lastIndexOf(".")); //trim the extension
+            android.util.Log.d("File ", file);
+
+            Resources resources = getActivity().getResources();
+            int resourceId = resources.getIdentifier(file, "drawable",
+                    getActivity().getPackageName());
+
+            //set the sampled sized of the image with the given dimensions
+            Bitmap image=  decodeSampledBitmapFromResource(getResources(),resourceId, 30, 30);
+            Drawable drawable = new BitmapDrawable(getResources(), image);
+            MenuEntity menuEntity1 = new MenuEntity();
+            menuEntity1.icon = drawable;
+            menuEntity1.title = element.getName();
+            list.add(menuEntity1);
+
+
+        }
+
+        db.close();
+
+    }
 
     private void declineGUI() {
         givePic= false;
@@ -524,30 +565,49 @@ public class BluetoothChatFragment extends Fragment {
         return bmOverlay;
     }
 
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
     public void setupCustomView() {
 
 
         mSweetSheet3 = new SweetSheet(rl);
-                ArrayList<MenuEntity> list = new ArrayList<>();
-        MenuEntity menuEntity1 = new MenuEntity();
-        menuEntity1.iconId = R.drawable.sherman;
-        menuEntity1.title = "code";
-        MenuEntity menuEntity = new MenuEntity();
-        menuEntity.iconId = R.drawable.girl;
-        menuEntity.title = "QQ";
-        list.add(menuEntity1);
-        list.add(menuEntity);
-        list.add(menuEntity);
-        list.add(menuEntity);
-        list.add(menuEntity);
-        list.add(menuEntity);
-        list.add(menuEntity);
-        list.add(menuEntity);
-        list.add(menuEntity);
-        list.add(menuEntity);
-        list.add(menuEntity);
-        list.add(menuEntity);
-        list.add(menuEntity);
 
         //从menu
         mSweetSheet3.setMenuList(list);

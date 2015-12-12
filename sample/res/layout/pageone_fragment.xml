@@ -48,7 +48,7 @@
             android:layout_marginTop="15dp">
 
             <ImageView
-                android:id="@+id/sticker_9"
+                android:id="@+id/adam_flayman_pic"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:src="@drawable/bee_adam_flayman_bg"
@@ -57,6 +57,7 @@
 
 
             <TextView
+                android:id="@+id/adam_flayman_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -85,7 +86,7 @@
 
 
             <ImageView
-                android:id="@+id/sticker_10"
+                android:id="@+id/berry_b_benson_img"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:src="@drawable/bee_berry_b_benson_burned_bg"
@@ -95,6 +96,7 @@
 
 
             <TextView
+                android:id="@+id/berry_b_benson_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -121,7 +123,7 @@
             android:layout_marginRight="40dp">
 
             <ImageView
-                android:id="@+id/janet"
+                android:id="@+id/janet_img"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:src="@drawable/bee_janet_benson_bg"
@@ -131,13 +133,13 @@
 
 
             <TextView
-                android:id="@+id/myImageViewText"
+                android:id="@+id/janet_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/janet"
-                android:layout_alignTop="@+id/janet"
-                android:layout_alignRight="@+id/janet"
-                android:layout_alignBottom="@+id/janet"
+                android:layout_alignLeft="@+id/janet_img"
+                android:layout_alignTop="@+id/janet_img"
+                android:layout_alignRight="@+id/janet_img"
+                android:layout_alignBottom="@+id/janet_img"
                 android:gravity="center"
                 android:text="#11"
                 android:textSize= "25dp"
@@ -166,7 +168,7 @@
 
 
             <ImageView
-                android:id="@+id/sticker_12"
+                android:id="@+id/larry_img"
                 android:layout_width="160dp"
                 android:layout_height="160dp"
                 android:src="@drawable/bee_larry_king_bg"
@@ -176,9 +178,9 @@
 
 
             <TextView
+                android:id="@+id/larry_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/sticker_8"
                 android:gravity="center"
                 android:text="#12"
                 android:textSize= "25dp"
@@ -209,7 +211,7 @@
 
 
             <ImageView
-                android:id="@+id/sticker_13"
+                android:id="@+id/layton_img"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:src="@drawable/bee_layton_t_montgomery_bg"
@@ -219,6 +221,7 @@
 
 
             <TextView
+                android:id="@+id/layton_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -247,7 +250,7 @@
 
 
             <ImageView
-                android:id="@+id/sticker_14"
+                android:id="@+id/lou_img"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:src="@drawable/bee_lou_lo_luca_bg"
@@ -257,6 +260,7 @@
 
 
             <TextView
+                android:id="@+id/lou_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -285,7 +289,7 @@
             android:layout_marginTop="-40dp">
 
             <ImageView
-                android:id="@+id/sticker_15"
+                android:id="@+id/mooseblood_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/bee_mooseblood_burned_bg"
@@ -296,6 +300,7 @@
 
 
             <TextView
+                android:id="@+id/mooseblood_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -317,7 +322,6 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_margin="5dp"
-            android:src="@drawable/bee_berry_b_benson_burned"
             android:layout_gravity="left|bottom" />
 
         <ImageView
@@ -325,7 +329,6 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_margin="5dp"
-            android:src="@drawable/bee_adam_flayman"
             android:layout_gravity="left|bottom" />
 
         <ImageView
@@ -333,7 +336,6 @@
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:layout_margin="5dp"
-            android:src="@drawable/bee_layton_t_montgomery"
             android:layout_gravity="left|bottom" />
 
         <ImageView
@@ -341,7 +343,6 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="5dp"
-            android:src="@drawable/bee_larry_king"
             android:layout_gravity="left|bottom" />
 
         <ImageView
@@ -349,15 +350,13 @@
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_margin="5dp"
-            android:src="@drawable/bee_lou_lo_luca"
             android:layout_gravity="left|bottom" />
 
         <ImageView
             android:id="@+id/mooseblood_o"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="170dp"
+            android:layout_height="130dp"
             android:layout_margin="5dp"
-            android:src="@drawable/bee_mooseblood_burned"
             android:layout_gravity="left|bottom" />
 
         <ImageView
@@ -365,7 +364,6 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_margin="5dp"
-            android:src="@drawable/bee_janet_benson"
             android:layout_gravity="left|bottom" />
 
     </FrameLayout>
