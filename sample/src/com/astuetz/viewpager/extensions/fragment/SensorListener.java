@@ -54,6 +54,7 @@ public class SensorListener extends Service implements SensorEventListener, Step
     public final static String ACTION_PAUSE = "pause";
 
     public final static String ACTION_STEPS = "ACTION_STEPS";
+    private  float goal =  Fragment_Settings.DEFAULT_GOAL;
 
     private static boolean WAIT_FOR_VALID_STEPS = true;
     private static int steps;
@@ -151,6 +152,8 @@ public class SensorListener extends Service implements SensorEventListener, Step
     @Override
     public void onCreate() {
         super.onCreate();
+        SharedPreferences prefs = getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+        goal = prefs.getInt("goal", Fragment_Settings.DEFAULT_GOAL);
         reRegisterSensor();
         updateNotificationState();
     }
@@ -265,12 +268,23 @@ public class SensorListener extends Service implements SensorEventListener, Step
         //   frag.updateCountView(steps_today);
         db.close();
 
+        if(steps_today>= (int)goal){
+            Log.w("GOOOAL", "ACHIEVED");
+            goal= goal+goal;
+            saveNextGoal((int)goal);}
+
         //send broadcast so that Steps can be updated dynamically
         Intent intent = new Intent();
         intent.setAction(ACTION_STEPS);
         intent.putExtra("stepsToday", steps_today);
         sendBroadcast(intent);
 
+    }
+    private void saveNextGoal(int nextGoal) {
+        SharedPreferences prefs =getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("goal", nextGoal);
+        editor.commit();
     }
 
     @Override

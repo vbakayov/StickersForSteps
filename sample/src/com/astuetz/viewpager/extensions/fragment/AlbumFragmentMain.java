@@ -32,7 +32,11 @@ import android.widget.ImageView;
 
 import com.astuetz.viewpager.extensions.sample.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import album.PageOneAlbum;
+import album.PageThreeAlbum;
 import album.PageTwoAlbum;
 
 /**
@@ -50,7 +54,7 @@ public class AlbumFragmentMain extends Fragment {
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
-    private static final int NUM_PAGES = 5;
+    private static final int NUM_PAGES = 6;
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -145,6 +149,11 @@ public class AlbumFragmentMain extends Fragment {
                     return AlbumScreenSlide.create(3);
                 case 4 : //Fragmern 4 - Swapping
                     return AlbumScreenSlide.create(4);
+                case 5 : //Fragmern 4 - Swapping
+                    return PageThreeAlbum.newInstance(
+                            "moview1",
+                            new ArrayList<Integer>(Arrays.asList(22,30,40,80,90,110,111,112)),
+                            new ArrayList<Integer>(Arrays.asList(70,120,90,90,90,90,90,90)));
                 default:
                     return null;
             }

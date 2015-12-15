@@ -11,7 +11,7 @@
         android:textSize="30dp"
         android:typeface="monospace"
 
-        android:id="@+id/textView"
+        android:id="@+id/movieName"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -30,7 +30,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
 
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/movieName"
         android:layout_alignParentEnd="true">
 
         <RelativeLayout
@@ -44,7 +44,7 @@
             android:layout_gravity="left|top"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/movieName"
             android:layout_alignStart="@+id/stick_container"
             android:layout_marginTop="15dp">
 
@@ -83,7 +83,7 @@
             android:weightSum="1"
             android:layout_gravity="left|center_vertical"
             android:layout_below="@+id/container_1"
-            android:layout_toStartOf="@+id/textView">
+            android:layout_toStartOf="@+id/movieName">
 
 
 
@@ -118,10 +118,11 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:orientation="vertical"
+            android:scaleType="fitXY"
             android:layout_gravity="right|bottom"
 
             android:layout_alignTop="@+id/container_4"
-            android:layout_toStartOf="@+id/textView"
+            android:layout_toStartOf="@+id/movieName"
             android:layout_marginBottom="40dp"
             android:layout_marginRight="-30dp">
 
@@ -249,7 +250,7 @@
             android:orientation="vertical"
             android:weightSum="1"
             android:layout_gravity="right|top"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/movieName"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="30dp">
 
@@ -337,7 +338,7 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="20dp"
             android:layout_below="@+id/container_2"
-            android:layout_toEndOf="@+id/textView"
+            android:layout_toEndOf="@+id/movieName"
             android:layout_marginBottom="40dp">
 
 

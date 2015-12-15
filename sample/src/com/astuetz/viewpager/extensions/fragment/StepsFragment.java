@@ -63,7 +63,7 @@ public class StepsFragment extends Fragment {
 	private DecoView mDecoView;
 	private int mBackIndex;
 	private int mSeries1Index;
-	private  float goal =  Fragment_Settings.DEFAULT_GOAL;
+	private  float goal ;
 	private float mSeriesCurrent;
 	private TextView textPercentage;
 	private TextView textToGo;
@@ -189,8 +189,6 @@ public class StepsFragment extends Fragment {
 		this.steps=Math.round(steps_today);
 		if(steps>= (int)goal){
 			Log.w("GOOOAL", "ACHIEVED");
-			goal= goal+goal;
-			saveNextGoal((int)goal);
 			playGoalAnimation();
 		}else {
 			updatePie();
