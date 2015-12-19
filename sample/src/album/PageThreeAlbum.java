@@ -93,7 +93,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
         Log.w("Strickers", stickers.toString());
 
         for(int i =0 ; i< stickers.size();i++) {
-            if (i == 0) {
+            if (i == 0 && stickers.get(0)!= -1) {
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_1).getLayoutParams();
                 int sizeSticker = size.get(i);
                 params.height = convertdipToPixel(sizeSticker);
@@ -118,7 +118,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                     ((TextView) view.findViewById(R.id.container1_txt)).setText("");
                 }
             }
-            if (i == 1) {
+            if (i == 1 && stickers.get(1)!= -1) {
 
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_5).getLayoutParams();
                 int sizeSticker = size.get(i);
@@ -146,7 +146,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 }
 
             }
-            if (i == 2) {
+            if (i == 2  && stickers.get(2)!= -1) {
 
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_8).getLayoutParams();
                 int sizeSticker = size.get(i);
@@ -176,7 +176,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
             }
 
 
-        if (i == 3) {
+        if (i == 3  && stickers.get(3)!= -1) {
 
             ViewGroup.LayoutParams params = view.findViewById(R.id.container_7).getLayoutParams();
             int sizeSticker = size.get(i);
@@ -204,7 +204,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
             }
 
         }
-            if (i == 4) {
+            if (i == 4 && stickers.get(4)!= -1) {
 
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_6).getLayoutParams();
                 int sizeSticker = size.get(i);
@@ -232,7 +232,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 }
 
             }
-            if (i == 5) {
+            if (i == 5 && stickers.get(5)!= -1) {
 
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_4).getLayoutParams();
                 int sizeSticker = size.get(i);
@@ -260,7 +260,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 }
 
             }
-            if (i == 6) {
+            if (i == 6 && stickers.get(6)!= -1) {
 
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_3).getLayoutParams();
                 int sizeSticker = size.get(i);
@@ -288,7 +288,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 }
 
             }
-            if (i == 7) {
+            if (i == 7 && stickers.get(7)!= -1) {
 
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_2).getLayoutParams();
                 int sizeSticker = size.get(i);

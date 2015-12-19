@@ -54,7 +54,7 @@ public class AlbumFragmentMain extends Fragment {
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
-    private static final int NUM_PAGES = 6;
+    private static final int NUM_PAGES = 21;
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -144,16 +144,113 @@ public class AlbumFragmentMain extends Fragment {
                 case 1: // Fragment # 2 - This will show  Album
                     return PageTwoAlbum.newInstance(1);
                 case 2: // Fragment # 3 - This will show Stickers
-                    return AlbumScreenSlide.create(2);
+                    return PageThreeAlbum.newInstance(
+                            "Cars",
+                            new ArrayList<>(Arrays.asList(16, 17, 18, 19, 20, 21, 22)),
+                            new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90)));
                 case 3 : //Fragmern 4 - Swapping
-                    return AlbumScreenSlide.create(3);
+                    return PageThreeAlbum.newInstance(
+                            "Croods",
+                            new ArrayList<>(Arrays.asList(23, 24, 25, 26, 27, 28, 29)),
+                            new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90)));
                 case 4 : //Fragmern 4 - Swapping
-                    return AlbumScreenSlide.create(4);
+                    return PageThreeAlbum.newInstance(
+                            "Frozen", ///add here one more
+                            new ArrayList<>(Arrays.asList(30,31,32,33,34,35,36,37)),
+                            new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90,90)));
                 case 5 : //Fragmern 4 - Swapping
                     return PageThreeAlbum.newInstance(
-                            "moview1",
-                            new ArrayList<Integer>(Arrays.asList(22,30,40,80,90,110,111,112)),
-                            new ArrayList<Integer>(Arrays.asList(70,120,90,90,90,90,90,90)));
+                            "Home", ///problme loading 44 -Tip-last one
+                            new ArrayList<>(Arrays.asList(-1,39,-1,40,42,41,43)),
+                            new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90)));
+
+                case 6 : //Fragmern 4 - Swapping
+                    return PageThreeAlbum.newInstance(
+                            "How to Train Your Dragon",
+                            new ArrayList<>(Arrays.asList(45,46,47,48,49,50,51,52)),
+                            new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90,90)));
+                case 7 : //Fragmern 4 - Swapping
+                    return PageThreeAlbum.newInstance(
+                            "Ice Age",
+                            new ArrayList<>(Arrays.asList(-1,53,54,55,56,57)),
+                            new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90)));
+                case 8 :
+                    return PageThreeAlbum.newInstance(
+                            "Incredible",
+                            new ArrayList<>(Arrays.asList(58,59,-1,61,62,63,64,60)),
+                            new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100,100)));
+                case 9 :
+                    return PageThreeAlbum.newInstance(
+                            "Inside Out",
+                            new ArrayList<>(Arrays.asList(65,66,67,68,69,-1,70,71)),
+                            new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100,100)));
+
+                case 10 :
+                    return PageThreeAlbum.newInstance(
+                            "Kung Fu Panda",
+                            new ArrayList<>(Arrays.asList(72,73,74,75,76,77,78,79)),
+                            new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100,100)));
+
+                case 11 :
+                    return PageThreeAlbum.newInstance(
+                            "Madagascar",  //add here two more
+                            new ArrayList<>(Arrays.asList(80,81,82,83,84,85,86,87)),
+                            new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100,100)));
+
+                case 12 :
+                    return PageThreeAlbum.newInstance(
+                            "Megamind",
+                            new ArrayList<>(Arrays.asList(-1,90,-1,91,-1,92,93,94)),
+                            new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100,100)));
+
+                case 13 :
+                    return PageThreeAlbum.newInstance(
+                            "Monsters",
+                            new ArrayList<>(Arrays.asList(95,96,97,98,99,-1,100,-1)),
+                            new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100,100)));
+                case 14 :
+                    return PageThreeAlbum.newInstance(
+                            "Nemo", //add four more
+                            new ArrayList<>(Arrays.asList(100,101,102,103,104,105,106,107)),
+                            new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100,100)));
+                case 15 :
+                    return PageThreeAlbum.newInstance(
+                            "Ratatouille",
+                            new ArrayList<>(Arrays.asList(112,113,-1,114,115,116,117,118)),
+                            new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100,100)));
+
+                case 16 :
+                    return PageThreeAlbum.newInstance(
+                            "Shrek",
+                            new ArrayList<>(Arrays.asList(119,120,-1,122,121)),
+                            new ArrayList<>(Arrays.asList(120, 120, 100, 120, 120, 100, 100,100)));
+                case 17 :
+                    return PageThreeAlbum.newInstance(
+                            "Tangled",
+                            new ArrayList<>(Arrays.asList(123,124,125,-1,126,127,128)),
+                            new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100,100)));
+                case 18 :
+                    return PageThreeAlbum.newInstance(
+                            "Toystory",
+                            new ArrayList<>(Arrays.asList(129,130,-1,-1,-1,131,132,133)),
+                            new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100,100)));
+                case 19 :
+                    return PageThreeAlbum.newInstance(
+                            "Up",
+                            new ArrayList<>(Arrays.asList(134,135,136,137,138,139,-1,-1)),
+                            new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100,100)));
+                case 20 :
+                    return PageThreeAlbum.newInstance(
+                            "Walle",
+                            new ArrayList<>(Arrays.asList(145,140,142,143,144,141,-1,-1)),
+                            new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100,100)));
+
+
+
+
+
+
+
                 default:
                     return null;
             }
