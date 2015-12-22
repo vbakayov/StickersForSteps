@@ -27,6 +27,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -36,6 +37,8 @@ import com.astuetz.viewpager.extensions.sample.R;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.nineoldandroids.animation.Animator;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,6 +136,7 @@ public class StickersFragment extends Fragment {
                 int imagePosition[] = new int[2];
                 picture.getLocationOnScreen(imagePosition);
 
+                //stick_image
                 DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
                 int width = metrics.widthPixels / 2;
                 int height = metrics.heightPixels / 2;
@@ -259,6 +263,30 @@ public class StickersFragment extends Fragment {
         int resourceId = resources.getIdentifier(file, "drawable", getActivity().getPackageName());
         image.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 250, 250));
 
+        //load the additional details and information
+        TextView id = (TextView) (dialog).findViewById(R.id.sticker_id);
+        id.setText("#" + Integer.toString(clickerStikcer.getId()));
+
+        TextView status = (TextView) (dialog).findViewById(R.id.sticker_status);
+        //at this poinrt only glued and notSticker available glued=1 notGlued=0
+         String statuss =  clickerStikcer.getStatus().equals(2)? "1": "0";
+        Integer count =  clickerStikcer.getCount();
+        status.setText("("+ statuss+" glued, "+ count+" left)");
+
+        //change here to one
+        Button stickButton = (Button) (dialog).findViewById(R.id.button_stick);
+       if (clickerStikcer.getStatus().equals(2))  stickButton.setVisibility(View.VISIBLE);
+
+
+        TextView title = (TextView) (dialog).findViewById(R.id.sticker_title);
+        title.setText( clickerStikcer.getName());
+
+        TextView rarity = (TextView) (dialog).findViewById(R.id.rarity);
+        rarity.setText( clickerStikcer.getPopularity());
+
+        TextView movie = (TextView) (dialog).findViewById(R.id.sticker_movie);
+        movie.setText( clickerStikcer.getMovie());
+        //set the layout to have the same widh and height as the  windows screen
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = width;
