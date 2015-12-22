@@ -70,6 +70,10 @@ ADDED from AndroidManifest.xml:24:9
 		ADDED from AndroidManifest.xml:26:13
 	android:name
 		ADDED from AndroidManifest.xml:25:13
+activity#com.astuetz.viewpager.extensions.fragment.CombinedChartActivity
+ADDED from AndroidManifest.xml:29:9
+	android:name
+		ADDED from AndroidManifest.xml:29:19
 service#com.astuetz.viewpager.extensions.fragment.DashClock
 ADDED from AndroidManifest.xml:31:9
 	android:permission

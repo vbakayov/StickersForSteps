@@ -26,7 +26,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/select_device"
            />
-
+        <activity android:name="com.astuetz.viewpager.extensions.fragment.CombinedChartActivity"></activity>
 
         <service
             android:name="com.astuetz.viewpager.extensions.fragment.DashClock"

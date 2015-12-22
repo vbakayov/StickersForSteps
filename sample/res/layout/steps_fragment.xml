@@ -143,5 +143,14 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/trendsImage"
+        android:src="@drawable/trends"
+        android:layout_below="@+id/averageandtotaltext"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="62dp" />
+
 
 </RelativeLayout>

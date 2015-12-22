@@ -19,6 +19,7 @@ package com.astuetz.viewpager.extensions.fragment;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -31,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnticipateInterpolator;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -146,22 +148,35 @@ public class StepsFragment extends Fragment {
 				.build());
 
 
-		mDecoView.setOnClickListener( new View.OnClickListener() {
+		mDecoView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (!isChecked) {
-				// show steps
-					isChecked=true;
+					// show steps
+					isChecked = true;
 					updateViews();
 
-				}else {	//showDistance
-					isChecked=false;
+				} else {    //showDistance
+					isChecked = false;
 					updateViews();
-					}
+				}
 			}
 
 
 		});
+
+
+
+		ImageView img = (ImageView) rootView.findViewById(R.id.trendsImage);
+		img.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Log.w("Test","Trends Clicked");
+				Intent intent = new Intent(getActivity(), CombinedChartActivity.class);
+				startActivity(intent);
+			}
+		});
+
+
 
 		return rootView;
 	}

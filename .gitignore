@@ -227,3 +227,4 @@ sample/build/outputs/apk/sample-debug-unaligned.apk
 sample/build/outputs/apk/sample-debug-unaligned.apk
 sample/build/outputs/apk/sample-debug.apk
 sample/build/outputs/apk/sample-debug.apk
+*.class
