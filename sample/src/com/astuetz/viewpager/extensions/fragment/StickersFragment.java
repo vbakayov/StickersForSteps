@@ -118,6 +118,8 @@ public class StickersFragment extends Fragment {
     }
 
     private void initMapping() {
+        stickerToAlbum.put(0, new ArrayList<>(Arrays.asList(2,6,7,3,5,8,4,1)));
+        stickerToAlbum.put(1, new ArrayList<>(Arrays.asList(9,13,14,10,15,11,12)));
         stickerToAlbum.put(2, new ArrayList<>(Arrays.asList(16, 17, 18, 19, 20, 21, 22)));
         stickerToAlbum.put(3, new ArrayList<>(Arrays.asList(23, 24, 25, 26, 27, 28, 29)));
         stickerToAlbum.put(4, new ArrayList<>(Arrays.asList(30,31,32,33,34,35,36,37)));

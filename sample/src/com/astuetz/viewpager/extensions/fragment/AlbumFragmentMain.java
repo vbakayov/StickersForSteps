@@ -54,7 +54,7 @@ public class AlbumFragmentMain extends Fragment {
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
-    private static final int NUM_PAGES = 21;
+    private static final int NUM_PAGES = 23;
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -134,10 +134,10 @@ public class AlbumFragmentMain extends Fragment {
         public Fragment getItem(int position) {
 
             switch (position) {
-                case 0: // Fragment # 1 - This will show Steps Fragment
-                    return PageOneAlbum.newInstance(0);
-                case 1: // Fragment # 2 - This will show  Album
+                case 0: // Fragment # 1 - 
                     return PageTwoAlbum.newInstance(1);
+                case 1: // Fragment # 2 - This will show  Album
+                    return PageOneAlbum.newInstance(0);
                 case 2: // Fragment # 3 - This will show Stickers
                     return PageThreeAlbum.newInstance(
                             "Cars",
