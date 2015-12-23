@@ -48,6 +48,7 @@ public class Database extends SQLiteOpenHelper {
     private String DB_PATH = context.getApplicationContext().getPackageName()+"/databases/";
     private final static String DB_NAME = "steps";
     private final static String  TABLE_STICKERS = "stickers";
+    private final static  String TABLE_STICKER_COUNT = "stickercount";
     private final static int DB_VERSION = 2;
     private static Database instance;
     private static final AtomicInteger openCounter = new AtomicInteger();
@@ -90,6 +91,7 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(final SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + DB_NAME + " (date INTEGER, steps INTEGER)");
+        db.execSQL("CREATE TABLE " + TABLE_STICKER_COUNT + " (date INTEGER, stickers INTEGER)");
         db.execSQL("CREATE TABLE "+ TABLE_STICKERS+ "(id INTEGER, name TEXT, movie TEXT, img TEXT, "+
                 "popularity TEXT, description TEXT, count INTEGER, status INTEGER  )");
     }
@@ -110,6 +112,9 @@ public class Database extends SQLiteOpenHelper {
             // create fresh stickers table
             db.execSQL("CREATE TABLE "+ TABLE_STICKERS + "(id INTEGER PRIMARY KEY, name TEXT, movie TEXT, img TEXT, "+
                     "popularity TEXT, description TEXT, count INTEGER, status INTEGER  )");
+
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_STICKER_COUNT);
+            db.execSQL("CREATE TABLE " + TABLE_STICKER_COUNT + " (date INTEGER, stickers INTEGER)");
 
         }
     }
@@ -426,15 +431,33 @@ public class Database extends SQLiteOpenHelper {
                 updateSteps(date, steps);
             }
             c.close();
-           // if (BuildConfig.DEBUG) {
-             ///   Logger.log("insertDay " + date + " / " + steps);
-          //      logState();
-           // }
+
             getWritableDatabase().setTransactionSuccessful();
         } finally {
             getWritableDatabase().endTransaction();
         }
     }
+
+    public void insertNewDayStickers(long date, int count) {
+        getWritableDatabase().beginTransaction();
+        try {
+            Cursor c = getReadableDatabase().query(TABLE_STICKER_COUNT, new String[]{"date"}, "date = ?",
+                    new String[]{String.valueOf(date)}, null, null, null);
+            if (c.getCount() == 0 ) {
+                ContentValues values = new ContentValues();
+                values.put("date", date);
+                // use the negative steps as offset
+                values.put("stickers", count);
+                getWritableDatabase().insert(TABLE_STICKER_COUNT, null, values);
+            }
+            c.close();
+
+            getWritableDatabase().setTransactionSuccessful();
+        } finally {
+            getWritableDatabase().endTransaction();
+        }
+    }
+
 
     /**
      * Inserts a new entry in the database, if there is no entry for the given
@@ -490,10 +513,11 @@ public class Database extends SQLiteOpenHelper {
     public void updateSteps(final long date, int steps) {
         getWritableDatabase().execSQL(
                 "UPDATE " + DB_NAME + " SET steps = steps + " + steps + " WHERE date = " + date);
-//        if (BuildConfig.DEBUG) {
-//            Logger.log("updateSteps " + date + " / " + steps);
-//            logState();
-//        }
+    }
+
+    public void updateStickerCount(final long date, int stickers) {
+        getWritableDatabase().execSQL(
+                "UPDATE " + TABLE_STICKER_COUNT + " SET stickers = stickers + " + stickers + " WHERE date = " + date);
     }
 
     /**
@@ -553,6 +577,24 @@ public class Database extends SQLiteOpenHelper {
      */
     public int getSteps(final long date) {
         Cursor c = getReadableDatabase().query(DB_NAME, new String[]{"steps"}, "date = ?",
+                new String[]{String.valueOf(date)}, null, null, null);
+        c.moveToFirst();
+        int re;
+        if (c.getCount() == 0) re = Integer.MIN_VALUE;
+        else re = c.getInt(0);
+        c.close();
+        return re;
+    }
+
+    /**
+     * Get the number of stickers won for the specified date
+     * <p/>
+     * @param date the date in millis since 1970
+     * @return the stickers won on this date or Integer.MIN_VALUE if date doesn't
+     * exist in the database
+     */
+    public int getStickerCount(final long date) {
+        Cursor c = getReadableDatabase().query(TABLE_STICKER_COUNT, new String[]{"stickers"}, "date = ?",
                 new String[]{String.valueOf(date)}, null, null, null);
         c.moveToFirst();
         int re;

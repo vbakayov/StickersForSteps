@@ -50,6 +50,7 @@ import java.util.Locale;
 public class SensorListener extends Service implements SensorEventListener, StepListener {
 
     private final static int NOTIFICATION_ID = 1;
+    private final static int BaseGOAL = 250;
 
     public final static String ACTION_PAUSE = "pause";
 
@@ -253,9 +254,13 @@ public class SensorListener extends Service implements SensorEventListener, Step
     private void saveSteps(boolean isHardwareCount, int steps) {
          Database db = Database.getInstance(this);
         android.util.Log.w("CountActivity", Integer.toString(steps));
-        if (db.getSteps(Util.getToday()) == Integer.MIN_VALUE)
+        if (db.getSteps(Util.getToday()) == Integer.MIN_VALUE) {
+            //start of new day
             db.insertNewDay(Util.getToday(), steps);
+            goal= BaseGOAL;
+            saveNextGoal((int)goal);
 
+        }
 
         db.saveCurrentSteps(steps);
         todayOffset = db.getSteps(Util.getToday());
@@ -271,7 +276,9 @@ public class SensorListener extends Service implements SensorEventListener, Step
         if(steps_today>= (int)goal){
             Log.w("GOOOAL", "ACHIEVED");
             goal= goal+goal;
-            saveNextGoal((int)goal);}
+            saveNextGoal((int)goal);
+            updateWonStickerCount();
+        }
 
         //send broadcast so that Steps can be updated dynamically
         Intent intent = new Intent();
@@ -280,6 +287,20 @@ public class SensorListener extends Service implements SensorEventListener, Step
         sendBroadcast(intent);
 
     }
+
+    private void updateWonStickerCount() {
+        Database db = Database.getInstance(this);
+        if (db.getStickerCount(Util.getToday()) == Integer.MIN_VALUE) {
+            db.insertNewDayStickers(Util.getToday(), 3);
+            Log.w("not existing", "create today");
+        }
+        else{
+            db.updateStickerCount(Util.getToday(), 3);
+            Log.w("existing", Integer.toString(db.getStickerCount(Util.getToday())));
+        }
+        db.close();
+    }
+
     private void saveNextGoal(int nextGoal) {
         SharedPreferences prefs =getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
         SharedPreferences.Editor editor = prefs.edit();

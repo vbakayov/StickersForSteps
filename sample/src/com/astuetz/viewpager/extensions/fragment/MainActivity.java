@@ -359,7 +359,12 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-
+    public ViewPager getViewPager() {
+        return AlbumFragmentMain.getViewPagerAlbum()    ;
+    }
+    public ViewPager getMainPager() {
+        return pager    ;
+    }
 
 
     // Extend from SmartFragmentStatePagerAdapter now instead for more dynamic ViewPager items

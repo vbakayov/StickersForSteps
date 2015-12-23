@@ -180,12 +180,8 @@ public class StepsFragment extends Fragment {
 
 		return rootView;
 	}
-	private void saveNextGoal(int nextGoal) {
-		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.putInt("goal", nextGoal);
-		editor.commit();
-	}
+
+
 
 	@Override
 	public void onResume(){
@@ -204,11 +200,17 @@ public class StepsFragment extends Fragment {
 		this.steps=Math.round(steps_today);
 		if(steps>= (int)goal){
 			Log.w("GOOOAL", "ACHIEVED");
+			updateGoal();
 			playGoalAnimation();
 		}else {
 			updatePie();
 			updateViews();
 		}
+	}
+
+	private void updateGoal() {
+		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+		goal = prefs.getInt("goal", Fragment_Settings.DEFAULT_GOAL);
 	}
 
 	private void updatePie() {
@@ -333,7 +335,8 @@ public class StepsFragment extends Fragment {
 	}
 
 	private void createDataSeries1() {
-
+		Log.w("creting seriess- goal", Float.toString(goal));
+		Log.w("creting seriess- steps", Float.toString(steps));
 		final SeriesItem seriesItem = new SeriesItem.Builder(Color.parseColor("#FFFF8800"))
 				.setRange(0, goal, steps)
 				.setInitialVisibility(false)

@@ -113,15 +113,30 @@ public class CombinedChartActivity extends DemoBase {
     }
 
     private LineData generateLineData() {
-
+        //getStickerCount
         LineData d = new LineData();
-
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
-        for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(getRandom(15, 10), index));
+        Database db = Database.getInstance(this);
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.setTimeInMillis(Util.getToday());
+        yesterday.add(Calendar.DAY_OF_YEAR, -1);
+        yesterday.add(Calendar.DAY_OF_YEAR, -6);
+        for (int i = 0; i < 7; i++) {
+            int stickers = db.getStickerCount(yesterday.getTimeInMillis());
+            Log.d("stickers", Integer.toString(stickers));
+            if(stickers !=Integer.MIN_VALUE) {
+                entries.add(new BarEntry(stickers, i));
+            }
+            yesterday.add(Calendar.DAY_OF_YEAR, 1);
+        }
 
-        LineDataSet set = new LineDataSet(entries, "Line DataSet");
+
+
+
+
+
+        LineDataSet set = new LineDataSet(entries, "Stickers");
         set.setColor(Color.rgb(240, 238, 70));
         set.setLineWidth(2.5f);
         set.setCircleColor(Color.rgb(240, 238, 70));
@@ -160,11 +175,7 @@ public class CombinedChartActivity extends DemoBase {
         }
 
 
-
-//        for (int index = 0; index < itemcount; index++)
-//            entries.add(new BarEntry(getRandom(15, 30), index));
-
-        BarDataSet set = new BarDataSet(entries, "Bar DataSet");
+        BarDataSet set = new BarDataSet(entries, "Steps");
         set.setColor(Color.rgb(60, 220, 78));
         set.setValueTextColor(Color.rgb(60, 220, 78));
         set.setValueTextSize(10f);

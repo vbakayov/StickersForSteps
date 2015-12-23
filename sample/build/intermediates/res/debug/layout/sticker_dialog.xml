@@ -102,7 +102,7 @@
         style="@style/ButtonText"
         android:text="Stick!"
         android:id="@+id/button_stick"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:background="@drawable/background_button_green"
         android:layout_below="@+id/imageView6"
         android:layout_centerHorizontal="true">

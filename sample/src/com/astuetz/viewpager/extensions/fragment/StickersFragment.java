@@ -41,8 +41,12 @@ import com.nineoldandroids.animation.Animator;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 import album.SampleImage;
 import butterknife.ButterKnife;
@@ -60,8 +64,9 @@ public class StickersFragment extends Fragment {
 
     private static final String ARG_POSITION = "position";
     private int position;
-    private       int width, height;
-    private      int originalPos[] = new int[2];
+    private int width, height;
+    private int originalPos[] = new int[2];
+    private Map stickerToAlbum = new HashMap<>();
 
     public static StickersFragment newInstance(int position) {
 
@@ -76,6 +81,7 @@ public class StickersFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         position = getArguments().getInt(ARG_POSITION);
+        initMapping();
 
 
 
@@ -111,9 +117,42 @@ public class StickersFragment extends Fragment {
 
     }
 
+    private void initMapping() {
+        stickerToAlbum.put(2, new ArrayList<>(Arrays.asList(16, 17, 18, 19, 20, 21, 22)));
+        stickerToAlbum.put(3, new ArrayList<>(Arrays.asList(23, 24, 25, 26, 27, 28, 29)));
+        stickerToAlbum.put(4, new ArrayList<>(Arrays.asList(30,31,32,33,34,35,36,37)));
+        stickerToAlbum.put(5, new ArrayList<>(Arrays.asList(39,40,42,41,43)));
+        stickerToAlbum.put(6, new ArrayList<>(Arrays.asList(45,46,47,48,49,50,51,52)));
+        stickerToAlbum.put(7, new ArrayList<>(Arrays.asList(53,54,55,56,57)));
+        stickerToAlbum.put(8, new ArrayList<>(Arrays.asList(58,59,61,62,63,64,60)));
+        stickerToAlbum.put(9, new ArrayList<>(Arrays.asList(65,66,67,68,69,70,71)));
+        stickerToAlbum.put(10,new ArrayList<>(Arrays.asList(72,73,74,75,76,77,78,79)));
+        stickerToAlbum.put(11,new ArrayList<>(Arrays.asList(80,81,82,83,84,85)));
+        stickerToAlbum.put(12,new ArrayList<>(Arrays.asList(86,87,88,89)));
+        stickerToAlbum.put(13, new ArrayList<>(Arrays.asList(90,91,92,93,94)));
+        stickerToAlbum.put(14, new ArrayList<>(Arrays.asList(95,96,97,98,99,100)));
+        stickerToAlbum.put(15, new ArrayList<>(Arrays.asList(100,101,102,103,104,105)));
+        stickerToAlbum.put(16, new ArrayList<>(Arrays.asList(106,107,108,109,110,111)));
+        stickerToAlbum.put(17, new ArrayList<>(Arrays.asList(112,113,114,115,116,117,118)));
+        stickerToAlbum.put(18, new ArrayList<>(Arrays.asList(119,120,122,121)));
+        stickerToAlbum.put(19, new ArrayList<>(Arrays.asList(123,124,125,126,127,128)));
+        stickerToAlbum.put(20, new ArrayList<>(Arrays.asList(129,130,131,132,133)));
+        stickerToAlbum.put(21, new ArrayList<>(Arrays.asList(134,135,136,137,138,139)));
+        stickerToAlbum.put(22, new ArrayList<>(Arrays.asList(145, 140, 142, 143, 144, 141)));
+        //Log.w("testmap",Integer.toString(getKeyFromValue(23)));
+    }
 
-
-
+    public  int getStickerToAlbumIndexMapping( int value) {
+        Iterator it = stickerToAlbum.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+            if(( (ArrayList) pair.getValue()).contains(value))
+                return (int) pair.getKey();
+            //it.remove(); // avoids a ConcurrentModificationException
+        }
+        return  -1;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -236,7 +275,7 @@ public class StickersFragment extends Fragment {
     private void showSticker(String name, final View view) {
         // custom dialog
         Database db= Database.getInstance(getActivity());
-        Sticker clickerStikcer = db.getStickerForName(name);
+        final Sticker clickerStikcer = db.getStickerForName(name);
         clickerStikcer.getName();
         Log.d("NAMe", clickerStikcer.getName());
 
@@ -276,9 +315,22 @@ public class StickersFragment extends Fragment {
         //change here to one
         Button stickButton = (Button) (dialog).findViewById(R.id.button_stick);
        if (clickerStikcer.getStatus().equals(2))  stickButton.setVisibility(View.VISIBLE);
+        stickButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                animateStickerBack(view);
+                dialog.dismiss();
+                ((MainActivity)getActivity()).getMainPager().setCurrentItem(1);
+//                Log.w("name", Integer.toString( clickerStikcer.getId()));
+//                Log.w("mapping", Integer.toString(getStickerToAlbumIndexMapping(clickerStikcer.getId())));
+                        ((MainActivity) getActivity()).
+                        getViewPager().setCurrentItem(getStickerToAlbumIndexMapping(clickerStikcer.getId()));
+            }
+        });
 
 
-        TextView title = (TextView) (dialog).findViewById(R.id.sticker_title);
+
+
+    TextView title = (TextView) (dialog).findViewById(R.id.sticker_title);
         title.setText( clickerStikcer.getName());
 
         TextView rarity = (TextView) (dialog).findViewById(R.id.rarity);
