@@ -134,7 +134,7 @@ public class AlbumFragmentMain extends Fragment {
         public Fragment getItem(int position) {
 
             switch (position) {
-                case 0: // Fragment # 1 - 
+                case 0: // Fragment # 1 -
                     return PageTwoAlbum.newInstance(1);
                 case 1: // Fragment # 2 - This will show  Album
                     return PageOneAlbum.newInstance(0);

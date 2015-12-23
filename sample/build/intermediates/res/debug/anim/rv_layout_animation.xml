@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layoutAnimation xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:animation="@anim/item_duang_show"
-                 android:delay="0.1">
-</layoutAnimation><!-- From: file:/build/sweetsheet/src/main/res/anim/rv_layout_animation.xml --><!-- From: file:/C:/StickersForSteps/sample/build/intermediates/exploded-aar/com.github.zzz40500/AndroidSweetSheet/1.1.0/res/anim/rv_layout_animation.xml -->
