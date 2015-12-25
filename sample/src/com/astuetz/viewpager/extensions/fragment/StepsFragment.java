@@ -18,21 +18,31 @@ package com.astuetz.viewpager.extensions.fragment;
 
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AnticipateInterpolator;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -47,6 +57,7 @@ import com.hookedonplay.decoviewlib.events.DecoEvent;
 
 import java.util.HashMap;
 
+import album.SampleImage;
 import butterknife.InjectView;
 import stickers.DistributedRandomNumberGenerator;
 
@@ -65,6 +76,7 @@ public class StepsFragment extends Fragment {
 	private DecoView mDecoView;
 	private int mBackIndex;
 	private int mSeries1Index;
+	private int availableStickerPacks;
 	private  float goal ;
 	private float mSeriesCurrent;
 	private TextView textPercentage;
@@ -75,6 +87,7 @@ public class StepsFragment extends Fragment {
 	private boolean goalAnimationPlaying;
 	private DistributedRandomNumberGenerator rg;
 	private NumberProgressBar bnp;
+	private TextView buttonOpenPack;
 
 
 	public static StepsFragment newInstance(int position) {
@@ -91,6 +104,7 @@ public class StepsFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
 		goal = prefs.getInt("goal", Fragment_Settings.DEFAULT_GOAL);
+		availableStickerPacks = prefs.getInt("packs",0);
 		//fix on create activity cout not to be 0 (non initalized)
 		Database db = Database.getInstance(getActivity());
 		todayOffset = db.getSteps(Util.getToday());
@@ -121,9 +135,32 @@ public class StepsFragment extends Fragment {
 		goalAnimationPlaying=false;
 
 
+		Database db = Database.getInstance(getActivity());
 		bnp = (NumberProgressBar)rootView.findViewById(R.id.number_progress_bar);
-		bnp.setMax(144);
-		bnp.setProgress(20);
+		bnp.setMax(145);
+		//Log.w("number",Integer.toString(db.getNumberGluedStickers()));
+		int gluedCount = db.getNumberGluedStickers();
+		bnp.setProgress(gluedCount);
+
+		TextView stickers_count = (TextView)rootView.findViewById(R.id.stickers_count);
+		stickers_count.setText(Integer.toString(gluedCount)+"/145 Stickers");
+
+		db.close();
+
+		buttonOpenPack = (TextView) rootView.findViewById(R.id.packButton);
+		buttonOpenPack.setText(Integer.toString(availableStickerPacks)+" New Packs");
+		buttonOpenPack.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+			//	if(availableStickerPacks > 0) {
+					 int sticker1 = rg.getDistributedRandomNumber();
+					int sticker2 = rg.getDistributedRandomNumber();
+					int sticker3 = rg.getDistributedRandomNumber();
+					showSticker(sticker1,sticker2,sticker3);
+					Log.w("pressButton", "pressed");
+					updateStickerPackCountDecrease();
+				}
+		//	}
+		});
 
 
 
@@ -183,6 +220,86 @@ public class StepsFragment extends Fragment {
 
 
 
+
+	private void showSticker(int sticker1, int sticker2, int sticker3) {
+		// custom dialog
+		Database db= Database.getInstance(getActivity());
+		Sticker sticker_1 = db.getSticker(sticker1);
+		Sticker sticker_2 = db.getSticker(sticker2);
+		Sticker sticker_3 = db.getSticker(sticker3);
+
+
+
+		final Dialog dialog = new Dialog(getActivity());
+
+		dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				dialog.dismiss();
+			}
+		});
+
+
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		dialog.setContentView(R.layout.new_stickers_dialog);
+		//get the correct image -1st sticker
+		ImageView image = (ImageView) (dialog).findViewById(R.id.sticker1);
+		String file= sticker_1.getImagesrc();
+		file = file.substring(0, file.lastIndexOf(".")); //trim the extension
+		Resources resources = getActivity().getResources();
+		int resourceId = resources.getIdentifier(file, "drawable", getActivity().getPackageName());
+		image.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 250, 250));
+
+		//get the correct image -2nd sticker
+		ImageView image2 = (ImageView) (dialog).findViewById(R.id.sticker2);
+		String file2= sticker_2.getImagesrc();
+		file2 = file2.substring(0, file2.lastIndexOf(".")); //trim the extension
+		Resources resources2 = getActivity().getResources();
+		int resourceId2 = resources2.getIdentifier(file2, "drawable", getActivity().getPackageName());
+		image2.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId2, 250, 250));
+
+
+		//get the correct image -4rd sticker
+		ImageView image3 = (ImageView) (dialog).findViewById(R.id.sticker3);
+		String file3= sticker_3.getImagesrc();
+		file3 = file3.substring(0, file3.lastIndexOf(".")); //trim the extension
+		Resources resources3 = getActivity().getResources();
+		int resourceId3 = resources3.getIdentifier(file3, "drawable", getActivity().getPackageName());
+		image3.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId3, 250, 250));
+
+
+
+
+//		WindowManager manager = (WindowManager) getActivity().getSystemService(Activity.WINDOW_SERVICE);
+//		Point point = new Point();
+//		manager.getDefaultDisplay().getSize(point);
+		Display display = getActivity().getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int width = size.x;
+		int height = size.y;
+
+
+		//set the layout to have the same widh and height as the  windows screen
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		lp.copyFrom(dialog.getWindow().getAttributes());
+		lp.width = width;
+		lp.height = height;
+		dialog.getWindow().setAttributes(lp);
+		RelativeLayout mainLayout = (RelativeLayout) dialog.findViewById(R.id.showStickerLayout);
+		dialog.show();
+		// if button is clicked, close the custom dialog
+		mainLayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+
+			}
+
+		});
+	}
+
+
 	@Override
 	public void onResume(){
 		super.onResume();
@@ -191,6 +308,7 @@ public class StepsFragment extends Fragment {
 
 		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
 		goal = prefs.getInt("goal", Fragment_Settings.DEFAULT_GOAL);
+		availableStickerPacks= prefs.getInt("packs",0);
 		total_start = db.getTotalWithoutToday();
 		total_days = db.getDays();
 		db.close();
@@ -201,12 +319,30 @@ public class StepsFragment extends Fragment {
 		if(steps>= (int)goal){
 			Log.w("GOOOAL", "ACHIEVED");
 			updateGoal();
+			updateStickerPackCountIncrease();
 			playGoalAnimation();
 		}else {
 			updatePie();
 			updateViews();
 		}
 	}
+
+	private void updateStickerPackCountIncrease() {
+		availableStickerPacks++;
+		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putInt("packs", availableStickerPacks);
+		editor.commit();
+	}
+
+	private void updateStickerPackCountDecrease() {
+		availableStickerPacks--;
+		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putInt("packs", availableStickerPacks);
+		editor.commit();
+	}
+
 
 	private void updateGoal() {
 		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);

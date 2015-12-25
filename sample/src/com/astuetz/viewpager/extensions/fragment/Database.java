@@ -448,7 +448,8 @@ public class Database extends SQLiteOpenHelper {
                 values.put("date", date);
                 // use the negative steps as offset
                 values.put("stickers", count);
-                getWritableDatabase().insert(TABLE_STICKER_COUNT, null, values);
+                getWritableDatabase().insert(TABLE_STICKER_COUNT
+                        , null, values);
             }
             c.close();
 
@@ -670,6 +671,17 @@ public class Database extends SQLiteOpenHelper {
         int re = c.getInt(0) + 1;
         c.close();
         return re <= 0 ? 1 : re;
+    }
+
+    public int getNumberGluedStickers() {
+        Cursor c = getReadableDatabase()
+                .query(TABLE_STICKERS, new String[]{"COUNT(*)"}, "status=2",
+                       null, null,
+                        null, null);
+        c.moveToFirst();
+        int re = c.getInt(0) ;
+        c.close();
+        return re;
     }
 
     /**

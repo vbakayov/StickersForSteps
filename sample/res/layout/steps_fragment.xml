@@ -64,6 +64,14 @@
             android:layout_below="@+id/textRemaining"
             android:layout_centerHorizontal="true" />
 
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/trendsImage"
+            android:src="@drawable/trends"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
     </RelativeLayout>
 
     <com.daimajia.numberprogressbar.NumberProgressBar
@@ -80,7 +88,7 @@
         custom:progress_text_offset="1dp"
         custom:progress_text_visibility="visible"
 
-        android:layout_below="@+id/textView3"
+        android:layout_below="@+id/stickers_count"
         android:layout_alignParentStart="true" />
 
 
@@ -139,18 +147,20 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="120/144 Stickers"
-        android:id="@+id/textView3"
+        android:id="@+id/stickers_count"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
-
-    <ImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:id="@+id/trendsImage"
-        android:src="@drawable/trends"
+    <Button
+        android:layout_width="130dp"
+        android:layout_height="34dp"
+        android:id="@+id/packButton"
+        android:text=" 1 New Pack"
+        android:background="@drawable/green_gradient"
+        android:padding="1dp"
+        android:textColor="@drawable/button_text_colour"
+        android:textSize="15dp"
         android:layout_below="@+id/averageandtotaltext"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="62dp" />
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
