@@ -25,20 +25,30 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BlurMaskFilter;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnticipateInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -88,6 +98,8 @@ public class StepsFragment extends Fragment {
 	private DistributedRandomNumberGenerator rg;
 	private NumberProgressBar bnp;
 	private TextView buttonOpenPack;
+	static final AnimationSet as = new AnimationSet(true);
+	private boolean firstTime= true;
 
 
 	public static StepsFragment newInstance(int position) {
@@ -155,7 +167,7 @@ public class StepsFragment extends Fragment {
 					 int sticker1 = rg.getDistributedRandomNumber();
 					int sticker2 = rg.getDistributedRandomNumber();
 					int sticker3 = rg.getDistributedRandomNumber();
-					showSticker(sticker1,sticker2,sticker3);
+					showNewSticker(sticker1,sticker2,sticker3);
 					Log.w("pressButton", "pressed");
 					updateStickerPackCountDecrease();
 				}
@@ -218,15 +230,92 @@ public class StepsFragment extends Fragment {
 		return rootView;
 	}
 
+	private void showStickerMoreInfo(Sticker clickerSticker) {
+		// custom dialog
+
+
+		clickerSticker.getName();
+		Log.d("NAMe", clickerSticker.getName());
+
+
+		final Dialog dialog = new Dialog(getActivity());
+
+		dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				dialog.dismiss();
+			}
+		});
+
+
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+		dialog.setContentView(R.layout.sticker_dialog);
+		ImageView image = (ImageView) (dialog).findViewById(R.id.image);
+
+		//get the correct image
+		String file= clickerSticker.getImagesrc();
+		file = file.substring(0, file.lastIndexOf(".")); //trim the extension
+		Resources resources = getActivity().getResources();
+		int resourceId = resources.getIdentifier(file, "drawable", getActivity().getPackageName());
+		image.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 250, 250));
+
+		//load the additional details and information
+		TextView id = (TextView) (dialog).findViewById(R.id.sticker_id);
+		id.setText("#" + Integer.toString(clickerSticker.getId()));
+
+		TextView status = (TextView) (dialog).findViewById(R.id.sticker_status);
+		//at this poinrt only glued and notSticker available glued=1 notGlued=0
+		String statuss =  clickerSticker.getStatus().equals(2)? "1": "0";
+		Integer count =  clickerSticker.getCount();
+		status.setText("(" + statuss + " glued, " + count + " left)");
 
 
 
-	private void showSticker(int sticker1, int sticker2, int sticker3) {
+
+
+		TextView title = (TextView) (dialog).findViewById(R.id.sticker_title);
+		title.setText(clickerSticker.getName());
+
+		TextView rarity = (TextView) (dialog).findViewById(R.id.rarity);
+		rarity.setText( clickerSticker.getPopularity());
+
+		TextView movie = (TextView) (dialog).findViewById(R.id.sticker_movie);
+		movie.setText(clickerSticker.getMovie());
+		//set the layout to have the same widh and height as the  windows screen
+
+
+		Display display = getActivity().getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int width = size.x;
+		int height = size.y;
+
+
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		lp.copyFrom(dialog.getWindow().getAttributes());
+		lp.width = width;
+		lp.height = height;
+		dialog.getWindow().setAttributes(lp);
+		RelativeLayout mainLayout = (RelativeLayout) dialog.findViewById(R.id.showStickerLayout);
+		dialog.show();
+		// if button is clicked, close the custom dialog
+		mainLayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+
+			}
+
+		});
+	}
+
+
+	private void showNewSticker(int sticker1, int sticker2, int sticker3) {
 		// custom dialog
 		Database db= Database.getInstance(getActivity());
-		Sticker sticker_1 = db.getSticker(sticker1);
-		Sticker sticker_2 = db.getSticker(sticker2);
-		Sticker sticker_3 = db.getSticker(sticker3);
+		final Sticker sticker_1 = db.getSticker(sticker1);
+		final Sticker sticker_2 = db.getSticker(sticker2);
+		final Sticker sticker_3 = db.getSticker(sticker3);
 
 
 
@@ -243,36 +332,49 @@ public class StepsFragment extends Fragment {
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		dialog.setContentView(R.layout.new_stickers_dialog);
 		//get the correct image -1st sticker
-		ImageView image = (ImageView) (dialog).findViewById(R.id.sticker1);
+		myImageView image = (myImageView) (dialog).findViewById(R.id.sticker1);
+		image.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {showStickerMoreInfo(sticker_1);}});
+
 		String file= sticker_1.getImagesrc();
 		file = file.substring(0, file.lastIndexOf(".")); //trim the extension
 		Resources resources = getActivity().getResources();
 		int resourceId = resources.getIdentifier(file, "drawable", getActivity().getPackageName());
 		image.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 250, 250));
+		TextView number = (TextView) (dialog).findViewById(R.id.text_sticker1);
+		number.setText("#"+ Integer.toString(sticker_1.getId()));
+		animate(image, 3000);
 
 		//get the correct image -2nd sticker
-		ImageView image2 = (ImageView) (dialog).findViewById(R.id.sticker2);
+		myImageView image2 = (myImageView) (dialog).findViewById(R.id.sticker2);
+		image2.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {showStickerMoreInfo(sticker_2);}});
 		String file2= sticker_2.getImagesrc();
 		file2 = file2.substring(0, file2.lastIndexOf(".")); //trim the extension
 		Resources resources2 = getActivity().getResources();
 		int resourceId2 = resources2.getIdentifier(file2, "drawable", getActivity().getPackageName());
 		image2.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId2, 250, 250));
+		TextView number2 = (TextView) (dialog).findViewById(R.id.text_sticker2);
+		number2.setText("#" + Integer.toString(sticker_2.getId()));
+		animate(image2, 3000);
 
 
-		//get the correct image -4rd sticker
-		ImageView image3 = (ImageView) (dialog).findViewById(R.id.sticker3);
+		//get the correct image -3rd sticker
+		myImageView image3 = (myImageView) (dialog).findViewById(R.id.sticker3);
+		image3.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {showStickerMoreInfo(sticker_3);}});
 		String file3= sticker_3.getImagesrc();
 		file3 = file3.substring(0, file3.lastIndexOf(".")); //trim the extension
 		Resources resources3 = getActivity().getResources();
 		int resourceId3 = resources3.getIdentifier(file3, "drawable", getActivity().getPackageName());
-		image3.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId3, 250, 250));
+		setBackgroundGlow(image3, resourceId3, 200, 200, 200);
+	//	image3.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId3, 250, 250));
+		TextView number3 = (TextView) (dialog).findViewById(R.id.text_sticker3);
+		number3.setText("#" + Integer.toString(sticker_3.getId()));
+		animate(image3, 3000);
 
 
 
-
-//		WindowManager manager = (WindowManager) getActivity().getSystemService(Activity.WINDOW_SERVICE);
-//		Point point = new Point();
-//		manager.getDefaultDisplay().getSize(point);
 		Display display = getActivity().getWindowManager().getDefaultDisplay();
 		Point size = new Point();
 		display.getSize(size);
@@ -289,7 +391,8 @@ public class StepsFragment extends Fragment {
 		RelativeLayout mainLayout = (RelativeLayout) dialog.findViewById(R.id.showStickerLayout);
 		dialog.show();
 		// if button is clicked, close the custom dialog
-		mainLayout.setOnClickListener(new View.OnClickListener() {
+		Button doneButton = (Button) (dialog).findViewById(R.id.doneButton);
+		doneButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				dialog.dismiss();
@@ -399,11 +502,11 @@ public class StepsFragment extends Fragment {
 					public void onEventEnd(DecoEvent decoEvent) {
 						resetText();
 						createDataSeries1();
-						goalAnimationPlaying=false;
+						goalAnimationPlaying = false;
 						updatePie();
 
-			}
-		}).build());
+					}
+				}).build());
 	}
 
 
@@ -435,30 +538,7 @@ public class StepsFragment extends Fragment {
 		}
 	}
 
-	/**
-	 * Updates the pie graph to show todays steps/distance as well as the
-	 * yesterday and total values. Should be called when switching from step
-	 * count to distance.
-	 */
-//	private void updatePie(int steps_today) {
-//		// todayOffset might still be Integer.MIN_VALUE on first start
-//
-//		sliceCurrent.setValue(steps_today);
-//		Log.w("GOAL", Integer.toString(goal));
-//		if (goal - steps_today > 0) {
-//			// goal not reached yet
-//            if (pg.getData().size() == 1) {
-//                // can happen if the goal value was changed: old goal value was
-//                // reached but now there are some steps missing for the new goal
-//                pg.addPieSlice(sliceGoal);
-//            }
-//
-//            sliceGoal.setValue(goal - steps_today);
-//        } else {
-//            // goal reached
-//            pg.clearChart();
-//            pg.addPieSlice(sliceCurrent);
-//        }
+
 
 
 	private void createBackSeries() {
@@ -573,6 +653,36 @@ public class StepsFragment extends Fragment {
 		resetText();
 	}
 
+	private void animate(final myImageView sticker,long durationMillis) {
+
+		//final AnimationSet as = new AnimationSet(true);
+		as.setFillEnabled(true);
+		as.setFillAfter(true);
+
+		final RotateAnimation rotateLeft = new RotateAnimation((float) 320, (float) 375,
+				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+		rotateLeft.setDuration(durationMillis);
+		rotateLeft.setFillEnabled(true);
+
+
+		if(firstTime) as.addAnimation(rotateLeft);
+
+		Animation rotateRight = new RotateAnimation((float) 375, (float) 320,
+				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+		rotateRight.setStartOffset(durationMillis);
+		rotateRight.setDuration(durationMillis);
+		rotateRight.setFillEnabled(true);
+		rotateRight.setFillAfter(true);
+
+
+		if(firstTime) as.addAnimation(rotateRight);
+		//sticker.clearAnimation();
+		sticker.startAnimation(as);
+		firstTime= false;
+	}
+
 	private void resetText() {
 
 		textPercentage.setText("");
@@ -580,4 +690,70 @@ public class StepsFragment extends Fragment {
 		textSteps.setText("");
 		textGoal.setText("");
 	}
+
+	private void setBackgroundGlow(ImageView imgview, int imageicon,int r,int g,int b)
+	{
+// An added margin to the initial image
+		int margin = 50;
+		int halfMargin = margin / 2;
+		// the glow radius
+		int glowRadius = 90;
+
+		// the glow color
+		int glowColor = Color.rgb(r, g, b);
+
+		// The original image to use reduced(re-sampled)
+		Bitmap src = SampleImage.decodeSampledBitmapFromResource(getResources(), imageicon, 250, 250);
+
+		// extract the alpha from the source image
+		Bitmap alpha = src.extractAlpha();
+
+		// The output bitmap (with the icon + glow)
+		Bitmap bmp =  Bitmap.createBitmap(src.getWidth() + margin, src.getHeight() + margin, Bitmap.Config.ARGB_8888);
+
+		// The canvas to paint on the image
+		Canvas canvas = new Canvas(bmp);
+
+		Paint paint = new Paint();
+		paint.setColor(glowColor);
+
+		// outer glow
+		paint.setMaskFilter(new BlurMaskFilter(glowRadius, BlurMaskFilter.Blur.OUTER));//For Inner glow set Blur.INNER
+		canvas.drawBitmap(alpha, halfMargin, halfMargin, paint);
+
+		// original icon
+		canvas.drawBitmap(src, halfMargin, halfMargin, null);
+
+		imgview.setImageBitmap(bmp);
+
+
 	}
+
+	//This basically states that the onAnimationEnd method doesn't really work well when an AnimationListener is attached to an Animation
+	// link http://stackoverflow.com/questions/2650351/android-translateanimation-resets-after-animation
+	public  static class myImageView extends ImageView {
+		public myImageView(Context context) {
+			super(context);
+		}
+
+
+		public myImageView(Context context, AttributeSet attrs)
+		{
+			super(context, attrs);
+			// TODO Auto-generated constructor stub
+		}
+
+		public myImageView(Context context, AttributeSet attrs, int defStyle)
+		{
+			super(context, attrs, defStyle);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void onAnimationEnd() {
+			super.onAnimationEnd();
+			//Functionality here
+			startAnimation(as);
+		}
+	}
+}

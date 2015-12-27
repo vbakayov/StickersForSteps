@@ -5,32 +5,79 @@
     android:background="#7F000000"
     android:layout_height="fill_parent" >
 
-    <ImageView
+    <view class="com.astuetz.viewpager.extensions.fragment.StepsFragment$myImageView"
         android:id="@+id/sticker1"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:src="@drawable/shrek_donkey_burned"
         android:layout_marginRight="5dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="64dp" />
 
-    <ImageView
+    <view class="com.astuetz.viewpager.extensions.fragment.StepsFragment$myImageView"
         android:id="@+id/sticker2"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:src="@drawable/shrek_donkey_burned"
         android:layout_marginRight="5dp"
-        android:layout_above="@+id/sticker3"
+        android:layout_alignTop="@+id/sticker1"
         android:layout_alignParentEnd="true" />
 
-    <ImageView
+    <view class="com.astuetz.viewpager.extensions.fragment.StepsFragment$myImageView"
         android:id="@+id/sticker3"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:src="@drawable/shrek_donkey_burned"
         android:layout_marginRight="5dp"
+        android:layout_below="@+id/text_sticker1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="37dp" />
+
+    <TextView
+        android:id="@+id/text_sticker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:text="#1"
+        android:textColor="#FFFFFF"
         android:layout_below="@+id/sticker1"
+        android:layout_toStartOf="@+id/sticker3" />
+
+    <TextView
+        android:id="@+id/text_sticker2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:text="#2"
+        android:textColor="#FFFFFF"
+        android:layout_above="@+id/sticker3"
+        android:layout_toEndOf="@+id/sticker3" />
+
+
+    <TextView
+        android:id="@+id/text_sticker3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:text="#3"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/sticker3"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="130dp"
+        android:layout_height="34dp"
+        android:id="@+id/doneButton"
+        android:text=" Done"
+        android:background="@drawable/green_gradient"
+        android:padding="1dp"
+        android:textColor="@drawable/button_text_colour"
+        android:textSize="15dp"
+        android:layout_below="@+id/text_sticker3"
+        android:layout_alignEnd="@+id/sticker2" />
 
 </RelativeLayout>
