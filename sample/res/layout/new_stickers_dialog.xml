@@ -5,57 +5,146 @@
     android:background="#7F000000"
     android:layout_height="fill_parent" >
 
-    <view class="com.astuetz.viewpager.extensions.fragment.StepsFragment$myImageView"
-        android:id="@+id/sticker1"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:src="@drawable/shrek_donkey_burned"
-        android:layout_marginRight="5dp"
+
+    <view class="com.astuetz.viewpager.extensions.fragment.StepsFragment$CustomLayout"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/sticker1_layout"
+        android:clipChildren="false"
+        android:padding="5dp"
+        android:weightSum="1"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="64dp" />
+        android:layout_marginTop="20dp">
 
-    <view class="com.astuetz.viewpager.extensions.fragment.StepsFragment$myImageView"
-        android:id="@+id/sticker2"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:src="@drawable/shrek_donkey_burned"
-        android:layout_marginRight="5dp"
-        android:layout_alignTop="@+id/sticker1"
-        android:layout_alignParentEnd="true" />
+       <ImageView
+            android:id="@+id/sticker1"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/shrek_donkey_burned"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp"
+           android:cropToPadding="false"
+       />
 
-    <view class="com.astuetz.viewpager.extensions.fragment.StepsFragment$myImageView"
+
+
+        <ImageView
+            android:id="@+id/category_image1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/stick"
+            android:description="@null"
+            android:scaleType="fitStart"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/text_sticker1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:text="#1"
+            android:textColor="#FFFFFF"
+            android:layout_below="@+id/sticker1"
+            android:layout_toEndOf="@+id/stick_image" />
+
+
+    </view>
+
+    <view class="com.astuetz.viewpager.extensions.fragment.StepsFragment$CustomLayout"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/sticker2_layout"
+        android:clipChildren="false"
+        android:padding="5dp"
+        android:weightSum="1"
+        android:layout_above="@+id/sticker3_layout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp">
+
+
+
+      <ImageView
+            android:id="@+id/sticker2"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/shrek_donkey_burned"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+
+
+        <ImageView
+            android:id="@+id/category_image2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/stick"
+            android:description="@null"
+            android:scaleType="fitStart"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/sticker2" />
+
+        <TextView
+            android:id="@+id/text_sticker2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:text="#2"
+            android:textColor="#FFFFFF"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+
+    </view>
+
+
+    <view class="com.astuetz.viewpager.extensions.fragment.StepsFragment$CustomLayout"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/sticker3_layout"
+        android:clipChildren="false"
+        android:padding="5dp"
+        android:weightSum="1"
+        android:layout_below="@+id/sticker1_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp">
+
+   <ImageView
         android:id="@+id/sticker3"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:src="@drawable/shrek_donkey_burned"
         android:layout_marginRight="5dp"
-        android:layout_below="@+id/text_sticker1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp" />
+        android:layout_marginTop="20dp" />
 
-    <TextView
-        android:id="@+id/text_sticker1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:text="#1"
-        android:textColor="#FFFFFF"
-        android:layout_below="@+id/sticker1"
-        android:layout_toStartOf="@+id/sticker3" />
-
-    <TextView
-        android:id="@+id/text_sticker2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:text="#2"
-        android:textColor="#FFFFFF"
-        android:layout_above="@+id/sticker3"
-        android:layout_toEndOf="@+id/sticker3" />
-
+        <ImageView
+            android:id="@+id/category_image3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/stick"
+            android:description="@null"
+            android:scaleType="fitStart"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/text_sticker3"
@@ -68,6 +157,8 @@
         android:layout_below="@+id/sticker3"
         android:layout_centerHorizontal="true" />
 
+</view>
+
     <Button
         android:layout_width="130dp"
         android:layout_height="34dp"
@@ -77,7 +168,7 @@
         android:padding="1dp"
         android:textColor="@drawable/button_text_colour"
         android:textSize="15dp"
-        android:layout_below="@+id/text_sticker3"
-        android:layout_alignEnd="@+id/sticker2" />
+        android:layout_alignBottom="@+id/sticker3_layout"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

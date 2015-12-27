@@ -332,10 +332,10 @@ public class StepsFragment extends Fragment {
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		dialog.setContentView(R.layout.new_stickers_dialog);
 		//get the correct image -1st sticker
-		myImageView image = (myImageView) (dialog).findViewById(R.id.sticker1);
+
+		ImageView image = (ImageView) (dialog).findViewById(R.id.sticker1);
 		image.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {showStickerMoreInfo(sticker_1);}});
-
 		String file= sticker_1.getImagesrc();
 		file = file.substring(0, file.lastIndexOf(".")); //trim the extension
 		Resources resources = getActivity().getResources();
@@ -343,10 +343,13 @@ public class StepsFragment extends Fragment {
 		image.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 250, 250));
 		TextView number = (TextView) (dialog).findViewById(R.id.text_sticker1);
 		number.setText("#"+ Integer.toString(sticker_1.getId()));
-		animate(image, 3000);
+		RelativeLayout image_layout = (RelativeLayout) (dialog).findViewById(R.id.sticker1_layout);
+		ImageView imageCategory = (ImageView) (dialog).findViewById(R.id.category_image1);
+		determineCategoty(imageCategory,sticker_1);
+		animate(image_layout, 3000);
 
 		//get the correct image -2nd sticker
-		myImageView image2 = (myImageView) (dialog).findViewById(R.id.sticker2);
+		ImageView image2 = (ImageView) (dialog).findViewById(R.id.sticker2);
 		image2.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {showStickerMoreInfo(sticker_2);}});
 		String file2= sticker_2.getImagesrc();
@@ -356,11 +359,14 @@ public class StepsFragment extends Fragment {
 		image2.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId2, 250, 250));
 		TextView number2 = (TextView) (dialog).findViewById(R.id.text_sticker2);
 		number2.setText("#" + Integer.toString(sticker_2.getId()));
-		animate(image2, 3000);
+		RelativeLayout image_layout2 = (RelativeLayout) (dialog).findViewById(R.id.sticker2_layout);
+		ImageView imageCategory2 = (ImageView) (dialog).findViewById(R.id.category_image2);
+		determineCategoty(imageCategory2,sticker_2);
+		animate(image_layout2, 3000);
 
 
 		//get the correct image -3rd sticker
-		myImageView image3 = (myImageView) (dialog).findViewById(R.id.sticker3);
+		ImageView image3 = (ImageView) (dialog).findViewById(R.id.sticker3);
 		image3.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {showStickerMoreInfo(sticker_3);}});
 		String file3= sticker_3.getImagesrc();
@@ -368,10 +374,12 @@ public class StepsFragment extends Fragment {
 		Resources resources3 = getActivity().getResources();
 		int resourceId3 = resources3.getIdentifier(file3, "drawable", getActivity().getPackageName());
 		setBackgroundGlow(image3, resourceId3, 200, 200, 200);
-	//	image3.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId3, 250, 250));
 		TextView number3 = (TextView) (dialog).findViewById(R.id.text_sticker3);
 		number3.setText("#" + Integer.toString(sticker_3.getId()));
-		animate(image3, 3000);
+		RelativeLayout image_layout3 = (RelativeLayout) (dialog).findViewById(R.id.sticker3_layout);
+		ImageView imageCategory3 = (ImageView) (dialog).findViewById(R.id.category_image3);
+		determineCategoty(imageCategory3,sticker_3);
+		animate(image_layout3, 3000);
 
 
 
@@ -400,6 +408,16 @@ public class StepsFragment extends Fragment {
 			}
 
 		});
+	}
+
+	private void determineCategoty(ImageView imageCategory, Sticker sticker) {
+		//new Sticker
+		if(sticker.getCount() == 0){
+			Resources resources = getActivity().getResources();
+			int resourceId = resources.getIdentifier("neww", "drawable", getActivity().getPackageName());
+			imageCategory.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 250, 250));
+		}
+
 	}
 
 
@@ -653,7 +671,7 @@ public class StepsFragment extends Fragment {
 		resetText();
 	}
 
-	private void animate(final myImageView sticker,long durationMillis) {
+	private void animate(final RelativeLayout sticker,long durationMillis) {
 
 		//final AnimationSet as = new AnimationSet(true);
 		as.setFillEnabled(true);
@@ -731,19 +749,19 @@ public class StepsFragment extends Fragment {
 
 	//This basically states that the onAnimationEnd method doesn't really work well when an AnimationListener is attached to an Animation
 	// link http://stackoverflow.com/questions/2650351/android-translateanimation-resets-after-animation
-	public  static class myImageView extends ImageView {
-		public myImageView(Context context) {
+	public  static class CustomLayout  extends RelativeLayout {
+		public CustomLayout(Context context) {
 			super(context);
 		}
 
 
-		public myImageView(Context context, AttributeSet attrs)
+		public CustomLayout(Context context, AttributeSet attrs)
 		{
 			super(context, attrs);
 			// TODO Auto-generated constructor stub
 		}
 
-		public myImageView(Context context, AttributeSet attrs, int defStyle)
+		public CustomLayout(Context context, AttributeSet attrs, int defStyle)
 		{
 			super(context, attrs, defStyle);
 			// TODO Auto-generated constructor stub

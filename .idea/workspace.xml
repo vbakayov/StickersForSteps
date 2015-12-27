@@ -4,6 +4,13 @@
     <shared>
       <config />
     </shared>
+    <layouts>
+      <layout url="file://$PROJECT_DIR$/sample/res/layout/new_stickers_dialog.xml">
+        <config>
+          <theme>@style/AppTheme</theme>
+        </config>
+      </layout>
+    </layouts>
   </component>
   <component name="AndroidLogFilters">
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
@@ -40,44 +47,77 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="StepsFragment.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/StepsFragment.java">
+      <file leaf-file-name="dialog_split.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sample/res/layout-v11/dialog_split.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.0266393">
-              <caret line="699" column="26" selection-start-line="699" selection-start-column="26" selection-end-line="699" selection-end-column="26" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#6938#7147#0" expanded="true" />
-                <element signature="e#7146#7147#0" expanded="true" />
-                <element signature="e#9651#9758#0" expanded="true" />
-                <element signature="e#9757#9758#0" expanded="true" />
-                <element signature="e#10153#10287#0" expanded="true" />
-                <element signature="e#10286#10287#0" expanded="true" />
-                <element signature="e#10586#10680#0" expanded="true" />
-                <element signature="e#10679#10680#0" expanded="true" />
-                <element signature="e#11352#11446#0" expanded="true" />
-                <element signature="e#11445#11446#0" expanded="true" />
-                <element signature="e#12132#12226#0" expanded="true" />
-                <element signature="e#12225#12226#0" expanded="true" />
-                <element signature="e#13543#13650#0" expanded="true" />
-                <element signature="e#13649#13650#0" expanded="true" />
-                <element signature="e#23360#23361#0" expanded="true" />
-                <element signature="e#23383#23384#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Sticker.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/Sticker.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="device_name.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sample/res/layout/device_name.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="fragment_stickers.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sample/res/layout/fragment_stickers.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-9.965517">
+              <caret line="17" column="32" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
       <file leaf-file-name="new_stickers_dialog.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sample/res/layout/new_stickers_dialog.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.655172">
-              <caret line="26" column="85" selection-start-line="26" selection-start-column="85" selection-end-line="26" selection-end-column="85" />
+            <state vertical-scroll-proportion="-2.3448277">
+              <caret line="36" column="44" selection-start-line="36" selection-start-column="44" selection-end-line="36" selection-end-column="44" />
               <folding />
             </state>
           </provider>
           <provider editor-type-id="android-designer">
             <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StepsFragment.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/StepsFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.32415253">
+              <caret line="415" column="33" selection-start-line="415" selection-start-column="33" selection-end-line="415" selection-end-column="33" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
           </provider>
         </entry>
       </file>
@@ -98,9 +138,22 @@
         <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/StickersFragment.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="282" column="0" selection-start-line="282" selection-start-column="0" selection-end-line="282" selection-end-column="0" />
+              <caret line="301" column="15" selection-start-line="301" selection-start-column="15" selection-end-line="301" selection-end-column="15" />
               <folding />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sticker_dialog.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sample/res/layout/sticker_dialog.xml">
+          <provider editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
@@ -2236,8 +2289,10 @@
         <option value="$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/Database.java" />
         <option value="$PROJECT_DIR$/sample/res/layout/steps_fragment.xml" />
         <option value="$PROJECT_DIR$/sample/build.gradle" />
-        <option value="$PROJECT_DIR$/sample/res/layout/new_stickers_dialog.xml" />
         <option value="$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/myImageView.java" />
+        <option value="$PROJECT_DIR$/sample/res/layout/fragment_stickers.xml" />
+        <option value="$PROJECT_DIR$/sample/res/layout/row_grid.xml" />
+        <option value="$PROJECT_DIR$/sample/res/layout/new_stickers_dialog.xml" />
         <option value="$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/StepsFragment.java" />
       </list>
     </option>
@@ -2596,13 +2651,13 @@
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.48786038" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.07155026" sideWeight="0.215478" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14821124" sideWeight="0.22003035" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.07155026" sideWeight="0.784522" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14821124" sideWeight="0.77996963" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2641,83 +2696,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/StepsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="286" column="27" selection-start-line="286" selection-start-column="27" selection-end-line="286" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#6938#7147#0" expanded="true" />
-            <element signature="e#7146#7147#0" expanded="true" />
-            <element signature="e#9651#9758#0" expanded="true" />
-            <element signature="e#9757#9758#0" expanded="true" />
-            <element signature="e#10153#10287#0" expanded="true" />
-            <element signature="e#10286#10287#0" expanded="true" />
-            <element signature="e#10586#10680#0" expanded="true" />
-            <element signature="e#10679#10680#0" expanded="true" />
-            <element signature="e#11352#11446#0" expanded="true" />
-            <element signature="e#11445#11446#0" expanded="true" />
-            <element signature="e#12132#12226#0" expanded="true" />
-            <element signature="e#12225#12226#0" expanded="true" />
-            <element signature="e#13543#13650#0" expanded="true" />
-            <element signature="e#13649#13650#0" expanded="true" />
-            <element signature="e#23360#23361#0" expanded="true" />
-            <element signature="e#23383#23384#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/Sticker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding>
-            <element signature="e#396#397#0" expanded="false" />
-            <element signature="e#427#428#0" expanded="false" />
-            <element signature="e#475#476#0" expanded="false" />
-            <element signature="e#515#516#0" expanded="false" />
-            <element signature="e#1003#1004#0" expanded="false" />
-            <element signature="e#1032#1033#0" expanded="false" />
-            <element signature="e#1062#1063#0" expanded="false" />
-            <element signature="e#1087#1088#0" expanded="false" />
-            <element signature="e#1118#1119#0" expanded="false" />
-            <element signature="e#1145#1146#0" expanded="false" />
-            <element signature="e#1177#1178#0" expanded="false" />
-            <element signature="e#1205#1206#0" expanded="false" />
-            <element signature="e#1242#1243#0" expanded="false" />
-            <element signature="e#1275#1276#0" expanded="false" />
-            <element signature="e#1313#1314#0" expanded="false" />
-            <element signature="e#1347#1348#0" expanded="false" />
-            <element signature="e#1381#1382#0" expanded="false" />
-            <element signature="e#1409#1410#0" expanded="false" />
-            <element signature="e#1446#1447#0" expanded="false" />
-            <element signature="e#1474#1475#0" expanded="false" />
-            <element signature="e#1514#1515#0" expanded="false" />
-            <element signature="e#1546#1547#0" expanded="false" />
-            <element signature="e#1588#1589#0" expanded="false" />
-            <element signature="e#1622#1623#0" expanded="false" />
-            <element signature="e#1674#1675#0" expanded="false" />
-            <element signature="e#1718#1719#0" expanded="false" />
-            <element signature="e#1772#1773#0" expanded="false" />
-            <element signature="e#1818#1819#0" expanded="false" />
-            <element signature="e#1861#1862#0" expanded="false" />
-            <element signature="e#1895#1896#0" expanded="false" />
-            <element signature="e#1940#1941#0" expanded="false" />
-            <element signature="e#1976#1977#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/Database.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="155" column="33" selection-start-line="155" selection-start-column="27" selection-end-line="155" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/StickersFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2856,22 +2834,6 @@
           <caret line="210" column="31" selection-start-line="210" selection-start-column="31" selection-end-line="210" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#6938#7147#0" expanded="true" />
-            <element signature="e#7146#7147#0" expanded="true" />
-            <element signature="e#9651#9758#0" expanded="true" />
-            <element signature="e#9757#9758#0" expanded="true" />
-            <element signature="e#10153#10287#0" expanded="true" />
-            <element signature="e#10286#10287#0" expanded="true" />
-            <element signature="e#10586#10680#0" expanded="true" />
-            <element signature="e#10679#10680#0" expanded="true" />
-            <element signature="e#11352#11446#0" expanded="true" />
-            <element signature="e#11445#11446#0" expanded="true" />
-            <element signature="e#12132#12226#0" expanded="true" />
-            <element signature="e#12225#12226#0" expanded="true" />
-            <element signature="e#13543#13650#0" expanded="true" />
-            <element signature="e#13649#13650#0" expanded="true" />
-            <element signature="e#23360#23361#0" expanded="true" />
-            <element signature="e#23383#23384#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3062,17 +3024,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sample/res/layout/sticker_dialog.xml">
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/StepDetector.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3083,59 +3034,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/Sticker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding>
-            <element signature="e#396#397#0" expanded="false" />
-            <element signature="e#427#428#0" expanded="false" />
-            <element signature="e#475#476#0" expanded="false" />
-            <element signature="e#515#516#0" expanded="false" />
-            <element signature="e#1003#1004#0" expanded="false" />
-            <element signature="e#1032#1033#0" expanded="false" />
-            <element signature="e#1062#1063#0" expanded="false" />
-            <element signature="e#1087#1088#0" expanded="false" />
-            <element signature="e#1118#1119#0" expanded="false" />
-            <element signature="e#1145#1146#0" expanded="false" />
-            <element signature="e#1177#1178#0" expanded="false" />
-            <element signature="e#1205#1206#0" expanded="false" />
-            <element signature="e#1242#1243#0" expanded="false" />
-            <element signature="e#1275#1276#0" expanded="false" />
-            <element signature="e#1313#1314#0" expanded="false" />
-            <element signature="e#1347#1348#0" expanded="false" />
-            <element signature="e#1381#1382#0" expanded="false" />
-            <element signature="e#1409#1410#0" expanded="false" />
-            <element signature="e#1446#1447#0" expanded="false" />
-            <element signature="e#1474#1475#0" expanded="false" />
-            <element signature="e#1514#1515#0" expanded="false" />
-            <element signature="e#1546#1547#0" expanded="false" />
-            <element signature="e#1588#1589#0" expanded="false" />
-            <element signature="e#1622#1623#0" expanded="false" />
-            <element signature="e#1674#1675#0" expanded="false" />
-            <element signature="e#1718#1719#0" expanded="false" />
-            <element signature="e#1772#1773#0" expanded="false" />
-            <element signature="e#1818#1819#0" expanded="false" />
-            <element signature="e#1861#1862#0" expanded="false" />
-            <element signature="e#1895#1896#0" expanded="false" />
-            <element signature="e#1940#1941#0" expanded="false" />
-            <element signature="e#1976#1977#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/library/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-v23/values-v23.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.3148148">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -3167,14 +3069,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/StickersFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="282" column="0" selection-start-line="282" selection-start-column="0" selection-end-line="282" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sample/res/layout/steps_fragment.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-12.413794">
@@ -3186,10 +3080,10 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sample/res/layout/new_stickers_dialog.xml">
+    <entry file="file://$PROJECT_DIR$/sample/res/layout/row_grid.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.655172">
-          <caret line="26" column="85" selection-start-line="26" selection-start-column="85" selection-end-line="26" selection-end-column="85" />
+        <state vertical-scroll-proportion="0.75614756">
+          <caret line="45" column="17" selection-start-line="1" selection-start-column="0" selection-end-line="45" selection-end-column="17" />
           <folding />
         </state>
       </provider>
@@ -3197,28 +3091,83 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/sample/res/layout-v11/dialog_split.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sample/res/layout/device_name.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sample/res/layout/fragment_stickers.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.965517">
+          <caret line="17" column="32" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sample/res/layout/new_stickers_dialog.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.3448277">
+          <caret line="36" column="44" selection-start-line="36" selection-start-column="44" selection-end-line="36" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sample/res/layout/sticker_dialog.xml">
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/Sticker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/StickersFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="301" column="15" selection-start-line="301" selection-start-column="15" selection-end-line="301" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/sample/src/com/astuetz/viewpager/extensions/fragment/StepsFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.0266393">
-          <caret line="699" column="26" selection-start-line="699" selection-start-column="26" selection-end-line="699" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.32415253">
+          <caret line="415" column="33" selection-start-line="415" selection-start-column="33" selection-end-line="415" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#6938#7147#0" expanded="true" />
-            <element signature="e#7146#7147#0" expanded="true" />
-            <element signature="e#9651#9758#0" expanded="true" />
-            <element signature="e#9757#9758#0" expanded="true" />
-            <element signature="e#10153#10287#0" expanded="true" />
-            <element signature="e#10286#10287#0" expanded="true" />
-            <element signature="e#10586#10680#0" expanded="true" />
-            <element signature="e#10679#10680#0" expanded="true" />
-            <element signature="e#11352#11446#0" expanded="true" />
-            <element signature="e#11445#11446#0" expanded="true" />
-            <element signature="e#12132#12226#0" expanded="true" />
-            <element signature="e#12225#12226#0" expanded="true" />
-            <element signature="e#13543#13650#0" expanded="true" />
-            <element signature="e#13649#13650#0" expanded="true" />
-            <element signature="e#23360#23361#0" expanded="true" />
-            <element signature="e#23383#23384#0" expanded="true" />
           </folding>
         </state>
       </provider>
