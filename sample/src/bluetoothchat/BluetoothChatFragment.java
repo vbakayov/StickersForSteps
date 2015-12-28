@@ -19,11 +19,8 @@ package bluetoothchat;
 
 
 
-import butterknife.ButterKnife;
 import logger.Log;
-import ui.Dialog_Split;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -37,18 +34,14 @@ import android.graphics.Matrix;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,13 +56,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.viewpager.extensions.fragment.Database;
-import com.astuetz.viewpager.extensions.fragment.Item;
 import com.astuetz.viewpager.extensions.fragment.MainActivity;
-import com.astuetz.viewpager.extensions.fragment.StepsFragment;
 import com.astuetz.viewpager.extensions.fragment.Sticker;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.mingle.entity.MenuEntity;
-import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.DimEffect;
 import com.mingle.sweetpick.SweetSheet;
 import com.mingle.sweetpick.ViewPagerDelegate;
@@ -271,7 +261,7 @@ public class BluetoothChatFragment extends Fragment {
     private void setUpListStickers(){
 
         Database db = Database.getInstance(getActivity());
-        List<Sticker> stickers = db.getStickersWithStatus(2);
+        List<Sticker> stickers = db.getStickersWithCountGreatherOrEqualTo(1);
         android.util.Log.d("File id ", Integer.toString(stickers.size()));
         for (ListIterator<Sticker > iter = stickers.listIterator(); iter.hasNext(); ) {
             Sticker element = iter.next();

@@ -87,6 +87,11 @@ public class Sticker {
         this.description = description;
     }
 
+    public String getDescription(String description) {
+        return description;
+    }
+
+
     public void setCount(Integer count) {
         this.count = count;
     }

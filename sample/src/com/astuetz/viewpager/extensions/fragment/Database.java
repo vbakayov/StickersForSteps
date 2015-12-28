@@ -152,8 +152,8 @@ public class Database extends SQLiteOpenHelper {
                 sticker.setPopularity(nextLine[3]);
                 sticker.setImagesrc(nextLine[4]);
                 sticker.setDescription(nextLine[5]);
-                sticker.setCount(1);
-                sticker.setStatus(2);
+                sticker.setCount(0);
+                sticker.setStatus(0);
                 addSticker(sticker);
             }
         } catch (IOException e) {
@@ -214,7 +214,7 @@ public class Database extends SQLiteOpenHelper {
         return checkdb;
     }
 
-    public  List<Sticker> getStickersWithStatus(int status){
+    public  List<Sticker> getStickersWithCountGreatherOrEqualTo(int count){
         List<Sticker> stickers = new LinkedList<Sticker>();
 
 
@@ -223,8 +223,8 @@ public class Database extends SQLiteOpenHelper {
         Cursor cursor =
                 db.query(TABLE_STICKERS, // a. table
                         COLUMNS, // b. column names
-                        " status = ?", // c. selections
-                        new String[]{String.valueOf(status)}, // d. selections args
+                        " count >= ?", // c. selections
+                        new String[]{String.valueOf(count)}, // d. selections args
                         null, // e. group by
                         null, // f. having
                         null, // g. order by
@@ -252,7 +252,7 @@ public class Database extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-       // Log.d("getStickersWithStatus()", stickers.toString());
+       // Log.d("getStickersWithCountGreatherOrEqualTo()", stickers.toString());
 
         // return stickers
         return stickers;
@@ -521,6 +521,23 @@ public class Database extends SQLiteOpenHelper {
                 "UPDATE " + TABLE_STICKER_COUNT + " SET stickers = stickers + " + stickers + " WHERE date = " + date);
     }
 
+    public void updateStatus(Integer id, int status) {
+        getWritableDatabase().execSQL(
+                "UPDATE " + TABLE_STICKERS + " SET status = " + status + " WHERE id = " + id);
+    }
+
+    public void updateCount(Integer id, String action) {
+        if(action.equals("increase")){
+            Log.w("Incrase","increase");
+            getWritableDatabase().execSQL(
+                    "UPDATE " + TABLE_STICKERS + " SET count = count + " + 1 + " WHERE id = " + id);
+
+        }else  if (action.equals("decrease")){
+            Log.w("Decrease","Decrease");
+            getWritableDatabase().execSQL(
+                    "UPDATE " + TABLE_STICKERS + " SET count = count - " + 1 + " WHERE id = " + id);
+        }
+    }
     /**
      * Get the total of steps taken without today's value
      *
@@ -697,7 +714,7 @@ public class Database extends SQLiteOpenHelper {
             getWritableDatabase().insert(DB_NAME, null, values);
         }
 
-        Log.w("saving steps in db: " ,Integer.toString(steps));
+        Log.w("saving steps in db: ", Integer.toString(steps));
 
     }
 
@@ -764,6 +781,7 @@ public class Database extends SQLiteOpenHelper {
         c.close();
         return re;
     }
+
 
 
 }

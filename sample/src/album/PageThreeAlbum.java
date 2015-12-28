@@ -20,9 +20,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -49,10 +47,20 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
     private ImageView macguffin;
     private int dimension=80;
     private int glued = 2;
+    private int recieved = 1;
     private Database db;
     private Bitmap currentImg;
     private Integer status;
     private ImageView angus;
+    private Sticker sticker8;
+    private Sticker sticker7;
+    private Sticker sticker6;
+    private Sticker sticker5;
+    private Sticker sticker4;
+    private Sticker sticker3;
+    private Sticker sticker2;
+    private Sticker sticker;
+    private int notReieved =0;
 
 
     public static PageThreeAlbum newInstance(String movieName, ArrayList<Integer> stickers,ArrayList<Integer> size) {
@@ -98,7 +106,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 int sizeSticker = size.get(i);
                 params.height = convertdipToPixel(sizeSticker);
                 params.width = convertdipToPixel(sizeSticker);
-                Sticker sticker = db.getSticker(stickers.get(i));
+                sticker = db.getSticker(stickers.get(i));
                 status = sticker.getStatus();
                 containerImg = (ImageView) view.findViewById(R.id.container1_unglued);
                 containerImg.setOnLongClickListener(this);
@@ -106,14 +114,14 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 //set the sampled sized of the image with the given dimensions
                 currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, dimension, dimension);
                 currentImg = Bitmap.createScaledBitmap(currentImg, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
-                if (status == glued) {
-                    containerImg.setImageBitmap(currentImg);
+                if (status == recieved || status == notReieved) {
+                    if (status == recieved) containerImg.setImageBitmap(currentImg);
                     resourceId = GetResourceIDForImage(sticker, true);
                     Bitmap image = BitmapFactory.decodeResource(getResources(), resourceId);
                     image = Bitmap.createScaledBitmap(image, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
                     ((ImageView) view.findViewById(R.id.container1_img)).setImageBitmap(image);
                     ((TextView) view.findViewById(R.id.container1_txt)).setText(sticker.getId().toString());
-                } else {
+                } else if(status == glued) {
                     ((ImageView) view.findViewById(R.id.container1_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.container1_txt)).setText("");
                 }
@@ -124,22 +132,22 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 int sizeSticker = size.get(i);
                 params.height = convertdipToPixel(sizeSticker);
                 params.width = convertdipToPixel(sizeSticker);
-                Sticker sticker = db.getSticker(stickers.get(i));
-                status = sticker.getStatus();
+                sticker2 = db.getSticker(stickers.get(i));
+                status = sticker2.getStatus();
                 merida = (ImageView) view.findViewById(R.id.container5_unglued);
                 merida.setOnLongClickListener(this);
-                int resourceId = GetResourceIDForImage(sticker, false);
+                int resourceId = GetResourceIDForImage(sticker2, false);
                 //set the sampled sized of the image with the given dimensions
                 currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, dimension, dimension);
                 currentImg = Bitmap.createScaledBitmap(currentImg, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
-                if (status == glued) {
-                    merida.setImageBitmap(currentImg);
-                    resourceId = GetResourceIDForImage(sticker, true);
+                if (status == recieved || status == notReieved) {
+                    if (status == recieved) merida.setImageBitmap(currentImg);
+                    resourceId = GetResourceIDForImage(sticker2, true);
                     Bitmap image = BitmapFactory.decodeResource(getResources(), resourceId);
                     image = Bitmap.createScaledBitmap(image, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
                     ((ImageView) view.findViewById(R.id.merida_img)).setImageBitmap(image);
-                    ((TextView) view.findViewById(R.id.merida_txt)).setText(sticker.getId().toString());
-                } else {
+                    ((TextView) view.findViewById(R.id.merida_txt)).setText(sticker2.getId().toString());
+                } else if(  status == glued) {
                     ((ImageView) view.findViewById(R.id.merida_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.merida_txt)).setText("");
 
@@ -152,22 +160,22 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 int sizeSticker = size.get(i);
                 params.height = convertdipToPixel(sizeSticker);
                 params.width = convertdipToPixel(sizeSticker);
-                Sticker sticker = db.getSticker(stickers.get(i));
-                status = sticker.getStatus();
+                sticker3 = db.getSticker(stickers.get(i));
+                status = sticker3.getStatus();
                 dingwall = (ImageView) view.findViewById(R.id.dingwall);
                 dingwall.setOnLongClickListener(this);
-                int resourceId = GetResourceIDForImage(sticker, false);
+                int resourceId = GetResourceIDForImage(sticker3, false);
                 //set the sampled sized of the image with the given dimensions
                 currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, dimension, dimension);
                 currentImg = Bitmap.createScaledBitmap(currentImg, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
-                if (status == glued) {
-                    dingwall.setImageBitmap(currentImg);
-                    resourceId = GetResourceIDForImage(sticker, true);
+                if (status == recieved || status == notReieved) {
+                     if (status == recieved) dingwall.setImageBitmap(currentImg);
+                    resourceId = GetResourceIDForImage(sticker3, true);
                     Bitmap image = BitmapFactory.decodeResource(getResources(), resourceId);
                     image = Bitmap.createScaledBitmap(image, convertdipToPixel(90), convertdipToPixel(90), true);
                     ((ImageView) view.findViewById(R.id.dingwall_img)).setImageBitmap(image);
-                    ((TextView) view.findViewById(R.id.dingwall_txt)).setText(sticker.getId().toString());
-                } else {
+                    ((TextView) view.findViewById(R.id.dingwall_txt)).setText(sticker3.getId().toString());
+                } else if(status==glued) {
                     ((ImageView) view.findViewById(R.id.dingwall_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.dingwall_txt)).setText("");
 
@@ -182,22 +190,22 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
             int sizeSticker = size.get(i);
             params.height = convertdipToPixel(sizeSticker);
             params.width = convertdipToPixel(sizeSticker);
-            Sticker sticker = db.getSticker(stickers.get(i));
-            status = sticker.getStatus();
+            sticker4 = db.getSticker(stickers.get(i));
+            status = sticker4.getStatus();
             triplets = (ImageView) view.findViewById(R.id.triplets);
             triplets.setOnLongClickListener(this);
-            int resourceId = GetResourceIDForImage(sticker, false);
+            int resourceId = GetResourceIDForImage(sticker4, false);
             //set the sampled sized of the image with the given dimensions
             currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, dimension, dimension);
             currentImg = Bitmap.createScaledBitmap(currentImg, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
-            if (status == glued) {
-                triplets.setImageBitmap(currentImg);
-                resourceId = GetResourceIDForImage(sticker, true);
+            if (status == recieved || status == notReieved) {
+                if (status == recieved) triplets.setImageBitmap(currentImg);
+                resourceId = GetResourceIDForImage(sticker4, true);
                 Bitmap image = BitmapFactory.decodeResource(getResources(), resourceId);
                 image = Bitmap.createScaledBitmap(image, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
                 ((ImageView) view.findViewById(R.id.triplets_img)).setImageBitmap(image);
-                ((TextView) view.findViewById(R.id.triplets_txt)).setText(sticker.getId().toString());
-            } else {
+                ((TextView) view.findViewById(R.id.triplets_txt)).setText(sticker4.getId().toString());
+            } else if(status==glued) {
                 ((ImageView) view.findViewById(R.id.triplets_img)).setImageBitmap(currentImg);
                 ((TextView) view.findViewById(R.id.triplets_txt)).setText("");
 
@@ -210,22 +218,22 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 int sizeSticker = size.get(i);
                 params.height = convertdipToPixel(sizeSticker);
                 params.width = convertdipToPixel(sizeSticker);
-                Sticker sticker = db.getSticker(stickers.get(i));
-                status = sticker.getStatus();
+                sticker5 = db.getSticker(stickers.get(i));
+                status = sticker5.getStatus();
                 elinor = (ImageView) view.findViewById(R.id.elinor);
                 elinor.setOnLongClickListener(this);
-                int resourceId = GetResourceIDForImage(sticker, false);
+                int resourceId = GetResourceIDForImage(sticker5, false);
                 //set the sampled sized of the image with the given dimensions
                 currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, dimension, dimension);
                 currentImg = Bitmap.createScaledBitmap(currentImg, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
-                if (status == glued) {
-                    elinor.setImageBitmap(currentImg);
-                    resourceId = GetResourceIDForImage(sticker, true);
+                if (status == recieved || status == notReieved) {
+                    if (status == recieved) elinor.setImageBitmap(currentImg);
+                    resourceId = GetResourceIDForImage(sticker5, true);
                     Bitmap image = BitmapFactory.decodeResource(getResources(), resourceId);
                     image = Bitmap.createScaledBitmap(image, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
                     ((ImageView) view.findViewById(R.id.elinor_img)).setImageBitmap(image);
-                    ((TextView) view.findViewById(R.id.elinor_txt)).setText(sticker.getId().toString());
-                } else {
+                    ((TextView) view.findViewById(R.id.elinor_txt)).setText(sticker5.getId().toString());
+                } else if( status == glued) {
                     ((ImageView) view.findViewById(R.id.elinor_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.elinor_txt)).setText("");
 
@@ -238,22 +246,22 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 int sizeSticker = size.get(i);
                 params.height = convertdipToPixel(sizeSticker);
                 params.width = convertdipToPixel(sizeSticker);
-                Sticker sticker = db.getSticker(stickers.get(i));
-                status = sticker.getStatus();
+                sticker6 = db.getSticker(stickers.get(i));
+                status = sticker6.getStatus();
                 macintosh = (ImageView) view.findViewById(R.id.lord_macintosh);
                 macintosh.setOnLongClickListener(this);
-                int resourceId = GetResourceIDForImage(sticker, false);
+                int resourceId = GetResourceIDForImage(sticker6, false);
                 //set the sampled sized of the image with the given dimensions
                 currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, dimension, dimension);
                 currentImg = Bitmap.createScaledBitmap(currentImg, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
-                if (status == glued) {
-                    macintosh.setImageBitmap(currentImg);
-                    resourceId = GetResourceIDForImage(sticker, true);
+                if (status == recieved || status == notReieved) {
+                    if (status == recieved) macintosh.setImageBitmap(currentImg);
+                    resourceId = GetResourceIDForImage(sticker6, true);
                     Bitmap image = BitmapFactory.decodeResource(getResources(), resourceId);
                     image = Bitmap.createScaledBitmap(image, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
                     ((ImageView) view.findViewById(R.id.macintosh_img)).setImageBitmap(image);
-                    ((TextView) view.findViewById(R.id.macintosh_txt)).setText(sticker.getId().toString());
-                } else {
+                    ((TextView) view.findViewById(R.id.macintosh_txt)).setText(sticker6.getId().toString());
+                } else if(status==glued) {
                     ((ImageView) view.findViewById(R.id.macintosh_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.macintosh_txt)).setText("");
 
@@ -266,22 +274,22 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 int sizeSticker = size.get(i);
                 params.height = convertdipToPixel(sizeSticker);
                 params.width = convertdipToPixel(sizeSticker);
-                Sticker sticker = db.getSticker(stickers.get(i));
-                status = sticker.getStatus();
+                 sticker7 = db.getSticker(stickers.get(i));
+                status = sticker7.getStatus();
                 macguffin = (ImageView) view.findViewById(R.id.macguffin);
                 macguffin.setOnLongClickListener(this);
-                int resourceId = GetResourceIDForImage(sticker, false);
+                int resourceId = GetResourceIDForImage(sticker7, false);
                 //set the sampled sized of the image with the given dimensions
                 currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, dimension, dimension);
                 currentImg = Bitmap.createScaledBitmap(currentImg, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
-                if (status == glued) {
-                    macguffin.setImageBitmap(currentImg);
-                    resourceId = GetResourceIDForImage(sticker, true);
+                if (status == recieved || status == notReieved) {
+                    if (status == recieved) macguffin.setImageBitmap(currentImg);
+                    resourceId = GetResourceIDForImage(sticker7, true);
                     Bitmap image = BitmapFactory.decodeResource(getResources(), resourceId);
                     image = Bitmap.createScaledBitmap(image, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
                     ((ImageView) view.findViewById(R.id.macguffin_img)).setImageBitmap(image);
-                    ((TextView) view.findViewById(R.id.macguffin_txt)).setText(sticker.getId().toString());
-                } else {
+                    ((TextView) view.findViewById(R.id.macguffin_txt)).setText(sticker7.getId().toString());
+                } else if(status == glued){
                     ((ImageView) view.findViewById(R.id.macguffin_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.macguffin_txt)).setText("");
 
@@ -294,22 +302,22 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 int sizeSticker = size.get(i);
                 params.height = convertdipToPixel(sizeSticker);
                 params.width = convertdipToPixel(sizeSticker);
-                Sticker sticker = db.getSticker(stickers.get(i));
-                status = sticker.getStatus();
+                sticker8 = db.getSticker(stickers.get(i));
+                status = sticker8.getStatus();
                 angus = (ImageView) view.findViewById(R.id.angus);
                 angus.setOnLongClickListener(this);
-                int resourceId = GetResourceIDForImage(sticker, false);
+                int resourceId = GetResourceIDForImage(sticker8, false);
                 //set the sampled sized of the image with the given dimensions
                 currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, dimension, dimension);
                 currentImg = Bitmap.createScaledBitmap(currentImg, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
-                if (status == glued) {
-                    angus.setImageBitmap(currentImg);
-                    resourceId = GetResourceIDForImage(sticker, true);
+                if (status == recieved || status == notReieved) {
+                    if (status == recieved) angus.setImageBitmap(currentImg);
+                    resourceId = GetResourceIDForImage(sticker8, true);
                     Bitmap image = BitmapFactory.decodeResource(getResources(), resourceId);
                     image = Bitmap.createScaledBitmap(image, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
                     ((ImageView) view.findViewById(R.id.angus_img)).setImageBitmap(image);
-                    ((TextView) view.findViewById(R.id.angus_txt)).setText(sticker.getId().toString());
-                } else {
+                    ((TextView) view.findViewById(R.id.angus_txt)).setText(sticker8.getId().toString());
+                } else if(status == glued) {
                     ((ImageView) view.findViewById(R.id.angus_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.angus_txt)).setText("");
 
@@ -428,8 +436,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 //  Log.i(TAG, "drag action location");
                 offsetX = (int)dragEvent.getX();//(int)motionEvent.getX();
                 offsetY = (int)dragEvent.getY();//motionEvent.getY();
-//                Log.i("MEASUREMENTS X",Integer.toString(offsetX));
-//                Log.i("MEASUREMENTS  Y",Integer.toString(offsetX));
+
                 return true;
 
             case DragEvent.ACTION_DRAG_EXITED:
@@ -447,6 +454,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                         Log.i(TAG, "containerImg");
                         if(receivingLayoutView.getId()== R.id.container_2) {
                             stickSticker(angus,draggedImageView,receivingLayoutView);
+                            updateStatusDatabase(sticker8);
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -457,6 +465,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                         Log.i(TAG, "merida");
                         if(receivingLayoutView.getId()== R.id.container_5) {
                             stickSticker(merida,draggedImageView,receivingLayoutView);
+                            updateStatusDatabase(sticker2);
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -466,6 +475,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                         Log.i(TAG, "dingwall");
                         if(receivingLayoutView.getId()== R.id.container_8) {
                             stickSticker(dingwall,draggedImageView,receivingLayoutView);
+                            updateStatusDatabase(sticker3);
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -475,6 +485,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                         Log.i(TAG, "triplets");
                         if(receivingLayoutView.getId()== R.id.container_7) {
                             stickSticker(triplets,draggedImageView,receivingLayoutView);
+                            updateStatusDatabase(sticker4);
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -484,6 +495,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                         Log.i(TAG, "elinor");
                         if(receivingLayoutView.getId()== R.id.container_6) {
                             stickSticker(elinor,draggedImageView,receivingLayoutView);
+                            updateStatusDatabase(sticker5);
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -493,6 +505,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                         Log.i(TAG, "macintosh");
                         if(receivingLayoutView.getId()== R.id.container_4) {
                             stickSticker(macintosh,draggedImageView,receivingLayoutView);
+                            updateStatusDatabase(sticker6);
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -503,6 +516,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                         Log.i(TAG, "macgguffin");
                         if(receivingLayoutView.getId()== R.id.container_3) {
                             stickSticker(macguffin,draggedImageView,receivingLayoutView);
+                            updateStatusDatabase(sticker7);
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -513,6 +527,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
 
                         if(receivingLayoutView.getId()== R.id.container_1) {
                             stickSticker(containerImg,draggedImageView,receivingLayoutView);
+                            updateStatusDatabase(sticker);
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -546,6 +561,11 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 break;
         }
         return false;
+    }
+
+    private void updateStatusDatabase(Sticker sticker) {
+        db.updateStatus(sticker.getId(), 2);
+        db.updateCount(sticker.getId(),"decrease");
     }
 
     private void stickSticker(ImageView sticker, View draggedImageView, View receivingLayoutView){

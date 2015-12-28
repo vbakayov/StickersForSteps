@@ -46,6 +46,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
@@ -164,12 +165,18 @@ public class StepsFragment extends Fragment {
 		buttonOpenPack.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 			//	if(availableStickerPacks > 0) {
-					 int sticker1 = rg.getDistributedRandomNumber();
-					int sticker2 = rg.getDistributedRandomNumber();
-					int sticker3 = rg.getDistributedRandomNumber();
-					showNewSticker(sticker1,sticker2,sticker3);
-					Log.w("pressButton", "pressed");
-					updateStickerPackCountDecrease();
+				int sticker1 = rg.getDistributedRandomNumber();
+				int sticker2 = rg.getDistributedRandomNumber();
+				int sticker3 = rg.getDistributedRandomNumber();
+				Database db= Database.getInstance(getActivity());
+				final Sticker sticker_1 = db.getSticker(sticker1);
+				final Sticker sticker_2 = db.getSticker(sticker2);
+				final Sticker sticker_3 = db.getSticker(sticker3);
+				db.close();
+				showNewSticker(sticker_1, sticker_2, sticker_3);
+				Log.w("pressButton", "pressed");
+				updateStickerPackCountDecrease();
+				updateCountAndStatusDatabase(sticker_1,sticker_2,sticker_3);
 				}
 		//	}
 		});
@@ -228,6 +235,29 @@ public class StepsFragment extends Fragment {
 
 
 		return rootView;
+	}
+
+	private void updateCountAndStatusDatabase(Sticker sticker_1, Sticker sticker_2, Sticker sticker_3) {
+		Database db= Database.getInstance(getActivity());
+		if(sticker_1.getCount()== 0){
+			db.updateStatus(sticker_1.getId(), 1);
+			db.updateCount(sticker_1.getId(),"increase");
+		}else{
+			db.updateCount(sticker_1.getId(),"increase");
+		}
+		if(sticker_2.getCount()== 0){
+			db.updateStatus(sticker_2.getId(),1);
+			db.updateCount(sticker_2.getId(),"increase");
+		}else{
+			db.updateCount(sticker_2.getId(),"increase");
+		}
+		if(sticker_3.getCount()== 0){
+			db.updateStatus(sticker_3.getId(),1);
+			db.updateCount(sticker_3.getId(),"increase");
+		}else{
+			db.updateCount(sticker_3.getId(),"increase");
+		}
+		db.close();
 	}
 
 	private void showStickerMoreInfo(Sticker clickerSticker) {
@@ -310,13 +340,8 @@ public class StepsFragment extends Fragment {
 	}
 
 
-	private void showNewSticker(int sticker1, int sticker2, int sticker3) {
+	private void showNewSticker( final Sticker sticker_1, final Sticker sticker_2,final  Sticker sticker_3) {
 		// custom dialog
-		Database db= Database.getInstance(getActivity());
-		final Sticker sticker_1 = db.getSticker(sticker1);
-		final Sticker sticker_2 = db.getSticker(sticker2);
-		final Sticker sticker_3 = db.getSticker(sticker3);
-
 
 
 		final Dialog dialog = new Dialog(getActivity());
@@ -340,12 +365,12 @@ public class StepsFragment extends Fragment {
 		file = file.substring(0, file.lastIndexOf(".")); //trim the extension
 		Resources resources = getActivity().getResources();
 		int resourceId = resources.getIdentifier(file, "drawable", getActivity().getPackageName());
-		image.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 250, 250));
 		TextView number = (TextView) (dialog).findViewById(R.id.text_sticker1);
 		number.setText("#"+ Integer.toString(sticker_1.getId()));
 		RelativeLayout image_layout = (RelativeLayout) (dialog).findViewById(R.id.sticker1_layout);
 		ImageView imageCategory = (ImageView) (dialog).findViewById(R.id.category_image1);
 		determineCategoty(imageCategory,sticker_1);
+		determinePicture(sticker_1, image, resourceId);
 		animate(image_layout, 3000);
 
 		//get the correct image -2nd sticker
@@ -356,12 +381,12 @@ public class StepsFragment extends Fragment {
 		file2 = file2.substring(0, file2.lastIndexOf(".")); //trim the extension
 		Resources resources2 = getActivity().getResources();
 		int resourceId2 = resources2.getIdentifier(file2, "drawable", getActivity().getPackageName());
-		image2.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId2, 250, 250));
 		TextView number2 = (TextView) (dialog).findViewById(R.id.text_sticker2);
 		number2.setText("#" + Integer.toString(sticker_2.getId()));
 		RelativeLayout image_layout2 = (RelativeLayout) (dialog).findViewById(R.id.sticker2_layout);
 		ImageView imageCategory2 = (ImageView) (dialog).findViewById(R.id.category_image2);
-		determineCategoty(imageCategory2,sticker_2);
+		determineCategoty(imageCategory2, sticker_2);
+		determinePicture(sticker_2,image2,resourceId2);
 		animate(image_layout2, 3000);
 
 
@@ -373,13 +398,15 @@ public class StepsFragment extends Fragment {
 		file3 = file3.substring(0, file3.lastIndexOf(".")); //trim the extension
 		Resources resources3 = getActivity().getResources();
 		int resourceId3 = resources3.getIdentifier(file3, "drawable", getActivity().getPackageName());
-		setBackgroundGlow(image3, resourceId3, 200, 200, 200);
+
 		TextView number3 = (TextView) (dialog).findViewById(R.id.text_sticker3);
 		number3.setText("#" + Integer.toString(sticker_3.getId()));
 		RelativeLayout image_layout3 = (RelativeLayout) (dialog).findViewById(R.id.sticker3_layout);
 		ImageView imageCategory3 = (ImageView) (dialog).findViewById(R.id.category_image3);
-		determineCategoty(imageCategory3,sticker_3);
+		determineCategoty(imageCategory3, sticker_3);
+		determinePicture(sticker_3,image3,resourceId3);
 		animate(image_layout3, 3000);
+
 
 
 
@@ -410,12 +437,23 @@ public class StepsFragment extends Fragment {
 		});
 	}
 
+	private void determinePicture(Sticker sticker, ImageView image, int resourceID) {
+		if(sticker.getPopularity().equals( "rare") || sticker.getPopularity().equals( "super rare")){
+			setBackgroundGlow(image, resourceID, 200, 200, 200);}
+		else{
+			image.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceID, 250, 250));
+		}
+	}
+
 	private void determineCategoty(ImageView imageCategory, Sticker sticker) {
 		//new Sticker
 		if(sticker.getCount() == 0){
 			Resources resources = getActivity().getResources();
 			int resourceId = resources.getIdentifier("neww", "drawable", getActivity().getPackageName());
 			imageCategory.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 250, 250));
+			Animation pulse = AnimationUtils.loadAnimation(getActivity(), R.anim.pulse);
+			pulse.setRepeatCount(Animation.INFINITE);
+			imageCategory.startAnimation(pulse);
 		}
 
 	}

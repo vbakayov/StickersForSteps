@@ -5,6 +5,7 @@ package com.astuetz.viewpager.extensions.fragment;
  */
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -16,7 +17,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,11 +34,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.astuetz.viewpager.extensions.sample.R;
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
-import com.nineoldandroids.animation.Animator;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,7 +88,8 @@ public class StickersFragment extends Fragment {
             height = point.y;
 
         Database db = Database.getInstance(getActivity());
-        List<Sticker> stickers = db.getStickersWithStatus(2);
+
+       List<Sticker> stickers = db.getStickersWithCountGreatherOrEqualTo(1);
         Log.d("File id ", Integer.toString(stickers.size()));
         for (ListIterator<Sticker > iter = stickers.listIterator(); iter.hasNext(); ) {
             Sticker element = iter.next();
@@ -158,7 +154,7 @@ public class StickersFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_stickers,container,false);
+        View rootView = inflater.inflate(R.layout.fragment_stickers, container, false);
         ButterKnife.inject(this, rootView);
         ViewCompat.setElevation(rootView, 50);
         gridView = (GridView) rootView.findViewById(R.id.gridView1);
@@ -244,10 +240,10 @@ public class StickersFragment extends Fragment {
     {
         //  RelativeLayout root = (RelativeLayout) getActivity().findViewById( R.id.fragment_stickers_main );
         DisplayMetrics dm = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics( dm );
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         //     int statusBarOffset = dm.heightPixels );
 
-        view.getLocationOnScreen( originalPos );
+        view.getLocationOnScreen(originalPos);
 
         int xDest = dm.widthPixels/2;
         xDest -= (view.getMeasuredWidth()/2);
@@ -277,9 +273,9 @@ public class StickersFragment extends Fragment {
     private void showSticker(String name, final View view) {
         // custom dialog
         Database db= Database.getInstance(getActivity());
-        final Sticker clickerStikcer = db.getStickerForName(name);
-        clickerStikcer.getName();
-        Log.d("NAMe", clickerStikcer.getName());
+        final Sticker clickedSticker = db.getStickerForName(name);
+        clickedSticker.getName();
+        Log.d("NAMe", clickedSticker.getName());
 
 
         final Dialog dialog = new Dialog(getActivity());
@@ -298,7 +294,7 @@ public class StickersFragment extends Fragment {
         ImageView image = (ImageView) (dialog).findViewById(R.id.image);
 
         //get the correct image
-        String file= clickerStikcer.getImagesrc();
+        String file= clickedSticker.getImagesrc();
         file = file.substring(0, file.lastIndexOf(".")); //trim the extension
         Resources resources = getActivity().getResources();
         int resourceId = resources.getIdentifier(file, "drawable", getActivity().getPackageName());
@@ -306,26 +302,24 @@ public class StickersFragment extends Fragment {
 
         //load the additional details and information
         TextView id = (TextView) (dialog).findViewById(R.id.sticker_id);
-        id.setText("#" + Integer.toString(clickerStikcer.getId()));
+        id.setText("#" + Integer.toString(clickedSticker.getId()));
 
         TextView status = (TextView) (dialog).findViewById(R.id.sticker_status);
         //at this poinrt only glued and notSticker available glued=1 notGlued=0
-         String statuss =  clickerStikcer.getStatus().equals(2)? "1": "0";
-        Integer count =  clickerStikcer.getCount();
+         String statuss =  clickedSticker.getStatus().equals(2)? "1": "0";
+        Integer count =  clickedSticker.getCount();
         status.setText("("+ statuss+" glued, "+ count+" left)");
 
         //change here to one
         Button stickButton = (Button) (dialog).findViewById(R.id.button_stick);
-       if (clickerStikcer.getStatus().equals(2))  stickButton.setVisibility(View.VISIBLE);
+       if (clickedSticker.getStatus().equals(2))  stickButton.setVisibility(View.VISIBLE);
         stickButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 animateStickerBack(view);
                 dialog.dismiss();
                 ((MainActivity)getActivity()).getMainPager().setCurrentItem(1);
-//                Log.w("name", Integer.toString( clickerStikcer.getId()));
-//                Log.w("mapping", Integer.toString(getStickerToAlbumIndexMapping(clickerStikcer.getId())));
                         ((MainActivity) getActivity()).
-                        getViewPager().setCurrentItem(getStickerToAlbumIndexMapping(clickerStikcer.getId()));
+                        getViewPager().setCurrentItem(getStickerToAlbumIndexMapping(clickedSticker.getId()));
             }
         });
 
@@ -333,13 +327,23 @@ public class StickersFragment extends Fragment {
 
 
     TextView title = (TextView) (dialog).findViewById(R.id.sticker_title);
-        title.setText( clickerStikcer.getName());
+        title.setText( clickedSticker.getName());
 
         TextView rarity = (TextView) (dialog).findViewById(R.id.rarity);
-        rarity.setText( clickerStikcer.getPopularity());
+        rarity.setText( clickedSticker.getPopularity());
+
+        //listen for the inf tab
+        ImageView info = (ImageView) (dialog).findViewById(R.id.info_image);
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInfoDialog(clickedSticker);
+            }
+
+        });
 
         TextView movie = (TextView) (dialog).findViewById(R.id.sticker_movie);
-        movie.setText( clickerStikcer.getMovie());
+        movie.setText( clickedSticker.getMovie());
         //set the layout to have the same widh and height as the  windows screen
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
@@ -357,5 +361,16 @@ public class StickersFragment extends Fragment {
             }
 
         });
+    }
+
+    private void showInfoDialog(Sticker clickedSticker) {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
+        builder.setTitle("More Information");
+
+        builder.setMessage(clickedSticker.getDescription());
+        builder.setPositiveButton("OK", null);
+        //builder.setNegativeButton("Cancel", null);
+        builder.show();
     }
 }
