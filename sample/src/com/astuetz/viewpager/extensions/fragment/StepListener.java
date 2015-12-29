@@ -5,8 +5,7 @@ package com.astuetz.viewpager.extensions.fragment;
  */
 
     public interface StepListener {
-        public void onStep();
-        public void passValue();
+         void onStep();
     }
 
 

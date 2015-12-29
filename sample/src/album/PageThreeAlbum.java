@@ -4,6 +4,7 @@ package album;
  * Created by Viktor on 12/14/2015.
  */
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.res.Resources;
@@ -25,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.astuetz.viewpager.extensions.fragment.Database;
+import com.astuetz.viewpager.extensions.fragment.StepsFragment;
 import com.astuetz.viewpager.extensions.fragment.Sticker;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.daimajia.androidanimations.library.Techniques;
@@ -61,6 +63,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
     private Sticker sticker2;
     private Sticker sticker;
     private int notReieved =0;
+    private StepsFragment.OnStickerChange notifyActivityStickerStatusChange;
 
 
     public static PageThreeAlbum newInstance(String movieName, ArrayList<Integer> stickers,ArrayList<Integer> size) {
@@ -378,6 +381,20 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            notifyActivityStickerStatusChange = (StepsFragment.OnStickerChange) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
     //    called when ball has been touched and held
     @Override
     public boolean onLongClick(View imageView) {
@@ -566,6 +583,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
     private void updateStatusDatabase(Sticker sticker) {
         db.updateStatus(sticker.getId(), 2);
         db.updateCount(sticker.getId(),"decrease");
+        notifyActivityStickerStatusChange.notifyChange();
     }
 
     private void stickSticker(ImageView sticker, View draggedImageView, View receivingLayoutView){

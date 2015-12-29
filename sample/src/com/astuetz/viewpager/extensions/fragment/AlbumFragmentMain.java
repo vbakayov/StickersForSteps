@@ -135,9 +135,15 @@ public class AlbumFragmentMain extends Fragment {
 
             switch (position) {
                 case 0: // Fragment # 1 -
-                    return PageTwoAlbum.newInstance(1);
+                    return PageThreeAlbum.newInstance(
+                            "Brave",
+                            new ArrayList<>(Arrays.asList(2,6,7,3,5,8,4,1)),
+                            new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90,90)));
                 case 1: // Fragment # 2 - This will show  Album
-                    return PageOneAlbum.newInstance(0);
+                    return PageThreeAlbum.newInstance(
+                            "Bee",
+                            new ArrayList<>(Arrays.asList(9,13,14,10,15,11,12)),
+                            new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90)));
                 case 2: // Fragment # 3 - This will show Stickers
                     return PageThreeAlbum.newInstance(
                             "Cars",

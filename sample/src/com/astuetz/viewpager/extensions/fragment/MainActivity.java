@@ -39,10 +39,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 
-import logger.Log;
 
 
 import android.view.Menu;
@@ -64,7 +64,7 @@ import bluetoothchat.BluetoothChatFragment;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity implements StepsFragment.OnStickerChange  {
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity  {
     private int since_boot;
     private int todayOffset;
     private int total_start;
+    private static StickersFragment fragmenttStickers;
     private static BluetoothChatFragment fragmentBlt;
 
     @Override
@@ -343,6 +344,12 @@ public class MainActivity extends AppCompatActivity  {
         return super.onPrepareOptionsMenu(menu);
     }
 
+    @Override
+    public void notifyChange() {
+        fragmenttStickers.updateList();
+        Log.w("Notifed","Notified");
+    }
+
 
     private class MyReceiver extends BroadcastReceiver {
 
@@ -391,7 +398,7 @@ public class MainActivity extends AppCompatActivity  {
                 case 1: // Fragment # 2 - This will show  Album
                     return AlbumFragmentMain.newInstance(3);
                 case 2: // Fragment # 3 - This will show Stickers
-                    return StickersFragment.newInstance(2);
+                        fragmenttStickers= StickersFragment.newInstance(2); return fragmenttStickers;
                 case 3 : //Fragmern 4 - Swapping
                        fragmentBlt =BluetoothChatFragment.newInstance(3);return fragmentBlt;
 
@@ -425,7 +432,7 @@ abstract class SmartFragmentStatePagerAdapter extends FragmentStatePagerAdapter 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Fragment fragment = (Fragment) super.instantiateItem(container, position);
-        Log.d("PUT","FRAGMENT");
+        Log.d("PUT", "FRAGMENT");
         registeredFragments.put(position, fragment);
         return fragment;
     }

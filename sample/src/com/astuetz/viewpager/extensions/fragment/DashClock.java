@@ -17,12 +17,12 @@
 package com.astuetz.viewpager.extensions.fragment;
 
 import android.content.Intent;
+import android.util.Log;
 
 import com.astuetz.viewpager.extensions.sample.R;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
-import logger.Log;
 
 
 /**
@@ -33,7 +33,7 @@ public class DashClock extends DashClockExtension {
 
     @Override
     protected void onUpdateData(int reason) {
-        Log.w("DASHCLOCK","HEREEE");
+        Log.w("DASHCLOCK", "HEREEE");
         ExtensionData data = new ExtensionData();
         Database db = Database.getInstance(this);
         int steps = Math.max(db.getCurrentSteps() + db.getSteps(Util.getToday()), 0);

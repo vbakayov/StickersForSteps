@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -32,7 +33,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.astuetz.viewpager.extensions.sample.R;
-import logger.Log;
+
 
 import java.util.Set;
 

@@ -99,8 +99,14 @@ public class StepsFragment extends Fragment {
 	private DistributedRandomNumberGenerator rg;
 	private NumberProgressBar bnp;
 	private TextView buttonOpenPack;
+	private  OnStickerChange notifyActivityStickerStatusChange;
 	static final AnimationSet as = new AnimationSet(true);
 	private boolean firstTime= true;
+
+	public interface OnStickerChange {
+		void notifyChange();
+	}
+
 
 
 	public static StepsFragment newInstance(int position) {
@@ -131,6 +137,22 @@ public class StepsFragment extends Fragment {
 		db.close();
 
 	}
+
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		// This makes sure that the container activity has implemented
+		// the callback interface. If not, it throws an exception
+		try {
+			notifyActivityStickerStatusChange = (OnStickerChange) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement OnHeadlineSelectedListener");
+		}
+	}
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -177,6 +199,7 @@ public class StepsFragment extends Fragment {
 				Log.w("pressButton", "pressed");
 				updateStickerPackCountDecrease();
 				updateCountAndStatusDatabase(sticker_1,sticker_2,sticker_3);
+				notifyActivityStickerStatusChange.notifyChange();
 				}
 		//	}
 		});

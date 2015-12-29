@@ -12,6 +12,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -95,7 +96,6 @@ public class StickersFragment extends Fragment {
             Sticker element = iter.next();
             String file= element.getImagesrc();
             file = file.substring(0, file.lastIndexOf(".")); //trim the extension
-            Log.d("File ", file);
 
             Resources resources = getActivity().getResources();
             int resourceId = resources.getIdentifier(file, "drawable",
@@ -103,8 +103,11 @@ public class StickersFragment extends Fragment {
 
             //set the sampled sized of the image with the given dimensions
             Bitmap image= SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 70, 70);
+            boolean stick =  element.getStatus().equals(1);
             //set grid view item
-            gridArray.add(new Item(image,element.getName()));
+            gridArray.add(new Item(image,element.getName(),stick));
+
+
 
 
         }
@@ -160,6 +163,7 @@ public class StickersFragment extends Fragment {
         gridView = (GridView) rootView.findViewById(R.id.gridView1);
 
         customGridAdapter = new CustomGridViewAdapter(getActivity(), R.layout.row_grid, gridArray);
+        customGridAdapter.notifyDataSetChanged();
         gridView.setAdapter(customGridAdapter);
 
 
@@ -312,7 +316,7 @@ public class StickersFragment extends Fragment {
 
         //change here to one
         Button stickButton = (Button) (dialog).findViewById(R.id.button_stick);
-       if (clickedSticker.getStatus().equals(2))  stickButton.setVisibility(View.VISIBLE);
+       if (clickedSticker.getStatus().equals(1))  stickButton.setVisibility(View.VISIBLE);
         stickButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 animateStickerBack(view);
@@ -367,10 +371,59 @@ public class StickersFragment extends Fragment {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
         builder.setTitle("More Information");
-
         builder.setMessage(clickedSticker.getDescription());
         builder.setPositiveButton("OK", null);
-        //builder.setNegativeButton("Cancel", null);
         builder.show();
+    }
+
+    //recieve listChange from the mainActivity
+    public void updateList() {
+        new LongOperation().execute("");
+    }
+
+    //update the list in asyncTask
+    private class LongOperation extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            gridArray.clear();
+            Database db = Database.getInstance(getActivity());
+
+            List<Sticker> stickers = db.getStickersWithCountGreatherOrEqualTo(1);
+            Log.d("File id ", Integer.toString(stickers.size()));
+            for (Sticker element : stickers) {
+                String file = element.getImagesrc();
+                file = file.substring(0, file.lastIndexOf(".")); //trim the extension
+
+                Resources resources = getActivity().getResources();
+                int resourceId = resources.getIdentifier(file, "drawable",
+                        getActivity().getPackageName());
+
+                //set the sampled sized of the image with the given dimensions
+                Bitmap image = SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 70, 70);
+                boolean stick =  element.getStatus().equals(1);
+                //set grid view item
+                gridArray.add(new Item(image, element.getName(),stick));
+                customGridAdapter = null;
+                customGridAdapter = new CustomGridViewAdapter(getActivity(), R.layout.row_grid, gridArray);
+
+
+            }
+            db.close();
+            return "Executed";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+           // gridView.setAdapter(customGridAdapter);
+            customGridAdapter.notifyDataSetChanged();
+            gridView.invalidate();
+        }
+
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected void onProgressUpdate(Void... values) {}
     }
 }

@@ -19,7 +19,7 @@ package bluetoothchat;
 
 
 
-import logger.Log;
+
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -40,6 +40,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;

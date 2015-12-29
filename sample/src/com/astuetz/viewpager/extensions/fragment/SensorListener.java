@@ -308,8 +308,5 @@ public class SensorListener extends Service implements SensorEventListener, Step
         editor.commit();
     }
 
-    @Override
-    public void passValue() {
 
-    }
 }

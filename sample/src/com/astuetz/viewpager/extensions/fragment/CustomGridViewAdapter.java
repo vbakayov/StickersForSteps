@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,8 @@ public class CustomGridViewAdapter extends ArrayAdapter<Item> {
 		View row = convertView;
 		RecordHolder holder = null;
 
-		if (row == null) {
+		Item item = data.get(position);
+
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			row = inflater.inflate(layoutResourceId, parent, false);
 
@@ -51,19 +53,18 @@ public class CustomGridViewAdapter extends ArrayAdapter<Item> {
 			holder.stickItem = (ImageView) row.findViewById(R.id.stick_image);
 			row.setTag(holder);
 
+		Log.w("Name",item.getTitle());
+		Log.w("Item",Boolean.toString(item.getStick()));
+
+		holder.txtTitle.setText(item.getTitle());
+		holder.imageItem.setImageBitmap(item.getImage());
+		if(!item.getStick())
+			holder.stickItem.setVisibility(View.INVISIBLE);
+		else {
 			Animation pulse = AnimationUtils.loadAnimation(getContext(), R.anim.pulse);
 			pulse.setRepeatCount(Animation.INFINITE);
 			holder.stickItem.startAnimation(pulse);
-		} else {
-			holder = (RecordHolder) row.getTag();
 		}
-
-		Item item = data.get(position);
-		holder.txtTitle.setText(item.getTitle());
-		holder.imageItem.setImageBitmap(item.getImage());
-
-//		Bitmap stickIcon = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.stick);
-//		holder.stickItem.setImageBitmap(stickIcon);
 		return row;
 
 	}
