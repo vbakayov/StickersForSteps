@@ -415,7 +415,7 @@ public class StickersFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-           // gridView.setAdapter(customGridAdapter);
+           gridView.setAdapter(customGridAdapter);
             customGridAdapter.notifyDataSetChanged();
             gridView.invalidate();
         }
