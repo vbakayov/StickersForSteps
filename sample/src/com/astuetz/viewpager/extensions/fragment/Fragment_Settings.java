@@ -45,12 +45,7 @@ import android.widget.RadioGroup;
 
 import com.astuetz.viewpager.extensions.sample.R;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+
 import java.util.Locale;
 
 
@@ -130,23 +125,24 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
         getView().setBackgroundColor(Color.WHITE);
         getView().setClickable(true);
     }
-    @Override
-    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
-        inflater.inflate(R.menu.main, menu);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(final Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.action_settings).setVisible(false);
-        menu.findItem(R.id.action_pause).setVisible(false);
-        menu.findItem(R.id.action_split_count).setVisible(false);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        return ((MainActivity) getActivity()).optionsItemSelected(item);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+//        inflater.inflate(R.menu.main, menu);
+//    }
+//
+//    @Override
+//    public void onPrepareOptionsMenu(final Menu menu) {
+//        super.onPrepareOptionsMenu(menu);
+//        menu.findItem(R.id.action_settings).setVisible(false);
+//        menu.findItem(R.id.action_pause).setVisible(false);
+//        menu.findItem(R.id.action_split_count).setVisible(false);
+//        menu.findItem(R.id.action_achievements).setVisible(false);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(final MenuItem item) {
+//        return ((MainActivity) getActivity()).optionsItemSelected(item);
+//    }
 
     @Override
     public boolean onPreferenceClick(final Preference preference) {

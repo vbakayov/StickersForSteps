@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -31,6 +32,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -57,6 +59,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import ui.*;
 
@@ -88,12 +91,8 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
     private MyReceiver myReceiver;
 
 
-    private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
-    private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
 
     private MyPagerAdapter adapter;//
-    // Whether the Log Fragment is currently shown
-    private boolean mLogShown;
 
     private Drawable oldBackground = null;
     private int currentColor;
@@ -281,11 +280,19 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
                 }
                 break;
             case R.id.action_settings:
-
                     getFragmentManager().beginTransaction()
                             .replace(android.R.id.content, new Fragment_Settings()).addToBackStack(null)
                             .commit();
+                break;
+            case R.id.action_achievements:
 
+                populateAchievementView();
+                ArrayList<Achievement> list=   AchievementStorage.getAchievements();
+                if(list != null) {
+                    Intent myIntent = new Intent(this, ListActivity.class);
+                    myIntent.putExtra("filtered", list); //pass the filted array with the trips
+                    this.startActivity(myIntent);
+                }
                 break;
         }
         return true;
@@ -310,10 +317,88 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         currentColor = newColor;
     }
 
-//    public void onColorClicked(View v) {
-//        int color = Color.parseColor(v.getTag().toString());
-//        changeColor(color);
-//    }
+    private void populateAchievementView() {
+        AchievementStorage.clear();
+
+        Database db = Database.getInstance(this);
+        db.removeInvalidEntries();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //check if update needed
+        if (!prefs.getBoolean("boots distance", false)) {
+            Cursor c = db.query(new String[]{"steps"}, "steps >= 7500 AND date > 0", null, null,
+                    null, null, "1");
+            if (c.getCount() >= 1) {
+                prefs.edit().putBoolean("boots distance", true).apply();
+            }
+            c.close();
+        }
+        //add the achievements to the storage
+        AchievementStorage.addAchievement(new Achievement("boots distance", prefs.getBoolean("boots distance", false), "picturesrc", "walk 7500 steps in one day"));
+
+
+        if (!prefs.getBoolean("boots distance 2", false)) {
+            Cursor c =
+                    db.query(new String[]{"steps"}, "steps >= 10000 AND date > 0", null, null,
+                            null, null, "1");
+            if (c.getCount() >= 1) {
+                prefs.edit().putBoolean("boots distance 2", true).apply();
+            }
+            c.close();
+        }
+        AchievementStorage.addAchievement(new Achievement("boots distance 2", prefs.getBoolean("boots distance 2", false), "picturesrc", "walk 10000 steps in one day"));
+
+
+        if (!prefs.getBoolean("boots distance 3", false)) {
+            Cursor c =
+                    db.query(new String[]{"steps"}, "steps >= 20000 AND date > 0", null, null,
+                            null, null, "1");
+            if (c.getCount() >= 1) {
+                prefs.edit().putBoolean("boots distance 3", true).apply();
+            }
+            c.close();
+        }
+        AchievementStorage.addAchievement(new Achievement("boots distance 3", prefs.getBoolean("boots distance 3", false), "picturesrc", "walk 20000 steps in one day"));
+
+        if (!prefs.getBoolean("boots distance 4", false)) {
+            Cursor c =
+                    db.query(new String[]{"steps"}, "steps >= 25000 AND date > 0", null, null,
+                            null, null, "1");
+            if (c.getCount() >= 1) {
+                prefs.edit().putBoolean("boots distance 4", true).apply();
+            }
+            c.close();
+        }
+        AchievementStorage.addAchievement(new Achievement("boots distance 4", prefs.getBoolean("boots distance 4", false), "picturesrc", "walk 25000 steps in one day"));
+
+
+
+            Cursor c = db.query(new String[]{"COUNT(*)"}, "steps >= 10000 AND date > 0", null, null,
+                    null, null, null);
+            c.moveToFirst();
+            int daysForStamina = c.getInt(0);
+            c.close();
+        if (!prefs.getBoolean("stamina", false)) {
+            if (daysForStamina >= 5)  {
+                prefs.edit().putBoolean("stamina", true).apply();
+            }
+        }
+        AchievementStorage.addAchievement(new Achievement("stamina", prefs.getBoolean("stamina", false), "picturesrc", "walk more than 10 000 steps per day on 5 different days"));
+
+        if (!prefs.getBoolean("stamina 2", false)) {
+            if (daysForStamina >= 10)  {
+                prefs.edit().putBoolean("stamina 2", true).apply();
+            }
+        }
+        AchievementStorage.addAchievement(new Achievement("stamina 2", prefs.getBoolean("stamina 2", false), "picturesrc", "walk more than 10 000 steps per day on 10 different days"));
+
+        if (!prefs.getBoolean("stamina 3", false)) {
+            if (daysForStamina >= 20)  {
+                prefs.edit().putBoolean("stamina 3", true).apply();
+            }
+        }
+        AchievementStorage.addAchievement(new Achievement("stamina 3", prefs.getBoolean("stamina 3", false), "picturesrc", "walk more than 10 000 steps per day on 20 different days"));
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
