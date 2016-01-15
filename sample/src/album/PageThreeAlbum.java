@@ -5,19 +5,26 @@ package album;
  */
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -127,6 +134,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 } else if(status == glued) {
                     ((ImageView) view.findViewById(R.id.container1_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.container1_txt)).setText("");
+                    view.findViewById(R.id.container_1).setOnClickListener(this);
                 }
             }
             if (i == 1 && stickers.get(1)!= -1) {
@@ -153,6 +161,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 } else if(  status == glued) {
                     ((ImageView) view.findViewById(R.id.merida_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.merida_txt)).setText("");
+                    view.findViewById(R.id.container_2).setOnClickListener(this);
 
                 }
 
@@ -181,6 +190,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 } else if(status==glued) {
                     ((ImageView) view.findViewById(R.id.dingwall_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.dingwall_txt)).setText("");
+                    view.findViewById(R.id.container_8).setOnClickListener(this);
 
                 }
 
@@ -211,6 +221,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
             } else if(status==glued) {
                 ((ImageView) view.findViewById(R.id.triplets_img)).setImageBitmap(currentImg);
                 ((TextView) view.findViewById(R.id.triplets_txt)).setText("");
+                view.findViewById(R.id.container_7).setOnClickListener(this);
 
             }
 
@@ -239,6 +250,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 } else if( status == glued) {
                     ((ImageView) view.findViewById(R.id.elinor_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.elinor_txt)).setText("");
+                    view.findViewById(R.id.container_6).setOnClickListener(this);
 
                 }
 
@@ -267,6 +279,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 } else if(status==glued) {
                     ((ImageView) view.findViewById(R.id.macintosh_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.macintosh_txt)).setText("");
+                    view.findViewById(R.id.container_4).setOnClickListener(this);
 
                 }
 
@@ -295,6 +308,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 } else if(status == glued){
                     ((ImageView) view.findViewById(R.id.macguffin_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.macguffin_txt)).setText("");
+                    view.findViewById(R.id.container_3).setOnClickListener(this);
 
                 }
 
@@ -323,6 +337,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
                 } else if(status == glued) {
                     ((ImageView) view.findViewById(R.id.angus_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.angus_txt)).setText("");
+                    view.findViewById(R.id.container_2).setOnClickListener(this);
 
                 }
 
@@ -342,14 +357,6 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
         view.findViewById(R.id.container_7).setOnDragListener(this);
         view.findViewById(R.id.container_8).setOnDragListener(this);
 
-        view.findViewById(R.id.container_1).setOnClickListener(this);
-        view.findViewById(R.id.container_2).setOnClickListener(this);
-        view.findViewById(R.id.container_3).setOnClickListener(this);
-        view.findViewById(R.id.container_4).setOnClickListener(this);
-        view.findViewById(R.id.container_5).setOnClickListener(this);
-        view.findViewById(R.id.container_6).setOnClickListener(this);
-        view.findViewById(R.id.container_7).setOnClickListener(this);
-        view.findViewById(R.id.container_8).setOnClickListener(this);
 
 
 
@@ -608,6 +615,122 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
 
     @Override
     public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.container_1:
 
+                Log.w("picture Clicked", "1");
+                showStickerMoreInfo(sticker);
+                break;
+            case R.id.container_2:
+                Log.w("picture Clicked", "2");
+                showStickerMoreInfo(sticker8);
+                break;
+            case R.id.container_3:
+                Log.w("picture Clicked", "3");
+                showStickerMoreInfo(sticker7);
+                break;
+            case R.id.container_4:
+                Log.w("picture Clicked", "4");
+                showStickerMoreInfo(sticker6);
+                break;
+            case R.id.container_5:
+                Log.w("picture Clicked", "5");
+                showStickerMoreInfo(sticker2);
+                break;
+            case R.id.container_6:
+                Log.w("picture Clicked", "6");
+                showStickerMoreInfo(sticker5);
+                break;
+            case R.id.container_7:
+                Log.w("picture Clicked", "7");
+                showStickerMoreInfo(sticker4);
+                break;
+            case R.id.container_8:
+                Log.w("picture Clicked", "8");
+                showStickerMoreInfo(sticker3);
+
+                break;
+
+        }
     }
+
+    private void showStickerMoreInfo(Sticker clickerSticker) {
+        // custom dialog
+
+
+        clickerSticker.getName();
+        Log.d("NAMe", clickerSticker.getName());
+
+
+        final Dialog dialog = new Dialog(getActivity());
+
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+        dialog.setContentView(R.layout.sticker_dialog);
+        ImageView image = (ImageView) (dialog).findViewById(R.id.image);
+
+        //get the correct image
+        String file= clickerSticker.getImagesrc();
+        file = file.substring(0, file.lastIndexOf(".")); //trim the extension
+        Resources resources = getActivity().getResources();
+        int resourceId = resources.getIdentifier(file, "drawable", getActivity().getPackageName());
+        image.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 250, 250));
+
+        //load the additional details and information
+        TextView id = (TextView) (dialog).findViewById(R.id.sticker_id);
+        id.setText("#" + Integer.toString(clickerSticker.getId()));
+
+        TextView status = (TextView) (dialog).findViewById(R.id.sticker_status);
+        //at this poinrt only glued and notSticker available glued=1 notGlued=0
+        String statuss =  clickerSticker.getStatus().equals(2)? "1": "0";
+        Integer count =  clickerSticker.getCount();
+        status.setText("(" + statuss + " glued, " + count + " left)");
+
+
+
+
+
+        TextView title = (TextView) (dialog).findViewById(R.id.sticker_title);
+        title.setText(clickerSticker.getName());
+
+        TextView rarity = (TextView) (dialog).findViewById(R.id.rarity);
+        rarity.setText( clickerSticker.getPopularity());
+
+        TextView movie = (TextView) (dialog).findViewById(R.id.sticker_movie);
+        movie.setText(clickerSticker.getMovie());
+        //set the layout to have the same widh and height as the  windows screen
+
+
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = width;
+        lp.height = height;
+        dialog.getWindow().setAttributes(lp);
+        RelativeLayout mainLayout = (RelativeLayout) dialog.findViewById(R.id.showStickerLayout);
+        dialog.show();
+        // if button is clicked, close the custom dialog
+        mainLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+
+        });
+    }
+
 }

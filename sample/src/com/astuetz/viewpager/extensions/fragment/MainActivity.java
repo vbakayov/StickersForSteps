@@ -324,6 +324,8 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         db.removeInvalidEntries();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        AchievementStorage.addAchievement(new Achievement("swap", prefs.getBoolean("performed swap", false), "picturesrc", "swap a sticker with the bluetooth"));
         //check if update needed
         if (!prefs.getBoolean("boots distance", false)) {
             Cursor c = db.query(new String[]{"steps"}, "steps >= 7500 AND date > 0", null, null,
@@ -398,6 +400,30 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
             }
         }
         AchievementStorage.addAchievement(new Achievement("stamina 3", prefs.getBoolean("stamina 3", false), "picturesrc", "walk more than 10 000 steps per day on 20 different days"));
+
+        int totalSteps = db.getTotalWithoutToday();
+
+        if (!prefs.getBoolean("maraton", false)) {
+            if (totalSteps > 10000)  {
+                prefs.edit().putBoolean("maraton", true).apply();
+            }
+        }
+        AchievementStorage.addAchievement(new Achievement("maraton", prefs.getBoolean("maraton", false), "picturesrc", "walk total of 10 000 steps"));
+
+        if (!prefs.getBoolean("maraton 2", false)) {
+            if (totalSteps > 25000)  {
+                prefs.edit().putBoolean("maraton 2", true).apply();
+            }
+        }
+        AchievementStorage.addAchievement(new Achievement("maraton 2", prefs.getBoolean("maraton 2", false), "picturesrc", "walk total of 25 000 steps"));
+
+        if (!prefs.getBoolean("maraton 3", false)) {
+            if (totalSteps > 50000)  {
+                prefs.edit().putBoolean("maraton 3", true).apply();
+            }
+        }
+        AchievementStorage.addAchievement(new Achievement("maraton 3", prefs.getBoolean("maraton 3", false), "picturesrc", "walk total of 50 000 steps"));
+
     }
 
     @Override

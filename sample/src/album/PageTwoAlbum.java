@@ -190,7 +190,7 @@ public class PageTwoAlbum extends Fragment  implements View.OnDragListener, View
         super.onActivityCreated(savedInstanceState);
     }
 
-    //    called when ball has been touched and held
+    //    called when sticker has been touched and held
     @Override
     public boolean onLongClick(View imageView) {
         //        the ball has been touched
@@ -206,8 +206,8 @@ public class PageTwoAlbum extends Fragment  implements View.OnDragListener, View
         return true;
     }
 
-    //    called when the ball starts to be dragged
-//    used by top and bottom layout containers
+    //    called when the sticker starts to be dragged
+    //    used by top and bottom layout containers
     @Override
     public boolean onDrag(View receivingLayoutView, DragEvent dragEvent) {
         final View draggedImageView = (View) dragEvent.getLocalState();
@@ -390,6 +390,7 @@ public class PageTwoAlbum extends Fragment  implements View.OnDragListener, View
 
     @Override
     public void onClick(View view) {
+        Log.w("picture Clicked", view.toString());
 
     }
 }
