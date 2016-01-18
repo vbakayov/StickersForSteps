@@ -4,10 +4,14 @@ package com.astuetz.viewpager.extensions.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import java.text.SimpleDateFormat;
@@ -18,34 +22,29 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.astuetz.viewpager.extensions.sample.R;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.CombinedChart;
-import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.data.BubbleDataSet;
-import com.github.mikephil.charting.data.BubbleEntry;
-import com.github.mikephil.charting.data.CandleData;
-import com.github.mikephil.charting.data.CandleDataSet;
-import com.github.mikephil.charting.data.CandleEntry;
-import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.ScatterData;
-import com.github.mikephil.charting.data.ScatterDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -65,13 +64,17 @@ public class CombinedChartActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_combined);
 
-        mChart = (CombinedChart) findViewById(R.id.chart1);
-        mChart.setDescription("");
-        mChart.setBackgroundColor(Color.WHITE);
-        mChart.setDrawGridBackground(false);
-        mChart.setDrawBarShadow(false);
+        ListView lv = (ListView) findViewById(R.id.chart1);
+
+        ArrayList<BarData> list = new ArrayList<>();
+        //false for steps true for distance
+        list.add(generateStepsOrDistanceData(false));
+        list.add(generateStickerData());
+        list.add(generateStepsOrDistanceData(true));
 
 
+        ChartDataAdapter cda = new ChartDataAdapter(getApplicationContext(), list);
+        lv.setAdapter(cda);
 
 
         Database db = Database.getInstance(this);
@@ -101,30 +104,7 @@ public class CombinedChartActivity extends DemoBase {
         totalDistanceView.setText(String.format("%.3f km", distance_total));
         averageDistanceView.setText(String.format("%.3f km", distance_total / total_days));
 
-        // draw bars behind lines
-        mChart.setDrawOrder(new DrawOrder[] {
-                DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
-        });
 
-        YAxis rightAxis = mChart.getAxisRight();
-        rightAxis.setDrawGridLines(false);
-
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setDrawGridLines(false);
-
-        XAxis xAxis = mChart.getXAxis();
-        xAxis.setPosition(XAxisPosition.BOTH_SIDED);
-
-        CombinedData data = new CombinedData(getDayOrder());
-
-        data.setData(generateLineData());
-        data.setData(generateBarData());
-//        data.setData(generateBubbleData());
-//         data.setData(generateScatterData());
-//         data.setData(generateCandleData());
-
-        mChart.setData(data);
-        mChart.invalidate();
     }
 
     private String[] getDayOrder() {
@@ -151,6 +131,7 @@ public class CombinedChartActivity extends DemoBase {
 
 
 
+
     private LineData generateLineData() {
         //getStickerCount
         LineData d = new LineData();
@@ -169,24 +150,7 @@ public class CombinedChartActivity extends DemoBase {
             }
             yesterday.add(Calendar.DAY_OF_YEAR, 1);
         }
-
-
-
-
-
-
         LineDataSet set = new LineDataSet(entries, "Stickers");
-        set.setColor(Color.rgb(240, 238, 70));
-        set.setLineWidth(2.5f);
-        set.setCircleColor(Color.rgb(240, 238, 70));
-        set.setCircleSize(5f);
-        set.setFillColor(Color.rgb(240, 238, 70));
-        set.setDrawCubic(true);
-        set.setDrawValues(true);
-        set.setValueTextSize(10f);
-        set.setValueTextColor(Color.rgb(240, 238, 70));
-        set.setAxisDependency(YAxis.AxisDependency.RIGHT);
-
         d.addDataSet(set);
 
         return d;
@@ -202,8 +166,8 @@ public class CombinedChartActivity extends DemoBase {
         yesterday.add(Calendar.DAY_OF_YEAR, -1);
         yesterday.add(Calendar.DAY_OF_YEAR, -6);
         for (int i = 0; i < 7; i++) {
-           int steps = db.getSteps(yesterday.getTimeInMillis());
-           String date =  df.format(new Date(yesterday.getTimeInMillis()));
+            int steps = db.getSteps(yesterday.getTimeInMillis());
+            String date =  df.format(new Date(yesterday.getTimeInMillis()));
             Log.d("steps", Integer.toString(steps));
             Log.d("date", date);
             Log.d("space", "===========");
@@ -212,8 +176,6 @@ public class CombinedChartActivity extends DemoBase {
             }
             yesterday.add(Calendar.DAY_OF_YEAR, 1);
         }
-
-
         BarDataSet set = new BarDataSet(entries, "Steps");
         set.setColor(Color.rgb(60, 220, 78));
         set.setValueTextColor(Color.rgb(60, 220, 78));
@@ -225,94 +187,151 @@ public class CombinedChartActivity extends DemoBase {
         return d;
     }
 
-    protected ScatterData generateScatterData() {
+    private class ChartDataAdapter extends ArrayAdapter<BarData> {
 
-        ScatterData d = new ScatterData();
+        private Typeface mTf;
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        public ChartDataAdapter(Context context, List<BarData> objects) {
+            super(context, 0, objects);
 
-        for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(getRandom(20, 15), index));
-
-        ScatterDataSet set = new ScatterDataSet(entries, "Scatter DataSet");
-        set.setColor(Color.GREEN);
-        set.setScatterShapeSize(7.5f);
-        set.setDrawValues(false);
-        set.setValueTextSize(10f);
-        d.addDataSet(set);
-
-        return d;
-    }
-
-    protected CandleData generateCandleData() {
-
-        CandleData d = new CandleData();
-
-        ArrayList<CandleEntry> entries = new ArrayList<CandleEntry>();
-
-        for (int index = 0; index < itemcount; index++)
-            entries.add(new CandleEntry(index, 20f, 10f, 13f, 17f));
-
-        CandleDataSet set = new CandleDataSet(entries, "Candle DataSet");
-        set.setColor(Color.rgb(80, 80, 80));
-        set.setBodySpace(0.3f);
-        set.setValueTextSize(10f);
-        set.setDrawValues(false);
-        d.addDataSet(set);
-
-        return d;
-    }
-
-    protected BubbleData generateBubbleData() {
-
-        BubbleData bd = new BubbleData();
-
-        ArrayList<BubbleEntry> entries = new ArrayList<BubbleEntry>();
-
-        for (int index = 0; index < itemcount; index++) {
-            float rnd = getRandom(10, 0);
-            entries.add(new BubbleEntry(index, rnd, rnd));
+            mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         }
 
-        BubbleDataSet set = new BubbleDataSet(entries, "Bubble DataSet");
-        set.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        set.setValueTextSize(10f);
-        set.setValueTextColor(Color.WHITE);
-        set.setHighlightCircleWidth(1.5f);
-        set.setDrawValues(true);
-        bd.addDataSet(set);
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
 
-        return bd;
+            BarData data = getItem(position);
+
+            ViewHolder holder = null;
+
+            if (convertView == null) {
+
+                holder = new ViewHolder();
+
+                convertView = LayoutInflater.from(getContext()).inflate(
+                        R.layout.list_item_barchart, null);
+                holder.chart = (BarChart) convertView.findViewById(R.id.chart);
+
+                convertView.setTag(holder);
+
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            // apply styling
+            data.setValueTypeface(mTf);
+            data.setValueTextColor(Color.BLACK);
+            holder.chart.setDescription("");
+            holder.chart.setDrawGridBackground(false);
+
+            XAxis xAxis = holder.chart.getXAxis();
+            xAxis.setPosition(XAxisPosition.BOTTOM);
+            xAxis.setTypeface(mTf);
+            xAxis.setDrawGridLines(false);
+
+            YAxis leftAxis = holder.chart.getAxisLeft();
+            leftAxis.setTypeface(mTf);
+            leftAxis.setLabelCount(5, false);
+            leftAxis.setSpaceTop(15f);
+
+            YAxis rightAxis = holder.chart.getAxisRight();
+            rightAxis.setTypeface(mTf);
+            rightAxis.setLabelCount(5, false);
+            rightAxis.setSpaceTop(15f);
+
+            // set data
+            holder.chart.setData(data);
+
+            // do not forget to refresh the chart
+//            holder.chart.invalidate();
+            holder.chart.animateY(700, Easing.EasingOption.EaseInCubic);
+
+            return convertView;
+        }
+
+        private class ViewHolder {
+
+            BarChart chart;
+        }
+    }
+    private BarData generateStickerData() {
+        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+        Database db = Database.getInstance(this);
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.setTimeInMillis(Util.getToday());
+        yesterday.add(Calendar.DAY_OF_YEAR, -1);
+        yesterday.add(Calendar.DAY_OF_YEAR, -6);
+        for (int i = 0; i < 7; i++) {
+            int stickers = db.getStickerCount(yesterday.getTimeInMillis());
+            Log.d("stickers", Integer.toString(stickers));
+            if(stickers !=Integer.MIN_VALUE) {
+                entries.add(new BarEntry(stickers, i));
+            }
+            yesterday.add(Calendar.DAY_OF_YEAR, 1);
+        }
+
+        BarDataSet d = new BarDataSet(entries, "Stickers");
+        d.setBarSpacePercent(20f);
+        d.setColor(Color.rgb(255, 255, 0));
+        d.setValueTextColor(Color.rgb(60, 220, 78));
+        d.setValueTextSize(25f);
+        d.setBarShadowColor(Color.rgb(203, 203, 203));
+
+        ArrayList<BarDataSet> sets = new ArrayList<BarDataSet>();
+        sets.add(d);
+
+        BarData cd = new BarData(getDayOrder(), sets);
+        return cd;
     }
 
-    private float getRandom(float range, float startsfrom) {
-        return (float) (Math.random() * range) + startsfrom;
+    private BarData generateStepsOrDistanceData(boolean isDistance) {
+        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+        Database db = Database.getInstance(this);
+        SimpleDateFormat df = new SimpleDateFormat("E", Locale.getDefault());
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.setTimeInMillis(Util.getToday());
+        yesterday.add(Calendar.DAY_OF_YEAR, -1);
+        yesterday.add(Calendar.DAY_OF_YEAR, -6);
+        for (int i = 0; i < 7; i++) {
+            int steps = db.getSteps(yesterday.getTimeInMillis());
+            Log.d("steps", Integer.toString(steps));
+            Log.d("space", "===========");
+            if (steps > 0) {
+                if(isDistance){
+                    //add distance
+                    SharedPreferences prefs = this.getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+                    float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_STEP_SIZE);
+                    float distance_today = steps * stepsize;
+                    distance_today=distance_today/100000;
+                    entries.add(new BarEntry(distance_today, i));
+                }else{
+                    //otherwise add steps
+                    entries.add(new BarEntry(steps, i));
+                }
+            }
+            yesterday.add(Calendar.DAY_OF_YEAR, 1);
+        }
+        BarDataSet d;
+        if(!isDistance){
+            d = new BarDataSet(entries, "Steps ");
+        }
+        else{
+            d = new BarDataSet(entries, "Distance ");
+        }
+        d.setBarSpacePercent(20f);
+        d.setColor(Color.rgb(60, 220, 78));
+        d.setValueTextColor(Color.rgb(60, 220, 78));
+        d.setValueTextSize(25f);
+        d.setBarShadowColor(Color.rgb(203, 203, 203));
+
+        ArrayList<BarDataSet> sets = new ArrayList<BarDataSet>();
+        sets.add(d);
+
+        BarData cd = new BarData(getDayOrder(), sets);
+        return cd;
     }
 
 
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.actionToggleLineValues: {
-//                for (IDataSet set : mChart.getData().getDataSets()) {
-//                    if (set instanceof LineDataSet)
-//                        set.setDrawValues(!set.isDrawValuesEnabled());
-//                }
-//
-//                mChart.invalidate();
-//                break;
-//            }
-//            case R.id.actionToggleBarValues: {
-//                for (IDataSet set : mChart.getData().getDataSets()) {
-//                    if (set instanceof BarDataSet)
-//                        set.setDrawValues(!set.isDrawValuesEnabled());
-//                }
-//
-//                mChart.invalidate();
-//                break;
-//            }
-//        }
-//        return true;
-//    }
+
 }
