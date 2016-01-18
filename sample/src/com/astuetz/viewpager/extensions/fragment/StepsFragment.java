@@ -19,6 +19,7 @@ package com.astuetz.viewpager.extensions.fragment;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -82,7 +83,7 @@ public class StepsFragment extends Fragment {
 
 	private static int steps;
 
-	private TextView  totalView, averageView;
+
 	private int todayOffset, total_start, since_boot, total_days;
 	private DecoView mDecoView;
 	private int mBackIndex;
@@ -129,8 +130,8 @@ public class StepsFragment extends Fragment {
 		todayOffset = db.getSteps(Util.getToday());
 		since_boot = db.getCurrentSteps();
 		steps = Math.max(todayOffset + since_boot, 0);
-		total_start = db.getTotalWithoutToday();
-		total_days = db.getDays();
+//		total_start = db.getTotalWithoutToday();
+//		total_days = db.getDays();
 
 		rg= new DistributedRandomNumberGenerator(getActivity());
 
@@ -160,8 +161,6 @@ public class StepsFragment extends Fragment {
         ViewCompat.setElevation(rootView, 50);
 		Log.w("Create VIew", "HERE");
 
-		totalView = (TextView) rootView.findViewById(R.id.total);
-		averageView = (TextView) rootView.findViewById(R.id.average);
 		textPercentage = (TextView) rootView.findViewById(R.id.textPercentage);
 		textToGo = (TextView) rootView.findViewById(R.id.textRemaining);
 		textSteps = (TextView) rootView.findViewById(R.id.textSteps);
@@ -283,12 +282,12 @@ public class StepsFragment extends Fragment {
 		db.close();
 	}
 
-	private void showStickerMoreInfo(Sticker clickerSticker) {
+	private void showStickerMoreInfo(final Sticker clickedSticker) {
 		// custom dialog
 
 
-		clickerSticker.getName();
-		Log.d("NAMe", clickerSticker.getName());
+		clickedSticker.getName();
+		Log.d("NAMe", clickedSticker.getName());
 
 
 		final Dialog dialog = new Dialog(getActivity());
@@ -306,7 +305,7 @@ public class StepsFragment extends Fragment {
 		ImageView image = (ImageView) (dialog).findViewById(R.id.image);
 
 		//get the correct image
-		String file= clickerSticker.getImagesrc();
+		String file= clickedSticker.getImagesrc();
 		file = file.substring(0, file.lastIndexOf(".")); //trim the extension
 		Resources resources = getActivity().getResources();
 		int resourceId = resources.getIdentifier(file, "drawable", getActivity().getPackageName());
@@ -314,12 +313,12 @@ public class StepsFragment extends Fragment {
 
 		//load the additional details and information
 		TextView id = (TextView) (dialog).findViewById(R.id.sticker_id);
-		id.setText("#" + Integer.toString(clickerSticker.getId()));
+		id.setText("#" + Integer.toString(clickedSticker.getId()));
 
 		TextView status = (TextView) (dialog).findViewById(R.id.sticker_status);
 		//at this poinrt only glued and notSticker available glued=1 notGlued=0
-		String statuss =  clickerSticker.getStatus().equals(2)? "1": "0";
-		Integer count =  clickerSticker.getCount();
+		String statuss =  clickedSticker.getStatus().equals(2)? "1": "0";
+		Integer count =  clickedSticker.getCount();
 		status.setText("(" + statuss + " glued, " + count + " left)");
 
 
@@ -327,13 +326,13 @@ public class StepsFragment extends Fragment {
 
 
 		TextView title = (TextView) (dialog).findViewById(R.id.sticker_title);
-		title.setText(clickerSticker.getName());
+		title.setText(clickedSticker.getName());
 
 		TextView rarity = (TextView) (dialog).findViewById(R.id.rarity);
-		rarity.setText( clickerSticker.getPopularity());
+		rarity.setText(clickedSticker.getPopularity());
 
 		TextView movie = (TextView) (dialog).findViewById(R.id.sticker_movie);
-		movie.setText(clickerSticker.getMovie());
+		movie.setText(clickedSticker.getMovie());
 		//set the layout to have the same widh and height as the  windows screen
 
 
@@ -360,8 +359,26 @@ public class StepsFragment extends Fragment {
 			}
 
 		});
+		//listen for the inf tab
+		ImageView info = (ImageView) (dialog).findViewById(R.id.info_image);
+		info.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showInfoDialog(clickedSticker);
+			}
+
+		});
+
 	}
 
+	private void showInfoDialog(Sticker clickedSticker) {
+		AlertDialog.Builder builder =
+				new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
+		builder.setTitle("More Information");
+		builder.setMessage(clickedSticker.getDescription());
+		builder.setPositiveButton("OK", null);
+		builder.show();
+	}
 
 	private void showNewSticker( final Sticker sticker_1, final Sticker sticker_2,final  Sticker sticker_3) {
 		// custom dialog
@@ -491,8 +508,8 @@ public class StepsFragment extends Fragment {
 		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
 		goal = prefs.getInt("goal", Fragment_Settings.DEFAULT_GOAL);
 		availableStickerPacks= prefs.getInt("packs",0);
-		total_start = db.getTotalWithoutToday();
-		total_days = db.getDays();
+//		total_start = db.getTotalWithoutToday();
+//		total_days = db.getDays();
 		db.close();
 	}
 
@@ -594,25 +611,18 @@ public class StepsFragment extends Fragment {
 		//Log.w("update  VIew", Integer.toString(total_start + steps));
 		if(!goalAnimationPlaying) {
 			if (isChecked) {
-				totalView.setText(Integer.toString(total_start + steps));
 				textSteps.setText(Integer.toString(steps) + " steps");
-				averageView.setText(Integer.toString((total_start + steps / total_days)));
 			} else {
 				SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
 				float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_STEP_SIZE);
 				float distance_today = steps * stepsize;
-				float distance_total = (total_start + steps) * stepsize;
 				if (prefs.getString("stepsize_unit", Fragment_Settings.DEFAULT_STEP_UNIT)
 						.equals("cm")) {
 					distance_today /= 100000;
-					distance_total /= 100000;
 				} else {
 					distance_today /= 5280;
-					distance_total /= 5280;
 				}
 				textSteps.setText(String.format("%.3f km.", distance_today));
-				totalView.setText(String.format("%.3f", distance_total));
-				averageView.setText(String.format("%.3f", distance_total / total_days));
 			}
 		}
 	}
@@ -643,9 +653,9 @@ public class StepsFragment extends Fragment {
 			public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
 				float percentFilled = ((currentPosition - seriesItem.getMinValue()) / (seriesItem.getMaxValue() - seriesItem.getMinValue()));
 				textPercentage.setText(String.format("%.0f%%", percentFilled * 100f));
-				totalView.setText(Integer.toString(total_start + steps));
+			//	totalView.setText(Integer.toString(total_start + steps));
 				textSteps.setText(Integer.toString(steps) + " steps");
-				averageView.setText(Integer.toString((total_start + steps / total_days)));
+		//		averageView.setText(Integer.toString((total_start + steps / total_days)));
 				textToGo.setText(String.format("%.1f steps to goal", seriesItem.getMaxValue() - currentPosition));
 				textSteps.setText(String.format("%.0f steps", currentPosition));
 				textGoal.setText(String.format("Goal: %.0f steps", seriesItem.getMaxValue()));

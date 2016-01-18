@@ -5,6 +5,7 @@ package album;
  */
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
@@ -654,12 +655,12 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
         }
     }
 
-    private void showStickerMoreInfo(Sticker clickerSticker) {
+    private void showStickerMoreInfo(final Sticker clickedSticker) {
         // custom dialog
 
 
-        clickerSticker.getName();
-        Log.d("NAMe", clickerSticker.getName());
+        clickedSticker.getName();
+        Log.d("NAMe", clickedSticker.getName());
 
 
         final Dialog dialog = new Dialog(getActivity());
@@ -677,7 +678,7 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
         ImageView image = (ImageView) (dialog).findViewById(R.id.image);
 
         //get the correct image
-        String file= clickerSticker.getImagesrc();
+        String file= clickedSticker.getImagesrc();
         file = file.substring(0, file.lastIndexOf(".")); //trim the extension
         Resources resources = getActivity().getResources();
         int resourceId = resources.getIdentifier(file, "drawable", getActivity().getPackageName());
@@ -685,12 +686,12 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
 
         //load the additional details and information
         TextView id = (TextView) (dialog).findViewById(R.id.sticker_id);
-        id.setText("#" + Integer.toString(clickerSticker.getId()));
+        id.setText("#" + Integer.toString(clickedSticker.getId()));
 
         TextView status = (TextView) (dialog).findViewById(R.id.sticker_status);
         //at this poinrt only glued and notSticker available glued=1 notGlued=0
-        String statuss =  clickerSticker.getStatus().equals(2)? "1": "0";
-        Integer count =  clickerSticker.getCount();
+        String statuss =  clickedSticker.getStatus().equals(2)? "1": "0";
+        Integer count =  clickedSticker.getCount();
         status.setText("(" + statuss + " glued, " + count + " left)");
 
 
@@ -698,13 +699,13 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
 
 
         TextView title = (TextView) (dialog).findViewById(R.id.sticker_title);
-        title.setText(clickerSticker.getName());
+        title.setText(clickedSticker.getName());
 
         TextView rarity = (TextView) (dialog).findViewById(R.id.rarity);
-        rarity.setText( clickerSticker.getPopularity());
+        rarity.setText(clickedSticker.getPopularity());
 
         TextView movie = (TextView) (dialog).findViewById(R.id.sticker_movie);
-        movie.setText(clickerSticker.getMovie());
+        movie.setText(clickedSticker.getMovie());
         //set the layout to have the same widh and height as the  windows screen
 
 
@@ -731,6 +732,27 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
             }
 
         });
+
+
+        //listen for the inf tab
+        ImageView info = (ImageView) (dialog).findViewById(R.id.info_image);
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInfoDialog(clickedSticker);
+            }
+
+        });
+
+    }
+
+    private void showInfoDialog(Sticker clickedSticker) {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
+        builder.setTitle("More Information");
+        builder.setMessage(clickedSticker.getDescription());
+        builder.setPositiveButton("OK", null);
+        builder.show();
     }
 
 }

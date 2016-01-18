@@ -92,55 +92,7 @@
         android:layout_alignParentStart="true" />
 
 
-    <LinearLayout
-        android:id="@+id/averageandtotaltext"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/averageandtotal"
-        android:layout_alignParentRight="true">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/average"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/total"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/averageandtotal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/graph"
-        android:layout_alignParentEnd="true">
-
-        <TextView
-            android:id="@+id/average"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/total"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -159,8 +111,9 @@
         android:padding="1dp"
         android:textColor="@drawable/button_text_colour"
         android:textSize="15dp"
-        android:layout_below="@+id/averageandtotaltext"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/graph"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp" />
 
 
 </RelativeLayout>

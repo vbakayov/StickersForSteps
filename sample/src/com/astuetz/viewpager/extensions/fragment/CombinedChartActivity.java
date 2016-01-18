@@ -1,6 +1,8 @@
 package com.astuetz.viewpager.extensions.fragment;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.astuetz.viewpager.extensions.sample.R;
 import com.github.mikephil.charting.charts.CombinedChart;
@@ -50,6 +53,10 @@ public class CombinedChartActivity extends DemoBase {
 
     private CombinedChart mChart;
     private final int itemcount = 7;
+    private TextView totalView;
+    private TextView averageView;
+    private TextView averageDistanceView;
+    private TextView totalDistanceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,36 @@ public class CombinedChartActivity extends DemoBase {
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setDrawGridBackground(false);
         mChart.setDrawBarShadow(false);
+
+
+
+
+        Database db = Database.getInstance(this);
+        int total_start = db.getTotalWithoutToday();
+        int  total_days = db.getDays();
+        int  todayOffset = db.getSteps(Util.getToday());
+        int since_boot = db.getCurrentSteps();
+        int  steps = Math.max(todayOffset + since_boot, 0);
+
+        totalView = (TextView) findViewById(R.id.total);
+        averageView = (TextView)findViewById(R.id.average);
+        totalView.setText(Integer.toString(total_start + steps));
+        averageView.setText(Integer.toString((total_start + steps / total_days)));
+
+
+        SharedPreferences prefs = this.getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+        float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_STEP_SIZE);
+        float distance_total = (total_start + steps) * stepsize;
+        if (prefs.getString("stepsize_unit", Fragment_Settings.DEFAULT_STEP_UNIT).equals("cm")) {
+            distance_total /= 100000;
+        } else {
+            distance_total /= 5280;
+        }
+
+        averageDistanceView = (TextView)findViewById(R.id.averageDistance);
+        totalDistanceView = (TextView)findViewById(R.id.totalDistance);
+        totalDistanceView.setText(String.format("%.3f km", distance_total));
+        averageDistanceView.setText(String.format("%.3f km", distance_total / total_days));
 
         // draw bars behind lines
         mChart.setDrawOrder(new DrawOrder[] {
@@ -111,6 +148,8 @@ public class CombinedChartActivity extends DemoBase {
         list = mylist.toArray(list);
         return list;
     }
+
+
 
     private LineData generateLineData() {
         //getStickerCount
