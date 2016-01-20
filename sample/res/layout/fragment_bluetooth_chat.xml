@@ -34,7 +34,8 @@
         android:textColor="@drawable/button_text_colour"
         android:textSize="20dp"
         android:layout_below="@+id/bluetoothStatus"
-        android:layout_toStartOf="@+id/imageView" />
+        android:layout_toStartOf="@+id/imageView"
+        android:layout_marginTop="50dp" />
 
     <Button
         android:layout_width="140dp"
@@ -120,5 +121,18 @@
         android:layout_alignBottom="@+id/imageViewGive"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="71dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Blth"
+        android:drawableLeft="@drawable/ic_action_device_access_bluetooth_searching"
+        android:id="@+id/enableSwap"
+        android:background="@drawable/green_gradient"
+        android:padding="1dp"
+        android:textColor="@drawable/button_text_colour"
+        android:textSize="15dp"
+        android:layout_below="@+id/bluetoothStatus"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -128,6 +128,7 @@ public class BluetoothChatFragment extends Fragment {
     private RelativeLayout rl;
     private Button btnAccept;
     private Button btnDecline;
+    private Button btnEnableSwap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -155,6 +156,16 @@ public class BluetoothChatFragment extends Fragment {
         super.onStart();
         // If BT is not on, request that it be enabled.
         // setupChat() will then be called during onActivityResult
+//        if (!mBluetoothAdapter.isEnabled()) {
+//            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+//            // Otherwise, setup the chat session
+//        } else if (mChatService == null) {
+//            setupChat();
+//        }
+    }
+
+    private void EnableBluetooth(){
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
@@ -163,6 +174,7 @@ public class BluetoothChatFragment extends Fragment {
             setupChat();
         }
     }
+
 
     @Override
     public void onDestroy() {
@@ -206,6 +218,27 @@ public class BluetoothChatFragment extends Fragment {
         btnDecline = (Button) view.findViewById(R.id.imageButton2);
         rl = (RelativeLayout) view.findViewById(R.id.rlBlth );
 
+        btnEnableSwap = (Button) view.findViewById(R.id.enableSwap);
+        if(mBluetoothAdapter.isEnabled()) btnEnableSwap.setText("Connect a device");
+
+        btnEnableSwap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //enable bluetooth if not enabled
+               if(! mBluetoothAdapter.isEnabled()) {
+                   EnableBluetooth();
+                   btnEnableSwap.setText("Connect a device");
+               }
+                else{
+                // Launch the DeviceListActivity to see devices and do scan
+               Intent serverIntent = new Intent(getActivity(), DeviceListActivity.class);
+                startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
+               }
+            }
+        });
+
+
+
         btnAccept.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
                     Iaccepted=true;
@@ -228,16 +261,17 @@ public class BluetoothChatFragment extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Hello World!",
                         Toast.LENGTH_LONG).show();
-//                btnAccept.setVisibility(View.VISIBLE);
-//                btnDecline.setVisibility(View.VISIBLE);
+
             }
         });
 
 
         btnAccept.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
         btnDecline.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
-        btnAccept.setEnabled(false);
-        btnDecline.setEnabled(false);
+
+       // if(! mBluetoothAdapter.isEnabled())
+        btnAccept.setVisibility(View.INVISIBLE);
+        btnDecline.setVisibility(View.INVISIBLE);
 
 
         if(rl == null) android.util.Log.d("HEREEEE","IT IS NUULLL");
@@ -248,15 +282,17 @@ public class BluetoothChatFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(!otherAccepted && (!Iaccepted || otherAccepted)) {
+                if (!otherAccepted && (!Iaccepted || otherAccepted)) {
                     setupCustomView();
 //                btnAccept.setVisibility(View.INVISIBLE);
 //                btnDecline.setVisibility(View.INVISIBLE);
                     mSweetSheet3.toggle();
                 }
 
-        };
-    });}
+            }
+
+            ;
+        });}
 
 
     private void setUpListStickers(){
@@ -420,13 +456,24 @@ public class BluetoothChatFragment extends Fragment {
                         case BluetoothChatService.STATE_CONNECTED:
                             setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
                             mConversationArrayAdapter.clear();
+                            btnEnableSwap.setVisibility(View.GONE);
+                            btnAccept.setVisibility(View.VISIBLE);
+                            btnDecline.setVisibility(View.VISIBLE);
+                            btnAccept.setEnabled(false);
+                            btnDecline.setEnabled(false);
                             break;
                         case BluetoothChatService.STATE_CONNECTING:
                             setStatus(R.string.title_connecting);
                             break;
                         case BluetoothChatService.STATE_LISTEN:
+
                         case BluetoothChatService.STATE_NONE:
                             setStatus(R.string.title_not_connected);
+                            btnEnableSwap.setVisibility(View.VISIBLE);
+                            btnAccept.setVisibility(View.GONE);
+                            btnDecline.setVisibility(View.GONE);
+                            btnAccept.setEnabled(false);
+                            btnDecline.setEnabled(false);
                             break;
                     }
                     break;
@@ -470,6 +517,7 @@ public class BluetoothChatFragment extends Fragment {
                 break;
             case REQUEST_CONNECT_DEVICE_INSECURE:
                 // When DeviceListActivity returns with a device to connect
+
                 if (resultCode == Activity.RESULT_OK) {
                     connectDevice(data, false);
                 }
@@ -484,7 +532,7 @@ public class BluetoothChatFragment extends Fragment {
                     Log.d(TAG, "BT not enabled");
                     Toast.makeText(getActivity(), R.string.bt_not_enabled_leaving,
                             Toast.LENGTH_SHORT).show();
-                    getActivity().finish();
+                   // getActivity().finish();
                 }
         }
     }
@@ -502,6 +550,10 @@ public class BluetoothChatFragment extends Fragment {
         // Get the BluetoothDevice object
         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
         // Attempt to connect to the device
+        //in case blth is enabled prior the start of the application init mChatService
+        if(mChatService == null)
+            setupChat();
+
         mChatService.connect(device, secure);
     }
 
@@ -510,12 +562,12 @@ public class BluetoothChatFragment extends Fragment {
 
     public boolean onOptionsItemSelectedPrivate(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.secure_connect_scan: {
-                // Launch the DeviceListActivity to see devices and do scan
-                Intent serverIntent = new Intent(getActivity(), DeviceListActivity.class);
-                startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
-                return true;
-            }
+//            case R.id.secure_connect_scan: {
+//                // Launch the DeviceListActivity to see devices and do scan
+//                Intent serverIntent = new Intent(getActivity(), DeviceListActivity.class);
+//                startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
+//                return true;
+//            }
             case R.id.insecure_connect_scan: {
                 // Launch the DeviceListActivity to see devices and do scan
                 Intent serverIntent = new Intent(getActivity(), DeviceListActivity.class);
@@ -551,7 +603,7 @@ public class BluetoothChatFragment extends Fragment {
         Bitmap bmp2 = BitmapFactory.decodeResource(getResources(), R.drawable.accept2);
         Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
         Canvas canvas = new Canvas(bmOverlay);
-        canvas.drawBitmap(bmp1,new Matrix(), null);
+        canvas.drawBitmap(bmp1, new Matrix(), null);
         canvas.drawBitmap(bmp2, new Matrix(), null);
         return bmOverlay;
     }
@@ -607,19 +659,25 @@ public class BluetoothChatFragment extends Fragment {
         mSweetSheet3.setOnMenuItemClickListener(new SweetSheet.OnMenuItemClickListener() {
             @Override
             public boolean onItemClick(int position, MenuEntity menuEntity1) {
-                imageGive.setImageResource(menuEntity1.iconId);
-                imageGive.buildDrawingCache();
                 givePic=true;
+                imageGive.setImageResource(getImageResourceIdForStickerName(String.valueOf(menuEntity1.title)));
+                imageGive.buildDrawingCache();
                 //send message, make it Json object and convert id to string
                 sendMessage( toJSon("giveSticker",Integer.toString(menuEntity1.iconId),null));
-                Toast.makeText(getActivity(), menuEntity1.title + "  " + position, Toast.LENGTH_SHORT).show();
-//                btnAccept.setVisibility(View.VISIBLE);
-//                btnDecline.setVisibility(View.VISIBLE);
-
-
+                Toast.makeText(getActivity(), menuEntity1.title + "  " +menuEntity1.icon, Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
+    }
+
+    private int getImageResourceIdForStickerName(String stickerName){
+        Database db = Database.getInstance(getActivity());
+        Sticker sticker = db.getStickerForName(String.valueOf(stickerName));
+        String file = sticker.getImagesrc();
+        Resources resources = getActivity().getResources();
+        //trim the extension
+        file = file.substring(0, file.lastIndexOf("."));
+        return resources.getIdentifier(file, "drawable", getActivity().getPackageName());
     }
 
     public boolean backPressed() {

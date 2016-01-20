@@ -274,7 +274,7 @@ public class CombinedChartActivity extends DemoBase {
         d.setBarSpacePercent(20f);
         d.setColor(Color.rgb(255, 255, 0));
         d.setValueTextColor(Color.rgb(60, 220, 78));
-        d.setValueTextSize(25f);
+        d.setValueTextSize(20f);
         d.setBarShadowColor(Color.rgb(203, 203, 203));
 
         ArrayList<BarDataSet> sets = new ArrayList<BarDataSet>();
@@ -321,7 +321,7 @@ public class CombinedChartActivity extends DemoBase {
         d.setBarSpacePercent(20f);
         d.setColor(Color.rgb(60, 220, 78));
         d.setValueTextColor(Color.rgb(60, 220, 78));
-        d.setValueTextSize(25f);
+        d.setValueTextSize(20f);
         d.setBarShadowColor(Color.rgb(203, 203, 203));
 
         ArrayList<BarDataSet> sets = new ArrayList<BarDataSet>();
