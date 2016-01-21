@@ -528,7 +528,7 @@ public class Database extends SQLiteOpenHelper {
 
     public void updateCount(Integer id, String action) {
         if(action.equals("increase")){
-            Log.w("Incrase","increase");
+            Log.w("Incrase", "increase");
             getWritableDatabase().execSQL(
                     "UPDATE " + TABLE_STICKERS + " SET count = count + " + 1 + " WHERE id = " + id);
 

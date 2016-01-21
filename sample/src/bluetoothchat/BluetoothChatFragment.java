@@ -22,8 +22,11 @@ package bluetoothchat;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -58,6 +61,7 @@ import android.widget.Toast;
 
 import com.astuetz.viewpager.extensions.fragment.Database;
 import com.astuetz.viewpager.extensions.fragment.MainActivity;
+import com.astuetz.viewpager.extensions.fragment.StepsFragment;
 import com.astuetz.viewpager.extensions.fragment.Sticker;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.mingle.entity.MenuEntity;
@@ -93,12 +97,15 @@ public class BluetoothChatFragment extends Fragment {
     private EditText mOutEditText;
     private Button mSendButton;
     private SweetSheet mSweetSheet3;
-    private ImageView imageGive;
     private boolean givePic;
     private boolean getPic;
     private boolean otherAccepted;
     private boolean Iaccepted;
     private ImageView imageReceive ;
+    private ImageView imageGive;
+    private String stickerNameGive;
+    private String stickerNameRecieve;
+    private StepsFragment.OnStickerChange notifyActivityStickerStatusChange;
 
     /**
      * Name of the connected device
@@ -207,6 +214,20 @@ public class BluetoothChatFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            notifyActivityStickerStatusChange = (StepsFragment.OnStickerChange) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mConversationView = (ListView) view.findViewById(R.id.in);
         mOutEditText = (EditText) view.findViewById(R.id.edit_text_out);
@@ -245,6 +266,13 @@ public class BluetoothChatFragment extends Fragment {
                     imageGive.buildDrawingCache();
                     imageGive.setImageBitmap(bitmapOverlay(imageGive.getDrawingCache()));
                     sendMessage(toJSon("accept", null, true));
+                    //if both accepted change the sticker status
+                    if(otherAccepted){
+                        changeStickerdbStatus(stickerNameRecieve,false);
+                        changeStickerdbStatus(stickerNameGive,true);
+                        showAlertDialog("Result Message", "The stickers were successfully swapped", true);
+                        notifyActivityStickerStatusChange.notifyChange();
+                    }
 
             }
         });
@@ -336,6 +364,7 @@ public class BluetoothChatFragment extends Fragment {
         btnDecline.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
         btnAccept.setEnabled(false);
         btnDecline.setEnabled(false);
+        showAlertDialog("Result Message", "The stickers were not swapped, Transaction was cancelled", true);
     }
 
     /**
@@ -662,8 +691,9 @@ public class BluetoothChatFragment extends Fragment {
                 givePic=true;
                 imageGive.setImageResource(getImageResourceIdForStickerName(String.valueOf(menuEntity1.title)));
                 imageGive.buildDrawingCache();
+                stickerNameGive = String.valueOf(menuEntity1.title);
                 //send message, make it Json object and convert id to string
-                sendMessage( toJSon("giveSticker",Integer.toString(menuEntity1.iconId),null));
+                sendMessage(toJSon("giveSticker", String.valueOf(menuEntity1.title), null));
                 Toast.makeText(getActivity(), menuEntity1.title + "  " +menuEntity1.icon, Toast.LENGTH_SHORT).show();
                 return true;
             }
@@ -713,15 +743,16 @@ public class BluetoothChatFragment extends Fragment {
     }
 
     public  String fromJSon( String data){
-        String stickerID=null;
+        String stickername=null;
         Boolean accept = null;
         try {
             JSONObject jObj =  new JSONObject(data);
             if(jObj.has("giveSticker")){
                 getPic=true;
-                stickerID = jObj.getString("giveSticker");
-                imageReceive.setImageResource(Integer.parseInt(stickerID));
+                stickername = jObj.getString("giveSticker");
+                imageReceive.setImageResource( getImageResourceIdForStickerName(stickername));
                 imageReceive.buildDrawingCache();
+                stickerNameRecieve= stickername;
                 mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + data);
                 if (givePic && getPic){
                     btnAccept.getBackground().setColorFilter(null);
@@ -738,6 +769,13 @@ public class BluetoothChatFragment extends Fragment {
                     mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + data);
                     imageReceive.buildDrawingCache();
                     imageReceive.setImageBitmap(bitmapOverlay(imageReceive.getDrawingCache()));
+                    //if both has accepted do the swap
+                    if(Iaccepted){
+                        changeStickerdbStatus(stickerNameGive,true);
+                        changeStickerdbStatus(stickerNameRecieve,false);
+                        showAlertDialog("Result Message", "The stickers were successfully swapped",true);
+                        notifyActivityStickerStatusChange.notifyChange();
+                    }
                 }else{
                     declineGUI();
                 }
@@ -747,7 +785,56 @@ public class BluetoothChatFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return  stickerID;
+        return  stickername;
+    }
+
+    private void changeStickerdbStatus( String stickername, boolean give) {
+        Database db = Database.getInstance(getActivity());
+        Sticker sticker_1= db.getStickerForName(stickername);
+        //give
+        if(give){
+            if(sticker_1.getCount()== 1){
+                db.updateStatus(sticker_1.getId(), 0);
+                db.updateCount(sticker_1.getId(),"decrease");
+            }else{
+                db.updateCount(sticker_1.getId(),"decrease");
+            }
+
+        }
+        else { //receive
+            if(sticker_1.getCount()== 0){
+                db.updateStatus(sticker_1.getId(), 1);
+                db.updateCount(sticker_1.getId(),"increase");
+            }else{
+                db.updateCount(sticker_1.getId(),"increase");
+            }
+
+        }
+
+        db.close();
+    }
+
+    /**
+     * Function to display simple Alert Dialog
+     * @param title - alert dialog title
+     * @param message - alert message
+     * @param status - success/failure (used to set icon)
+     * */
+    public void showAlertDialog( String title, String message, Boolean status) {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("OK", null);
+
+        // Setting Dialog Message
+        builder.setMessage(message);
+
+        // Setting alert dialog icon
+       // builder.setIcon((status) ? R.drawable.success : R.drawable.fail);
+
+        // Showing Alert Message
+        builder.show();
     }
 
 }
