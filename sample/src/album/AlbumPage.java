@@ -43,7 +43,7 @@ import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.ArrayList;
 
-public class PageThreeAlbum extends Fragment implements View.OnDragListener, View.OnLongClickListener, View.OnClickListener {
+public class AlbumPage extends Fragment implements View.OnDragListener, View.OnLongClickListener, View.OnClickListener {
 
     private static final String TAG = "Drag";
     private static final String ARG_POSITION = "position";
@@ -74,8 +74,8 @@ public class PageThreeAlbum extends Fragment implements View.OnDragListener, Vie
     private StepsFragment.OnStickerChange notifyActivityStickerStatusChange;
 
 
-    public static PageThreeAlbum newInstance(String movieName, ArrayList<Integer> stickers,ArrayList<Integer> size) {
-        PageThreeAlbum f = new PageThreeAlbum();
+    public static AlbumPage newInstance(String movieName, ArrayList<Integer> stickers,ArrayList<Integer> size) {
+        AlbumPage f = new AlbumPage();
         Bundle b = new Bundle();
         b.putString("movieName", movieName);
         b.putIntegerArrayList("stickers", stickers);

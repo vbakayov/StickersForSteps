@@ -61,7 +61,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import ui.*;
 
 import bluetoothchat.BluetoothChatFragment;
 import butterknife.ButterKnife;
@@ -246,16 +245,20 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
     @Override
     public void onBackPressed() {
         if (fragmentBlt.backPressed()) { // and then you define a method allowBackPressed with the logic to allow back pressed or not
-            new AlertDialog.Builder(this)
-                    .setTitle("Really Exit?")
-                    .setMessage("Are you sure you want to exit?")
-                    .setNegativeButton(android.R.string.no, null)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            if (getFragmentManager().getBackStackEntryCount() > 0) {
+                getFragmentManager().popBackStackImmediate();
+            } else {
+                new AlertDialog.Builder(this)
+                        .setTitle("Really Exit?")
+                        .setMessage("Are you sure you want to exit?")
+                        .setNegativeButton(android.R.string.no, null)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            MainActivity.super.onBackPressed();
-                        }
-                    }).create().show();
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                MainActivity.super.onBackPressed();
+                            }
+                        }).create().show();
+            }
         }
 
 //        else{        //so that pressing back arrou on settings fragmen does not go out of the activity
@@ -270,10 +273,6 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
 
     public boolean optionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_split_count:{
-                Dialog_Split.getDialog(MainActivity.this,
-                        total_start + Math.max(todayOffset + since_boot, 0)).show();
-                return true;}
             case android.R.id.home:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     getFragmentManager().popBackStackImmediate();
@@ -281,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
                 break;
             case R.id.action_settings:
                     getFragmentManager().beginTransaction()
-                            .replace(android.R.id.content, new Fragment_Settings()).addToBackStack(null)
+                            .replace(android.R.id.content, new Fragment_Settings()).addToBackStack("SettingsFragment")
                             .commit();
                 break;
             case R.id.action_achievements:

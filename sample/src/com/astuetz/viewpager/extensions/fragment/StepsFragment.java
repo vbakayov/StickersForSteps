@@ -78,8 +78,6 @@ public class StepsFragment extends Fragment {
 
 	private static final String ARG_POSITION = "position";
 
-    @InjectView(R.id.textView2)
-    TextView textView;
 
 	private static int steps;
 
@@ -90,15 +88,12 @@ public class StepsFragment extends Fragment {
 	private int mSeries1Index;
 	private int availableStickerPacks;
 	private  float goal ;
-	private float mSeriesCurrent;
-	private TextView textPercentage;
 	private TextView textToGo;
 	private TextView textSteps;
 	private TextView textGoal;
 	private boolean isChecked;
 	private boolean goalAnimationPlaying;
 	private DistributedRandomNumberGenerator rg;
-	private NumberProgressBar bnp;
 	private TextView buttonOpenPack;
 	private  OnStickerChange notifyActivityStickerStatusChange;
 	static final AnimationSet as = new AnimationSet(true);
@@ -161,7 +156,6 @@ public class StepsFragment extends Fragment {
         ViewCompat.setElevation(rootView, 50);
 		Log.w("Create VIew", "HERE");
 
-		textPercentage = (TextView) rootView.findViewById(R.id.textPercentage);
 		textToGo = (TextView) rootView.findViewById(R.id.textRemaining);
 		textSteps = (TextView) rootView.findViewById(R.id.textSteps);
 		textGoal = (TextView) rootView.findViewById(R.id.textCurrentGoal);
@@ -169,27 +163,17 @@ public class StepsFragment extends Fragment {
 		goalAnimationPlaying=false;
 
 
-		Database db = Database.getInstance(getActivity());
-		bnp = (NumberProgressBar)rootView.findViewById(R.id.number_progress_bar);
-		bnp.setMax(145);
-		//Log.w("number",Integer.toString(db.getNumberGluedStickers()));
-		int gluedCount = db.getNumberGluedStickers();
-		bnp.setProgress(gluedCount);
 
-		TextView stickers_count = (TextView)rootView.findViewById(R.id.stickers_count);
-		stickers_count.setText(Integer.toString(gluedCount)+"/145 Stickers");
-
-		db.close();
 
 		buttonOpenPack = (TextView) rootView.findViewById(R.id.packButton);
 		buttonOpenPack.setText(Integer.toString(availableStickerPacks)+" New Packs");
 		buttonOpenPack.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-			//	if(availableStickerPacks > 0) {
+				//	if(availableStickerPacks > 0) {
 				int sticker1 = rg.getDistributedRandomNumber();
 				int sticker2 = rg.getDistributedRandomNumber();
 				int sticker3 = rg.getDistributedRandomNumber();
-				Database db= Database.getInstance(getActivity());
+				Database db = Database.getInstance(getActivity());
 				final Sticker sticker_1 = db.getSticker(sticker1);
 				final Sticker sticker_2 = db.getSticker(sticker2);
 				final Sticker sticker_3 = db.getSticker(sticker3);
@@ -197,10 +181,10 @@ public class StepsFragment extends Fragment {
 				showNewSticker(sticker_1, sticker_2, sticker_3);
 				Log.w("pressButton", "pressed");
 				updateStickerPackCountDecrease();
-				updateCountAndStatusDatabase(sticker_1,sticker_2,sticker_3);
+				updateCountAndStatusDatabase(sticker_1, sticker_2, sticker_3);
 				notifyActivityStickerStatusChange.notifyChange();
-				}
-		//	}
+			}
+			//	}
 		});
 
 
@@ -224,6 +208,7 @@ public class StepsFragment extends Fragment {
 				.setDuration(3000)
 				.setDelay(1250)
 				.build());
+
 
 
 		mDecoView.setOnClickListener(new View.OnClickListener() {
@@ -478,7 +463,7 @@ public class StepsFragment extends Fragment {
 	}
 
 	private void determinePicture(Sticker sticker, ImageView image, int resourceID) {
-		if(sticker.getPopularity().equals( "rare") || sticker.getPopularity().equals( "super rare")){
+		if(sticker.getPopularity().equals("rare") || sticker.getPopularity().equals( "super rare")){
 			setBackgroundGlow(image, resourceID, 200, 200, 200);}
 		else{
 			image.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceID, 250, 250));
@@ -611,7 +596,7 @@ public class StepsFragment extends Fragment {
 		//Log.w("update  VIew", Integer.toString(total_start + steps));
 		if(!goalAnimationPlaying) {
 			if (isChecked) {
-				textSteps.setText(Integer.toString(steps) + " steps");
+				textSteps.setText(Integer.toString(steps) + " steps today ");
 			} else {
 				SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
 				float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_STEP_SIZE);
@@ -652,12 +637,10 @@ public class StepsFragment extends Fragment {
 			@Override
 			public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
 				float percentFilled = ((currentPosition - seriesItem.getMinValue()) / (seriesItem.getMaxValue() - seriesItem.getMinValue()));
-				textPercentage.setText(String.format("%.0f%%", percentFilled * 100f));
-			//	totalView.setText(Integer.toString(total_start + steps));
+
 				textSteps.setText(Integer.toString(steps) + " steps");
-		//		averageView.setText(Integer.toString((total_start + steps / total_days)));
-				textToGo.setText(String.format("%.1f steps to goal", seriesItem.getMaxValue() - currentPosition));
-				textSteps.setText(String.format("%.0f steps", currentPosition));
+				textToGo.setText( Integer.toString(Math.round(seriesItem.getMaxValue() - currentPosition))+" steps");
+				textSteps.setText(String.format("%.0f steps today", currentPosition));
 				textGoal.setText(String.format("Goal: %.0f steps", seriesItem.getMaxValue()));
 			}
 
@@ -694,53 +677,6 @@ public class StepsFragment extends Fragment {
 
 
 
-	private void createEvents() {
-
-
-		//InitialState
-		mDecoView.addEvent(new DecoEvent.Builder(mSeriesCurrent) //here set the value
-				.setIndex(mSeries1Index)
-				.setDelay(3250)
-				.build());
-
-		mDecoView.addEvent(new DecoEvent.Builder(40f).setIndex(mSeries1Index).build());
-
-		mDecoView.addEvent(new DecoEvent.Builder(0)
-				.setIndex(mSeries1Index)
-				.setDuration(1000)
-				.setInterpolator(new AnticipateInterpolator())
-				.setListener(new DecoEvent.ExecuteEventListener() {
-					@Override
-					public void onEventStart(DecoEvent decoEvent) {
-
-					}
-
-					@Override
-					public void onEventEnd(DecoEvent decoEvent) {
-						resetText();
-					}
-				})
-				.build());
-
-		mDecoView.addEvent(new DecoEvent.Builder(DecoDrawEffect.EffectType.EFFECT_SPIRAL_EXPLODE)
-				.setIndex(mSeries1Index)
-				.setDuration(3000)
-				.setDisplayText("GOAL!")
-				.setListener(new DecoEvent.ExecuteEventListener() {
-					@Override
-					public void onEventStart(DecoEvent decoEvent) {
-
-					}
-
-					@Override
-					public void onEventEnd(DecoEvent decoEvent) {
-						createEvents();
-					}
-				})
-				.build());
-
-		resetText();
-	}
 
 	private void animate(final RelativeLayout sticker,long durationMillis) {
 
@@ -774,7 +710,6 @@ public class StepsFragment extends Fragment {
 
 	private void resetText() {
 
-		textPercentage.setText("");
 		textToGo.setText("");
 		textSteps.setText("");
 		textGoal.setText("");

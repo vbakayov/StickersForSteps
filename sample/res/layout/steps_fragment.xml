@@ -2,24 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:padding="5dp"
     tools:context=".Activity_Main">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="280dp"
         android:id="@+id/graph"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/number_progress_bar"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="26dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <com.hookedonplay.decoviewlib.DecoView
             xmlns:custom="http://schemas.android.com/apk/res-auto"
             custom:dv_lineWidth="26dp"
             android:id="@+id/dynamicArcView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true">
 
         </com.hookedonplay.decoviewlib.DecoView>
 
@@ -27,20 +27,11 @@
             android:id="@+id/textSteps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="2015 steps"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="24sp"/>
-
-        <TextView
-            android:id="@+id/textPercentage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="2015 steps today"
             android:textSize="20sp"
-            android:layout_below="@+id/textSteps"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="67dp" />
 
 
         <TextView
@@ -48,9 +39,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxWidth="200dp"
-            android:text="200 steps to next goal"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_below="@+id/textPercentage"
+            android:text=" 200 steps "
+            android:textSize="33sp"
+            android:gravity="center"
+            android:lineSpacingExtra="15dp"
+            android:textAppearance="?android:attr/textAppearanceSearchResultTitle"
+            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
 
         <TextView
@@ -60,8 +54,9 @@
             android:maxWidth="200dp"
             android:text="Goal : 18000"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_below="@+id/textRemaining"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignTop="@+id/textSteps"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="37dp" />
 
         <ImageView
             android:layout_width="60dp"
@@ -71,38 +66,21 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Next Pack:"
+            android:textStyle="italic"
+            android:id="@+id/textView3"
+            android:layout_below="@+id/trendsImage"
+            android:layout_centerHorizontal="true" />
+
     </RelativeLayout>
 
-    <com.daimajia.numberprogressbar.NumberProgressBar
-        android:id="@+id/number_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        custom:progress_unreached_color="#CCCCCC"
-        custom:progress_reached_color="#3498DB"
 
-        custom:progress_unreached_bar_height="10.75dp"
-        custom:progress_reached_bar_height="11.5dp"
-        custom:progress_text_size="20sp"
-        custom:progress_text_color="#3498DB"
-        custom:progress_text_offset="1dp"
-        custom:progress_text_visibility="visible"
-
-        android:layout_below="@+id/stickers_count"
-        android:layout_alignParentStart="true" />
-
-
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="120/144 Stickers"
-        android:id="@+id/stickers_count"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
     <Button
-        android:layout_width="130dp"
+        android:layout_width="200dp"
         android:layout_height="34dp"
         android:id="@+id/packButton"
         android:text=" 1 New Pack"
@@ -112,7 +90,7 @@
         android:textSize="15dp"
         android:layout_below="@+id/graph"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="46dp" />
+        android:layout_marginTop="30dp" />
 
 
 </RelativeLayout>

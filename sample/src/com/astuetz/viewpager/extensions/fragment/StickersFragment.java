@@ -35,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.astuetz.viewpager.extensions.sample.R;
+import com.daimajia.numberprogressbar.NumberProgressBar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,6 +64,7 @@ public class StickersFragment extends Fragment {
     private int width, height;
     private int originalPos[] = new int[2];
     private Map stickerToAlbum = new HashMap<>();
+    private NumberProgressBar bnp;
 
     public static StickersFragment newInstance(int position) {
 
@@ -165,9 +167,6 @@ public class StickersFragment extends Fragment {
         customGridAdapter = new CustomGridViewAdapter(getActivity(), R.layout.row_grid, gridArray);
         customGridAdapter.notifyDataSetChanged();
         gridView.setAdapter(customGridAdapter);
-
-
-
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
@@ -185,6 +184,18 @@ public class StickersFragment extends Fragment {
 
             }
         });
+
+
+        Database db = Database.getInstance(getActivity());
+        bnp = (NumberProgressBar)rootView.findViewById(R.id.number_progress_bar);
+        bnp.setMax(145);
+        //Log.w("number",Integer.toString(db.getNumberGluedStickers()));
+        int gluedCount = db.getNumberGluedStickers();
+        bnp.setProgress(gluedCount);
+        TextView stickers_count = (TextView)rootView.findViewById(R.id.stickers_count);
+        stickers_count.setText(Integer.toString(gluedCount) + "/145 Stickers");
+
+        db.close();
         return rootView;
     }
 
