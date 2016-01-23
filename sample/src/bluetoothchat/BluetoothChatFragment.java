@@ -248,7 +248,6 @@ public class BluetoothChatFragment extends Fragment {
                 //enable bluetooth if not enabled
                if(! mBluetoothAdapter.isEnabled()) {
                    EnableBluetooth();
-                   btnEnableSwap.setText("Connect a device");
                }
                 else{
                 // Launch the DeviceListActivity to see devices and do scan
@@ -270,7 +269,7 @@ public class BluetoothChatFragment extends Fragment {
                     if(otherAccepted){
                         changeStickerdbStatus(stickerNameRecieve,false);
                         changeStickerdbStatus(stickerNameGive,true);
-                        showAlertDialog("Result Message", "The stickers were successfully swapped", true);
+                        resultGUI("The stickers were successfully swapped", true);
                         notifyActivityStickerStatusChange.notifyChange();
                     }
 
@@ -279,7 +278,7 @@ public class BluetoothChatFragment extends Fragment {
 
         btnDecline.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
-                declineGUI();
+                resultGUI("The stickers were not swapped, Transaction was cancelled",false);
                 sendMessage(toJSon("accept", null, false));
 
             }
@@ -287,7 +286,8 @@ public class BluetoothChatFragment extends Fragment {
 
         rl.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Hello World!",
+                if (mChatService == null)
+                    Toast.makeText(getActivity(), "Connect to a device first",
                         Toast.LENGTH_LONG).show();
 
             }
@@ -309,14 +309,15 @@ public class BluetoothChatFragment extends Fragment {
         view.findViewById(R.id.imageViewGive).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (!otherAccepted && (!Iaccepted || otherAccepted)) {
-                    setupCustomView();
-//                btnAccept.setVisibility(View.INVISIBLE);
-//                btnDecline.setVisibility(View.INVISIBLE);
-                    mSweetSheet3.toggle();
+                if( mChatService != null) {
+                    if (!otherAccepted && (!Iaccepted || otherAccepted)) {
+                        setupCustomView();
+                        mSweetSheet3.toggle();
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "Connect to a device first",
+                            Toast.LENGTH_LONG).show();
                 }
-
             }
 
             ;
@@ -353,7 +354,7 @@ public class BluetoothChatFragment extends Fragment {
 
     }
 
-    private void declineGUI() {
+    private void resultGUI(String message, boolean success) {
         givePic= false;
         getPic= false;
         otherAccepted=false;
@@ -364,7 +365,7 @@ public class BluetoothChatFragment extends Fragment {
         btnDecline.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
         btnAccept.setEnabled(false);
         btnDecline.setEnabled(false);
-        showAlertDialog("Result Message", "The stickers were not swapped, Transaction was cancelled", true);
+        showAlertDialog("Result Message", message, success);
     }
 
     /**
@@ -554,6 +555,7 @@ public class BluetoothChatFragment extends Fragment {
             case REQUEST_ENABLE_BT:
                 // When the request to enable Bluetooth returns
                 if (resultCode == Activity.RESULT_OK) {
+                    btnEnableSwap.setText("Connect a device");
                     // Bluetooth is now enabled, so set up a chat session
                     setupChat();
                 } else {
@@ -773,11 +775,11 @@ public class BluetoothChatFragment extends Fragment {
                     if(Iaccepted){
                         changeStickerdbStatus(stickerNameGive,true);
                         changeStickerdbStatus(stickerNameRecieve,false);
-                        showAlertDialog("Result Message", "The stickers were successfully swapped",true);
+                        resultGUI("The stickers were successfully swapped",true);
                         notifyActivityStickerStatusChange.notifyChange();
                     }
                 }else{
-                    declineGUI();
+                    resultGUI("The stickers were not swapped, Transaction was cancelled",false);
                 }
 
             }
@@ -826,14 +828,11 @@ public class BluetoothChatFragment extends Fragment {
         builder.setTitle(title);
         builder.setMessage(message);
         builder.setPositiveButton("OK", null);
-
         // Setting Dialog Message
         builder.setMessage(message);
-
         // Setting alert dialog icon
-       // builder.setIcon((status) ? R.drawable.success : R.drawable.fail);
+        builder.setIcon((status) ? R.drawable.success : R.drawable.fail);
 
-        // Showing Alert Message
         builder.show();
     }
 

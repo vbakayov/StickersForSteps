@@ -125,8 +125,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enable Blth"
-        android:drawableLeft="@drawable/ic_action_device_access_bluetooth_searching"
+        android:text=" Enable Blth  "
+        android:drawableStart="@drawable/ic_action_device_access_bluetooth_searching"
+        android:drawableEnd="@drawable/ic_action_device_access_bluetooth_searching"
         android:id="@+id/enableSwap"
         android:background="@drawable/green_gradient"
         android:padding="1dp"
