@@ -37,10 +37,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -51,6 +55,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 
 import com.astuetz.SlidingTabLayout;
@@ -106,7 +111,9 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
 
     @Override
     protected void onCreate(Bundle b) {
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(b);
+
         setContentView(R.layout.activity_main);
         startService(new Intent(this, SensorListener.class));
 
@@ -169,6 +176,13 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
                 return getResources().getColor(R.color.tabsScrollColor);
             }
         });
+//        SpannableString s = new SpannableString(" Stickers For Steps");
+//        s.setSpan(new TypefaceSpan("IDroid Bold.otf"), 0, s.length(),
+//                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        //getSupportActionBar().setTitle(s);
+        getSupportActionBar().setIcon(R.drawable.icon);
 
 
         Database db = Database.getInstance(this);
@@ -324,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        AchievementStorage.addAchievement(new Achievement("swap", prefs.getBoolean("performed swap", false), "picturesrc", "swap a sticker with the bluetooth"));
+        AchievementStorage.addAchievement(new Achievement("swap", prefs.getBoolean("performed swap", false), "swap1", "swap a sticker with the bluetooth"));
         //check if update needed
         if (!prefs.getBoolean("boots distance", false)) {
             Cursor c = db.query(new String[]{"steps"}, "steps >= 7500 AND date > 0", null, null,
@@ -335,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
             c.close();
         }
         //add the achievements to the storage
-        AchievementStorage.addAchievement(new Achievement("boots distance", prefs.getBoolean("boots distance", false), "picturesrc", "walk 7500 steps in one day"));
+        AchievementStorage.addAchievement(new Achievement("boots distance", prefs.getBoolean("boots distance", false), "boots1", "walk 7500 steps in one day"));
 
 
         if (!prefs.getBoolean("boots distance 2", false)) {
@@ -347,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
             }
             c.close();
         }
-        AchievementStorage.addAchievement(new Achievement("boots distance 2", prefs.getBoolean("boots distance 2", false), "picturesrc", "walk 10000 steps in one day"));
+        AchievementStorage.addAchievement(new Achievement("boots distance 2", prefs.getBoolean("boots distance 2", false), "boots2", "walk 10000 steps in one day"));
 
 
         if (!prefs.getBoolean("boots distance 3", false)) {
@@ -359,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
             }
             c.close();
         }
-        AchievementStorage.addAchievement(new Achievement("boots distance 3", prefs.getBoolean("boots distance 3", false), "picturesrc", "walk 20000 steps in one day"));
+        AchievementStorage.addAchievement(new Achievement("boots distance 3", prefs.getBoolean("boots distance 3", false), "boots3", "walk 20000 steps in one day"));
 
         if (!prefs.getBoolean("boots distance 4", false)) {
             Cursor c =
@@ -370,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
             }
             c.close();
         }
-        AchievementStorage.addAchievement(new Achievement("boots distance 4", prefs.getBoolean("boots distance 4", false), "picturesrc", "walk 25000 steps in one day"));
+        AchievementStorage.addAchievement(new Achievement("boots distance 4", prefs.getBoolean("boots distance 4", false), "boots4", "walk 25000 steps in one day"));
 
 
 
@@ -384,21 +398,21 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
                 prefs.edit().putBoolean("stamina", true).apply();
             }
         }
-        AchievementStorage.addAchievement(new Achievement("stamina", prefs.getBoolean("stamina", false), "picturesrc", "walk more than 10 000 steps per day on 5 different days"));
+        AchievementStorage.addAchievement(new Achievement("stamina", prefs.getBoolean("stamina", false), "stamina1", "walk more than 10 000 steps per day on 5 different days"));
 
         if (!prefs.getBoolean("stamina 2", false)) {
             if (daysForStamina >= 10)  {
                 prefs.edit().putBoolean("stamina 2", true).apply();
             }
         }
-        AchievementStorage.addAchievement(new Achievement("stamina 2", prefs.getBoolean("stamina 2", false), "picturesrc", "walk more than 10 000 steps per day on 10 different days"));
+        AchievementStorage.addAchievement(new Achievement("stamina 2", prefs.getBoolean("stamina 2", false), "stamina2", "walk more than 10 000 steps per day on 10 different days"));
 
         if (!prefs.getBoolean("stamina 3", false)) {
             if (daysForStamina >= 20)  {
                 prefs.edit().putBoolean("stamina 3", true).apply();
             }
         }
-        AchievementStorage.addAchievement(new Achievement("stamina 3", prefs.getBoolean("stamina 3", false), "picturesrc", "walk more than 10 000 steps per day on 20 different days"));
+        AchievementStorage.addAchievement(new Achievement("stamina 3", prefs.getBoolean("stamina 3", false), "stamina3", "walk more than 10 000 steps per day on 20 different days"));
 
         int totalSteps = db.getTotalWithoutToday();
 
@@ -407,21 +421,21 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
                 prefs.edit().putBoolean("maraton", true).apply();
             }
         }
-        AchievementStorage.addAchievement(new Achievement("maraton", prefs.getBoolean("maraton", false), "picturesrc", "walk total of 10 000 steps"));
+        AchievementStorage.addAchievement(new Achievement("marathon", prefs.getBoolean("maraton", false), "maraton1", "walk total of 10 000 steps"));
 
         if (!prefs.getBoolean("maraton 2", false)) {
             if (totalSteps > 25000)  {
                 prefs.edit().putBoolean("maraton 2", true).apply();
             }
         }
-        AchievementStorage.addAchievement(new Achievement("maraton 2", prefs.getBoolean("maraton 2", false), "picturesrc", "walk total of 25 000 steps"));
+        AchievementStorage.addAchievement(new Achievement("marathon 2", prefs.getBoolean("maraton 2", false), "maraton2", "walk total of 25 000 steps"));
 
         if (!prefs.getBoolean("maraton 3", false)) {
             if (totalSteps > 50000)  {
                 prefs.edit().putBoolean("maraton 3", true).apply();
             }
         }
-        AchievementStorage.addAchievement(new Achievement("maraton 3", prefs.getBoolean("maraton 3", false), "picturesrc", "walk total of 50 000 steps"));
+        AchievementStorage.addAchievement(new Achievement("marathon 3", prefs.getBoolean("maraton 3", false), "maraton3", "walk total of 50 000 steps"));
 
     }
 

@@ -98,6 +98,7 @@ public class StepsFragment extends Fragment {
 	private  OnStickerChange notifyActivityStickerStatusChange;
 	static final AnimationSet as = new AnimationSet(true);
 	private boolean firstTime= true;
+	private TextView textNextPack;
 
 	public interface OnStickerChange {
 		void notifyChange();
@@ -159,6 +160,7 @@ public class StepsFragment extends Fragment {
 		textToGo = (TextView) rootView.findViewById(R.id.textRemaining);
 		textSteps = (TextView) rootView.findViewById(R.id.textSteps);
 		textGoal = (TextView) rootView.findViewById(R.id.textCurrentGoal);
+		textNextPack = (TextView) rootView.findViewById(R.id.textView3);
 		isChecked=true;
 		goalAnimationPlaying=false;
 
@@ -639,6 +641,7 @@ public class StepsFragment extends Fragment {
 				float percentFilled = ((currentPosition - seriesItem.getMinValue()) / (seriesItem.getMaxValue() - seriesItem.getMinValue()));
 
 				textSteps.setText(Integer.toString(steps) + " steps");
+				textNextPack.setText("Next Pack:");
 				textToGo.setText( Integer.toString(Math.round(seriesItem.getMaxValue() - currentPosition))+" steps");
 				textSteps.setText(String.format("%.0f steps today", currentPosition));
 				textGoal.setText(String.format("Goal: %.0f steps", seriesItem.getMaxValue()));
@@ -713,6 +716,7 @@ public class StepsFragment extends Fragment {
 		textToGo.setText("");
 		textSteps.setText("");
 		textGoal.setText("");
+		textNextPack.setText("");
 	}
 
 	private void setBackgroundGlow(ImageView imgview, int imageicon,int r,int g,int b)

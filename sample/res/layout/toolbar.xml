@@ -7,5 +7,4 @@
     android:theme="@style/AppTheme"
     android:background="@color/green"
     android:elevation="4dp"
-
     android:minHeight="?attr/actionBarSize" />

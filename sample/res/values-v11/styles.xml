@@ -3,7 +3,7 @@
 
         <!-- Base application theme. -->
         <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
+            <item name="icon">@drawable/icon</item>
             <item name="colorPrimary">@color/green</item>
             //change the most upper bar
             <item name="colorPrimaryDark">@color/ColorPrimary</item>

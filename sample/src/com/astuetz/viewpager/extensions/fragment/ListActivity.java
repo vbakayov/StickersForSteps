@@ -139,7 +139,7 @@ public class ListActivity extends AppCompatActivity {
 
             //Fill the view
             ImageView imageView = (ImageView) itemView.findViewById(R.id.list_image);
-            imageView.setImageResource(getResources().getIdentifier("myphoto", "drawable", getPackageName()));
+            imageView.setImageResource(getResources().getIdentifier(currentAchievement.getPictureSrc(), "drawable", getPackageName()));
 
 
             TextView ownerName = (TextView) itemView.findViewById(R.id.title);
