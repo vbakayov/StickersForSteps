@@ -165,7 +165,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                 } else if(  status == glued) {
                     ((ImageView) view.findViewById(R.id.merida_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.merida_txt)).setText("");
-                    view.findViewById(R.id.container_2).setOnClickListener(this);
+                    view.findViewById(R.id.container_5).setOnClickListener(this);
 
                 }
 
@@ -618,165 +618,204 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
         prefs.edit().putInt("glued stickers", count).apply();
     }
 
-    private void stickSticker(ImageView sticker, View draggedImageView, View receivingLayoutView){
+    private void stickSticker(final ImageView stickerImage, View draggedImageView, View receivingLayoutView){
         ViewGroup draggedImageViewParentLayout = (ViewGroup) draggedImageView.getParent();
         draggedImageViewParentLayout.removeView(draggedImageView);
         RelativeLayout bottomLinearLayout = (RelativeLayout) receivingLayoutView;
         bottomLinearLayout.addView(draggedImageView);
         draggedImageView.setVisibility(View.VISIBLE);
-        YoYo.with(Techniques.BounceIn).duration(700).playOn(sticker);
-        draggedImageView.setOnLongClickListener(null);
+        YoYo.with(Techniques.BounceIn).duration(700).playOn(stickerImage);
+        draggedImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("clickeed", "imagee Clicked");
+                switch (v.getId()) {
+                    case R.id.container1_unglued:
 
-    }
+                        Log.w("picture Clicked", "1");
+                        showStickerMoreInfo(sticker);
+                        break;
+                    case R.id.angus:
+                        Log.w("picture Clicked", "2");
+                        showStickerMoreInfo(sticker8);
+                        break;
+                    case R.id.macguffin:
+                        Log.w("picture Clicked", "3");
+                        showStickerMoreInfo(sticker7);
+                        break;
+                    case R.id.lord_macintosh:
+                        Log.w("picture Clicked", "4");
+                        showStickerMoreInfo(sticker6);
+                        break;
+                    case R.id.container5_unglued:
+                        Log.w("picture Clicked", "5");
+                        showStickerMoreInfo(sticker2);
+                        break;
+                    case R.id.elinor:
+                        Log.w("picture Clicked", "6");
+                        showStickerMoreInfo(sticker5);
+                        break;
+                    case R.id.triplets:
+                        Log.w("picture Clicked", "7");
+                        showStickerMoreInfo(sticker4);
+                        break;
+                    case R.id.dingwall:
+                        Log.w("picture Clicked", "8");
+                        showStickerMoreInfo(sticker3);
 
-    private void AnimateStickerBack( View view, int offsetX, int offsetY, int originalPosX, int originalPosY ) {
-
-        Animation animation = new TranslateAnimation(offsetX - originalPosX - 160, 0, offsetY -  originalPosY + 240, 0);
-        animation.setDuration(1000);
-        animation.setInterpolator(new DecelerateInterpolator(1));
-        view.startAnimation(animation);
-    }
+                        break;
+                    }
+            }});
+                }
 
 
-    @Override
-    public void onClick(View view) {
-        switch(view.getId()) {
-            case R.id.container_1:
 
-                Log.w("picture Clicked", "1");
-                showStickerMoreInfo(sticker);
-                break;
-            case R.id.container_2:
-                Log.w("picture Clicked", "2");
-                showStickerMoreInfo(sticker8);
-                break;
-            case R.id.container_3:
-                Log.w("picture Clicked", "3");
-                showStickerMoreInfo(sticker7);
-                break;
-            case R.id.container_4:
-                Log.w("picture Clicked", "4");
-                showStickerMoreInfo(sticker6);
-                break;
-            case R.id.container_5:
-                Log.w("picture Clicked", "5");
-                showStickerMoreInfo(sticker2);
-                break;
-            case R.id.container_6:
-                Log.w("picture Clicked", "6");
-                showStickerMoreInfo(sticker5);
-                break;
-            case R.id.container_7:
-                Log.w("picture Clicked", "7");
-                showStickerMoreInfo(sticker4);
-                break;
-            case R.id.container_8:
-                Log.w("picture Clicked", "8");
-                showStickerMoreInfo(sticker3);
+            private void AnimateStickerBack(View view, int offsetX, int offsetY, int originalPosX, int originalPosY) {
 
-                break;
+                Animation animation = new TranslateAnimation(offsetX - originalPosX - 160, 0, offsetY - originalPosY + 240, 0);
+                animation.setDuration(1000);
+                animation.setInterpolator(new DecelerateInterpolator(1));
+                view.startAnimation(animation);
+            }
+
+
+            @Override
+            public void onClick(View view) {
+                Log.d("clickeed", "imagee Clicked");
+                switch (view.getId()) {
+                    case R.id.container_1:
+
+                        Log.w("picture Clicked", "1");
+                        showStickerMoreInfo(sticker);
+                        break;
+                    case R.id.container_2:
+                        Log.w("picture Clicked", "2");
+                        showStickerMoreInfo(sticker8);
+                        break;
+                    case R.id.container_3:
+                        Log.w("picture Clicked", "3");
+                        showStickerMoreInfo(sticker7);
+                        break;
+                    case R.id.container_4:
+                        Log.w("picture Clicked", "4");
+                        showStickerMoreInfo(sticker6);
+                        break;
+                    case R.id.container_5:
+                        Log.w("picture Clicked", "5");
+                        showStickerMoreInfo(sticker2);
+                        break;
+                    case R.id.container_6:
+                        Log.w("picture Clicked", "6");
+                        showStickerMoreInfo(sticker5);
+                        break;
+                    case R.id.container_7:
+                        Log.w("picture Clicked", "7");
+                        showStickerMoreInfo(sticker4);
+                        break;
+                    case R.id.container_8:
+                        Log.w("picture Clicked", "8");
+                        showStickerMoreInfo(sticker3);
+
+                        break;
+
+                }
+            }
+
+            private void showStickerMoreInfo(final Sticker clickedSticker) {
+                // custom dialog
+
+
+                clickedSticker.getName();
+                Log.d("NAMe", clickedSticker.getName());
+
+
+                final Dialog dialog = new Dialog(getActivity());
+
+                dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+                dialog.setContentView(R.layout.sticker_dialog);
+                ImageView image = (ImageView) (dialog).findViewById(R.id.image);
+
+                //get the correct image
+                String file = clickedSticker.getImagesrc();
+                file = file.substring(0, file.lastIndexOf(".")); //trim the extension
+                Resources resources = getActivity().getResources();
+                int resourceId = resources.getIdentifier(file, "drawable", getActivity().getPackageName());
+                image.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 250, 250));
+
+                //load the additional details and information
+                TextView id = (TextView) (dialog).findViewById(R.id.sticker_id);
+                id.setText("#" + Integer.toString(clickedSticker.getId()));
+
+                TextView status = (TextView) (dialog).findViewById(R.id.sticker_status);
+                //at this poinrt only glued and notSticker available glued=1 notGlued=0
+                String statuss = clickedSticker.getStatus().equals(2) ? "1" : "0";
+                Integer count = clickedSticker.getCount();
+                status.setText("(" + statuss + " glued, " + count + " left)");
+
+
+                TextView title = (TextView) (dialog).findViewById(R.id.sticker_title);
+                title.setText(clickedSticker.getName());
+
+                TextView rarity = (TextView) (dialog).findViewById(R.id.rarity);
+                rarity.setText(clickedSticker.getPopularity());
+
+                TextView movie = (TextView) (dialog).findViewById(R.id.sticker_movie);
+                movie.setText(clickedSticker.getMovie());
+                //set the layout to have the same widh and height as the  windows screen
+
+
+                Display display = getActivity().getWindowManager().getDefaultDisplay();
+                Point size = new Point();
+                display.getSize(size);
+                int width = size.x;
+                int height = size.y;
+
+
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.width = width;
+                lp.height = height;
+                dialog.getWindow().setAttributes(lp);
+                RelativeLayout mainLayout = (RelativeLayout) dialog.findViewById(R.id.showStickerLayout);
+                dialog.show();
+                // if button is clicked, close the custom dialog
+                mainLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+
+                    }
+
+                });
+
+
+                //listen for the inf tab
+                ImageView info = (ImageView) (dialog).findViewById(R.id.info_image);
+                info.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showInfoDialog(clickedSticker);
+                    }
+
+                });
+
+            }
+
+            private void showInfoDialog(Sticker clickedSticker) {
+                AlertDialog.Builder builder =
+                        new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
+                builder.setTitle("More Information");
+                builder.setMessage(clickedSticker.getDescription());
+                builder.setPositiveButton("OK", null);
+                builder.show();
+            }
 
         }
-    }
-
-    private void showStickerMoreInfo(final Sticker clickedSticker) {
-        // custom dialog
-
-
-        clickedSticker.getName();
-        Log.d("NAMe", clickedSticker.getName());
-
-
-        final Dialog dialog = new Dialog(getActivity());
-
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                dialog.dismiss();
-            }
-        });
-
-
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-        dialog.setContentView(R.layout.sticker_dialog);
-        ImageView image = (ImageView) (dialog).findViewById(R.id.image);
-
-        //get the correct image
-        String file= clickedSticker.getImagesrc();
-        file = file.substring(0, file.lastIndexOf(".")); //trim the extension
-        Resources resources = getActivity().getResources();
-        int resourceId = resources.getIdentifier(file, "drawable", getActivity().getPackageName());
-        image.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 250, 250));
-
-        //load the additional details and information
-        TextView id = (TextView) (dialog).findViewById(R.id.sticker_id);
-        id.setText("#" + Integer.toString(clickedSticker.getId()));
-
-        TextView status = (TextView) (dialog).findViewById(R.id.sticker_status);
-        //at this poinrt only glued and notSticker available glued=1 notGlued=0
-        String statuss =  clickedSticker.getStatus().equals(2)? "1": "0";
-        Integer count =  clickedSticker.getCount();
-        status.setText("(" + statuss + " glued, " + count + " left)");
-
-
-
-
-
-        TextView title = (TextView) (dialog).findViewById(R.id.sticker_title);
-        title.setText(clickedSticker.getName());
-
-        TextView rarity = (TextView) (dialog).findViewById(R.id.rarity);
-        rarity.setText(clickedSticker.getPopularity());
-
-        TextView movie = (TextView) (dialog).findViewById(R.id.sticker_movie);
-        movie.setText(clickedSticker.getMovie());
-        //set the layout to have the same widh and height as the  windows screen
-
-
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
-
-
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = width;
-        lp.height = height;
-        dialog.getWindow().setAttributes(lp);
-        RelativeLayout mainLayout = (RelativeLayout) dialog.findViewById(R.id.showStickerLayout);
-        dialog.show();
-        // if button is clicked, close the custom dialog
-        mainLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-
-            }
-
-        });
-
-
-        //listen for the inf tab
-        ImageView info = (ImageView) (dialog).findViewById(R.id.info_image);
-        info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showInfoDialog(clickedSticker);
-            }
-
-        });
-
-    }
-
-    private void showInfoDialog(Sticker clickedSticker) {
-        AlertDialog.Builder builder =
-                new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("More Information");
-        builder.setMessage(clickedSticker.getDescription());
-        builder.setPositiveButton("OK", null);
-        builder.show();
-    }
-
-}

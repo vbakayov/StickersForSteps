@@ -338,16 +338,34 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         int count = prefs.getInt("swap count", 0);
+        if(!prefs.getBoolean(("swap"),false))
+            if (count>=1){
+                prefs.edit().putBoolean("swap",true).apply();
+                updatePackCount();
+            }
         AchievementStorage.addAchievement(new Achievement("swap", count>= 1, "swap1", "swap a sticker with the bluetooth"));
+
+        if(!prefs.getBoolean(("swap 2"),false))
+            if (count>=3){
+                prefs.edit().putBoolean("swap 2",true).apply();
+                updatePackCount();
+            }
         AchievementStorage.addAchievement(new Achievement("swap 2", count >= 3, "swap1", "swap 3 stickers with the bluetooth"));
+        if(!prefs.getBoolean(("swap 3"),false))
+            if (count>=5){
+                prefs.edit().putBoolean("swap 3",true).apply();
+                updatePackCount();
+            }
         AchievementStorage.addAchievement(new Achievement("swap 3", count >= 5, "swap1", "swap 5 stickers with the bluetooth"));
 
+        //checking is done in the stepsFragment when a pack is rewarded
         int numberRecieved = prefs.getInt("received stickers", 0);
 
         AchievementStorage.addAchievement(new Achievement("Pack 1", numberRecieved>= 6, "swap1", "receive 6 stickers"));
         AchievementStorage.addAchievement(new Achievement("Pack 2", numberRecieved >= 15, "swap1", "receive 15 stickers"));
         AchievementStorage.addAchievement(new Achievement("Pack 3", numberRecieved >= 30, "swap1", "receive 30 stickers"));
 
+        //checking is done in the Album page a sticker is glued
         int numberGlued=     prefs.getInt("glued stickers", 0);
 
         AchievementStorage.addAchievement(new Achievement("Collection", numberGlued>= 5, "swap1", "Stick 5 stickers into the album"));
@@ -365,6 +383,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
                             null, null, "1");
             if (c.getCount() >= 1) {
                 prefs.edit().putBoolean("boots distance 2", true).apply();
+                updatePackCount();
             }
             c.close();
         }
@@ -377,6 +396,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
                             null, null, "1");
             if (c.getCount() >= 1) {
                 prefs.edit().putBoolean("boots distance 3", true).apply();
+                updatePackCount();
             }
             c.close();
         }
@@ -388,6 +408,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
                             null, null, "1");
             if (c.getCount() >= 1) {
                 prefs.edit().putBoolean("boots distance 4", true).apply();
+                updatePackCount();
             }
             c.close();
         }
@@ -403,6 +424,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         if (!prefs.getBoolean("stamina", false)) {
             if (daysForStamina >= 5)  {
                 prefs.edit().putBoolean("stamina", true).apply();
+                updatePackCount();
             }
         }
         AchievementStorage.addAchievement(new Achievement("stamina", prefs.getBoolean("stamina", false), "stamina1", "walk more than 10 000 steps per day on 5 different days"));
@@ -410,6 +432,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         if (!prefs.getBoolean("stamina 2", false)) {
             if (daysForStamina >= 10)  {
                 prefs.edit().putBoolean("stamina 2", true).apply();
+                updatePackCount();
             }
         }
         AchievementStorage.addAchievement(new Achievement("stamina 2", prefs.getBoolean("stamina 2", false), "stamina2", "walk more than 10 000 steps per day on 10 different days"));
@@ -417,6 +440,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         if (!prefs.getBoolean("stamina 3", false)) {
             if (daysForStamina >= 20)  {
                 prefs.edit().putBoolean("stamina 3", true).apply();
+                updatePackCount();
             }
         }
         AchievementStorage.addAchievement(new Achievement("stamina 3", prefs.getBoolean("stamina 3", false), "stamina3", "walk more than 10 000 steps per day on 20 different days"));
@@ -426,6 +450,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         if (!prefs.getBoolean("maraton", false)) {
             if (totalSteps > 10000)  {
                 prefs.edit().putBoolean("maraton", true).apply();
+                updatePackCount();
             }
         }
         AchievementStorage.addAchievement(new Achievement("marathon", prefs.getBoolean("maraton", false), "maraton1", "walk total of 10 000 steps"));
@@ -433,6 +458,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         if (!prefs.getBoolean("maraton 2", false)) {
             if (totalSteps > 25000)  {
                 prefs.edit().putBoolean("maraton 2", true).apply();
+                updatePackCount();
             }
         }
         AchievementStorage.addAchievement(new Achievement("marathon 2", prefs.getBoolean("maraton 2", false), "maraton2", "walk total of 25 000 steps"));
@@ -440,9 +466,17 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         if (!prefs.getBoolean("maraton 3", false)) {
             if (totalSteps > 50000)  {
                 prefs.edit().putBoolean("maraton 3", true).apply();
+                updatePackCount();
             }
         }
         AchievementStorage.addAchievement(new Achievement("marathon 3", prefs.getBoolean("maraton 3", false), "maraton3", "walk total of 50 000 steps"));
+
+    }
+
+    private void updatePackCount() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int count = prefs.getInt("packs", 0);
+        prefs.edit().putInt("packs", count + 1).apply();
 
     }
 

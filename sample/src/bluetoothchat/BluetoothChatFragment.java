@@ -95,8 +95,6 @@ public class BluetoothChatFragment extends Fragment {
     private ArrayList<MenuEntity> list = new ArrayList<>();
 
     // Layout Views
-    private ListView mConversationView;
-    private EditText mOutEditText;
     private Button mSendButton;
     private SweetSheet mSweetSheet3;
     private boolean givePic;
@@ -233,9 +231,6 @@ public class BluetoothChatFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mConversationView = (ListView) view.findViewById(R.id.in);
-        mOutEditText = (EditText) view.findViewById(R.id.edit_text_out);
-        mSendButton = (Button) view.findViewById(R.id.button_send);
         statusTextView= (TextView) view.findViewById(R.id.bluetoothStatus);
         imageGive = (ImageView) view.findViewById(R.id.imageViewGive);
         imageReceive = (ImageView) view.findViewById(R.id.imageView2);
@@ -318,8 +313,13 @@ public class BluetoothChatFragment extends Fragment {
             public void onClick(View v) {
                 if( mChatService != null && connectionLost== false) {
                     if (!otherAccepted && (!Iaccepted || otherAccepted)) {
-                        setupCustomView();
-                        mSweetSheet3.toggle();
+                          if(list.size() != 0) {
+                              setupCustomView();
+                              mSweetSheet3.toggle();
+                        }else{
+                              Toast.makeText(getActivity(), "You don't have any stickers to swap", Toast.LENGTH_LONG).show();
+                          }
+
                     }
                 }else{
                     Toast.makeText(getActivity(), "Connect to a device first",
@@ -390,23 +390,10 @@ public class BluetoothChatFragment extends Fragment {
         // Initialize the array adapter for the conversation thread
         mConversationArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.message);
 
-        mConversationView.setAdapter(mConversationArrayAdapter);
+      //  mConversationView.setAdapter(mConversationArrayAdapter);
 
         // Initialize the compose field with a listener for the return key
-        mOutEditText.setOnEditorActionListener(mWriteListener);
 
-        // Initialize the send button with a listener that for click events
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Send a message using content of the edit text widget
-                View view = getView();
-                if (null != view) {
-                    TextView textView = (TextView) view.findViewById(R.id.edit_text_out);
-                    String message = textView.getText().toString();
-                    sendMessage(message);
-                }
-            }
-        });
 
         // Initialize the BluetoothChatService to perform bluetooth connections
         mChatService = new BluetoothChatService(getActivity(), mHandler);
@@ -447,7 +434,6 @@ public class BluetoothChatFragment extends Fragment {
 
             // Reset out string buffer to zero and clear the edit text field
             mOutStringBuffer.setLength(0);
-            mOutEditText.setText(mOutStringBuffer);
         }
     }
 
@@ -700,7 +686,6 @@ public class BluetoothChatFragment extends Fragment {
     }
 
     public void setupCustomView() {
-
         mSweetSheet3=null;
         mSweetSheet3 = new SweetSheet(rl);
 

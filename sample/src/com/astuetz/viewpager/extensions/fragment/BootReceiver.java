@@ -49,11 +49,7 @@ public class BootReceiver extends BroadcastReceiver {
                             new Builder(context).setContentTitle("Incorrect shutdown")
                                     .setContentText(
                                             "Use the power button to shutdown the device, otherwise the app might not be able to save your steps!")
-                                    .setSubText("Click for more information").setAutoCancel(true)
-                                    .setContentIntent(PendingIntent.getActivity(context, 0,
-                                            new Intent(Intent.ACTION_VIEW, Uri.parse(
-                                                    "http://j4velin.de/faq/index.php?app=pm"))
-                                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), 0))
+                                    .setAutoCancel(true)
                                     .setShowWhen(false)
                                     //.setSmallIcon(R.drawable.ic_notification)
                                     .build());

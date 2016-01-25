@@ -88,7 +88,6 @@ public class StepsFragment extends Fragment {
 	private DecoView mDecoView;
 	private int mBackIndex;
 	private int mSeries1Index;
-	private int availableStickerPacks;
 	private  float goal ;
 	private TextView textToGo;
 	private TextView textSteps;
@@ -122,7 +121,6 @@ public class StepsFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
 		goal = prefs.getInt("goal", Fragment_Settings.DEFAULT_GOAL);
-		availableStickerPacks = prefs.getInt("packs",0);
 		//fix on create activity cout not to be 0 (non initalized)
 		Database db = Database.getInstance(getActivity());
 		todayOffset = db.getSteps(Util.getToday());
@@ -167,29 +165,40 @@ public class StepsFragment extends Fragment {
 		goalAnimationPlaying=false;
 
 
+		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+		int availableStickerPacks = prefs.getInt("packs", 0);
+
 
 
 		buttonOpenPack = (TextView) rootView.findViewById(R.id.packButton);
 		buttonOpenPack.setText(Integer.toString(availableStickerPacks)+" New Packs");
 		buttonOpenPack.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				//	if(availableStickerPacks > 0) {
-				int sticker1 = rg.getDistributedRandomNumber();
-				int sticker2 = rg.getDistributedRandomNumber();
-				int sticker3 = rg.getDistributedRandomNumber();
-				Database db = Database.getInstance(getActivity());
-				final Sticker sticker_1 = db.getSticker(sticker1);
-				final Sticker sticker_2 = db.getSticker(sticker2);
-				final Sticker sticker_3 = db.getSticker(sticker3);
-				db.close();
-				showNewSticker(sticker_1, sticker_2, sticker_3);
-				Log.w("pressButton", "pressed");
-				updateStickerPackCountDecrease();
-				updateCountForAchievements();
-				updateCountAndStatusDatabase(sticker_1, sticker_2, sticker_3);
-				notifyActivityStickerStatusChange.notifyChange();
+				SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+				int availableStickerPacks = prefs.getInt("packs", 0);
+				buttonOpenPack.setText(Integer.toString(availableStickerPacks) + " New Packs");
+				if(availableStickerPacks > 0) {
+					int sticker1 = rg.getDistributedRandomNumber();
+					int sticker2 = rg.getDistributedRandomNumber();
+					int sticker3 = rg.getDistributedRandomNumber();
+					Database db = Database.getInstance(getActivity());
+					final Sticker sticker_1 = db.getSticker(sticker1);
+					final Sticker sticker_2 = db.getSticker(sticker2);
+					final Sticker sticker_3 = db.getSticker(sticker3);
+					db.close();
+					showNewSticker(sticker_1, sticker_2, sticker_3);
+					Log.w("pressButton", "pressed");
+					updateStickerPackCountDecrease();
+					updateCountForAchievements();
+					updateCountAndStatusDatabase(sticker_1, sticker_2, sticker_3);
+					notifyActivityStickerStatusChange.notifyChange();
+				}else{
+					Toast.makeText(getActivity(), "You don't have any stickers to open right now",
+							Toast.LENGTH_LONG).show();
+				}
+
+
 			}
-			//	}
 		});
 
 
@@ -505,11 +514,12 @@ public class StepsFragment extends Fragment {
 	public void onResume(){
 		super.onResume();
 
+		Log.d("RESUMMEE","resume");
 		Database db = Database.getInstance(getActivity());
 
 		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+
 		goal = prefs.getInt("goal", Fragment_Settings.DEFAULT_GOAL);
-		availableStickerPacks= prefs.getInt("packs",0);
 //		total_start = db.getTotalWithoutToday();
 //		total_days = db.getDays();
 		db.close();
@@ -529,20 +539,27 @@ public class StepsFragment extends Fragment {
 	}
 
 	private void updateStickerPackCountIncrease() {
-		availableStickerPacks++;
+
 		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+		 int availableStickerPacks = prefs.getInt("packs", 0);
+		availableStickerPacks++;
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putInt("packs", availableStickerPacks);
 		editor.commit();
+		buttonOpenPack.setText(Integer.toString(availableStickerPacks) + " New Packs");
 	}
 
 	private void updateStickerPackCountDecrease() {
-		availableStickerPacks--;
 		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+		int availableStickerPacks = prefs.getInt("packs", 0);
+		availableStickerPacks--;
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putInt("packs", availableStickerPacks);
 		editor.commit();
+		buttonOpenPack.setText(Integer.toString(availableStickerPacks) + " New Packs");
 	}
+
+
 
 
 	private void updateGoal() {
