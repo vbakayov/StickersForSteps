@@ -28,6 +28,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,6 +41,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -105,6 +107,7 @@ public class BluetoothChatFragment extends Fragment {
     private ImageView imageGive;
     private String stickerNameGive;
     private String stickerNameRecieve;
+    private boolean connectionLost;
     private StepsFragment.OnStickerChange notifyActivityStickerStatusChange;
 
     /**
@@ -148,6 +151,7 @@ public class BluetoothChatFragment extends Fragment {
         otherAccepted=false;
         Iaccepted=false;
         setUpListStickers();
+        connectionLost= false;
 
         // If the adapter is null, then Bluetooth is not supported
         if (mBluetoothAdapter == null) {
@@ -271,6 +275,9 @@ public class BluetoothChatFragment extends Fragment {
                         changeStickerdbStatus(stickerNameGive,true);
                         resultGUI("The stickers were successfully swapped", true);
                         notifyActivityStickerStatusChange.notifyChange();
+                        setUpListStickers();
+                        setupCustomView();
+                        updateSwapCount();
                     }
 
             }
@@ -309,7 +316,7 @@ public class BluetoothChatFragment extends Fragment {
         view.findViewById(R.id.imageViewGive).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( mChatService != null) {
+                if( mChatService != null && connectionLost== false) {
                     if (!otherAccepted && (!Iaccepted || otherAccepted)) {
                         setupCustomView();
                         mSweetSheet3.toggle();
@@ -323,9 +330,15 @@ public class BluetoothChatFragment extends Fragment {
             ;
         });}
 
+    private void updateSwapCount() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int count = prefs.getInt("swap count", 0);
+        prefs.edit().putInt("swap count", count + 1).apply();
+    }
+
 
     private void setUpListStickers(){
-
+        list.clear();
         Database db = Database.getInstance(getActivity());
         List<Sticker> stickers = db.getStickersWithCountGreatherOrEqualTo(1);
         android.util.Log.d("File id ", Integer.toString(stickers.size()));
@@ -525,12 +538,20 @@ public class BluetoothChatFragment extends Fragment {
                     if (null != activity) {
                         Toast.makeText(activity, "Connected to "
                                 + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                        connectionLost=false;
                     }
                     break;
+                //this is used when disconnection event happens
                 case Constants.MESSAGE_TOAST:
                     if (null != activity) {
                         Toast.makeText(activity, msg.getData().getString(Constants.TOAST),
                                 Toast.LENGTH_SHORT).show();
+                        Log.d("HEREE", "Disconestion");
+                        if(msg.getData().getString(Constants.TOAST).equals("Device connection was lost")){
+                            connectionLost = true;
+                            Log.d("Print lost connection", "Lost connection");
+                            resultGUI("Sorry, device connection was lost",false);
+                        }
                     }
                     break;
             }
@@ -680,7 +701,7 @@ public class BluetoothChatFragment extends Fragment {
 
     public void setupCustomView() {
 
-
+        mSweetSheet3=null;
         mSweetSheet3 = new SweetSheet(rl);
 
         //从menu
@@ -774,9 +795,12 @@ public class BluetoothChatFragment extends Fragment {
                     //if both has accepted do the swap
                     if(Iaccepted){
                         changeStickerdbStatus(stickerNameGive,true);
-                        changeStickerdbStatus(stickerNameRecieve,false);
+                        changeStickerdbStatus(stickerNameRecieve, false);
                         resultGUI("The stickers were successfully swapped",true);
                         notifyActivityStickerStatusChange.notifyChange();
+                        setUpListStickers();
+                        setupCustomView();
+                        updateSwapCount();
                     }
                 }else{
                     resultGUI("The stickers were not swapped, Transaction was cancelled",false);

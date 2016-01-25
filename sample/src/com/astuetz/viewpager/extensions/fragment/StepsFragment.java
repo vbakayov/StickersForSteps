@@ -36,6 +36,7 @@ import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
@@ -56,6 +57,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.astuetz.viewpager.extensions.sample.R;
@@ -183,6 +185,7 @@ public class StepsFragment extends Fragment {
 				showNewSticker(sticker_1, sticker_2, sticker_3);
 				Log.w("pressButton", "pressed");
 				updateStickerPackCountDecrease();
+				updateCountForAchievements();
 				updateCountAndStatusDatabase(sticker_1, sticker_2, sticker_3);
 				notifyActivityStickerStatusChange.notifyChange();
 			}
@@ -244,6 +247,18 @@ public class StepsFragment extends Fragment {
 
 
 		return rootView;
+	}
+
+	private void updateCountForAchievements() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		int count = prefs.getInt("received stickers", 0)+3;
+		if (count ==6 || count ==15 || count==30){
+			updateStickerPackCountIncrease();
+			Toast.makeText(getActivity(), "Achieved for received stickers completed. You received one free pack",
+					Toast.LENGTH_LONG).show();
+
+		}
+		prefs.edit().putInt("received stickers", count).apply();
 	}
 
 	private void updateCountAndStatusDatabase(Sticker sticker_1, Sticker sticker_2, Sticker sticker_3) {

@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.TypedValue;
@@ -32,6 +34,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.astuetz.viewpager.extensions.fragment.Database;
 import com.astuetz.viewpager.extensions.fragment.StepsFragment;
@@ -480,6 +483,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                         if(receivingLayoutView.getId()== R.id.container_2) {
                             stickSticker(angus,draggedImageView,receivingLayoutView);
                             updateStatusDatabase(sticker8);
+                            updateCountForAchievements();
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -491,6 +495,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                         if(receivingLayoutView.getId()== R.id.container_5) {
                             stickSticker(merida,draggedImageView,receivingLayoutView);
                             updateStatusDatabase(sticker2);
+                            updateCountForAchievements();
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -501,6 +506,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                         if(receivingLayoutView.getId()== R.id.container_8) {
                             stickSticker(dingwall,draggedImageView,receivingLayoutView);
                             updateStatusDatabase(sticker3);
+                            updateCountForAchievements();
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -511,6 +517,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                         if(receivingLayoutView.getId()== R.id.container_7) {
                             stickSticker(triplets,draggedImageView,receivingLayoutView);
                             updateStatusDatabase(sticker4);
+                            updateCountForAchievements();
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -519,8 +526,9 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                     case R.id.elinor:
                         Log.i(TAG, "elinor");
                         if(receivingLayoutView.getId()== R.id.container_6) {
-                            stickSticker(elinor,draggedImageView,receivingLayoutView);
+                            stickSticker(elinor, draggedImageView,receivingLayoutView);
                             updateStatusDatabase(sticker5);
+                            updateCountForAchievements();
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -531,6 +539,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                         if(receivingLayoutView.getId()== R.id.container_4) {
                             stickSticker(macintosh,draggedImageView,receivingLayoutView);
                             updateStatusDatabase(sticker6);
+                            updateCountForAchievements();
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -542,6 +551,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                         if(receivingLayoutView.getId()== R.id.container_3) {
                             stickSticker(macguffin,draggedImageView,receivingLayoutView);
                             updateStatusDatabase(sticker7);
+                            updateCountForAchievements();
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -553,6 +563,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                         if(receivingLayoutView.getId()== R.id.container_1) {
                             stickSticker(containerImg,draggedImageView,receivingLayoutView);
                             updateStatusDatabase(sticker);
+                            updateCountForAchievements();
                             return true;
                         }else{
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
@@ -592,6 +603,19 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
         db.updateStatus(sticker.getId(), 2);
         db.updateCount(sticker.getId(),"decrease");
         notifyActivityStickerStatusChange.notifyChange();
+    }
+
+    private void updateCountForAchievements() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int count = prefs.getInt("glued stickers", 0)+1;
+        if (count ==5 || count ==10 || count==15){
+             int availablePacks = prefs.getInt("packs",0);
+            prefs.edit().putInt("packs", availablePacks+1).apply();
+            Toast.makeText(getActivity(), "Achieved for gluing stickers completed. You received one free pack",
+                    Toast.LENGTH_LONG).show();
+
+        }
+        prefs.edit().putInt("glued stickers", count).apply();
     }
 
     private void stickSticker(ImageView sticker, View draggedImageView, View receivingLayoutView){

@@ -337,17 +337,24 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         db.removeInvalidEntries();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int count = prefs.getInt("swap count", 0);
+        AchievementStorage.addAchievement(new Achievement("swap", count>= 1, "swap1", "swap a sticker with the bluetooth"));
+        AchievementStorage.addAchievement(new Achievement("swap 2", count >= 3, "swap1", "swap 3 stickers with the bluetooth"));
+        AchievementStorage.addAchievement(new Achievement("swap 3", count >= 5, "swap1", "swap 5 stickers with the bluetooth"));
 
-        AchievementStorage.addAchievement(new Achievement("swap", prefs.getBoolean("performed swap", false), "swap1", "swap a sticker with the bluetooth"));
-        //check if update needed
-        if (!prefs.getBoolean("boots distance", false)) {
-            Cursor c = db.query(new String[]{"steps"}, "steps >= 7500 AND date > 0", null, null,
-                    null, null, "1");
-            if (c.getCount() >= 1) {
-                prefs.edit().putBoolean("boots distance", true).apply();
-            }
-            c.close();
-        }
+        int numberRecieved = prefs.getInt("received stickers", 0);
+
+        AchievementStorage.addAchievement(new Achievement("Pack 1", numberRecieved>= 6, "swap1", "receive 6 stickers"));
+        AchievementStorage.addAchievement(new Achievement("Pack 2", numberRecieved >= 15, "swap1", "receive 15 stickers"));
+        AchievementStorage.addAchievement(new Achievement("Pack 3", numberRecieved >= 30, "swap1", "receive 30 stickers"));
+
+        int numberGlued=     prefs.getInt("glued stickers", 0);
+
+        AchievementStorage.addAchievement(new Achievement("Collection", numberGlued>= 5, "swap1", "Stick 5 stickers into the album"));
+        AchievementStorage.addAchievement(new Achievement("Collection", numberGlued >= 10, "swap1", "Stick 10 stickers into the album"));
+        AchievementStorage.addAchievement(new Achievement("Collection", numberGlued >= 15, "swap1", "Stick 15 stickers into the album"));
+
+
         //add the achievements to the storage
         AchievementStorage.addAchievement(new Achievement("boots distance", prefs.getBoolean("boots distance", false), "boots1", "walk 7500 steps in one day"));
 

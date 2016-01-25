@@ -65,6 +65,7 @@ public class StickersFragment extends Fragment {
     private int originalPos[] = new int[2];
     private Map stickerToAlbum = new HashMap<>();
     private NumberProgressBar bnp;
+    private TextView stickers_count;
 
     public static StickersFragment newInstance(int position) {
 
@@ -124,7 +125,7 @@ public class StickersFragment extends Fragment {
         stickerToAlbum.put(2, new ArrayList<>(Arrays.asList(16, 17, 18, 19, 20, 21, 22)));
         stickerToAlbum.put(3, new ArrayList<>(Arrays.asList(23, 24, 25, 26, 27, 28, 29)));
         stickerToAlbum.put(4, new ArrayList<>(Arrays.asList(30,31,32,33,34,35,36,37)));
-        stickerToAlbum.put(5, new ArrayList<>(Arrays.asList(39,40,42,41,43)));
+        stickerToAlbum.put(5, new ArrayList<>(Arrays.asList(38,39,40,42,41,43)));
         stickerToAlbum.put(6, new ArrayList<>(Arrays.asList(45,46,47,48,49,50,51,52)));
         stickerToAlbum.put(7, new ArrayList<>(Arrays.asList(53,54,55,56,57)));
         stickerToAlbum.put(8, new ArrayList<>(Arrays.asList(58,59,61,62,63,64,60)));
@@ -192,7 +193,7 @@ public class StickersFragment extends Fragment {
         //Log.w("number",Integer.toString(db.getNumberGluedStickers()));
         int gluedCount = db.getNumberGluedStickers();
         bnp.setProgress(gluedCount);
-        TextView stickers_count = (TextView)rootView.findViewById(R.id.stickers_count);
+        stickers_count = (TextView)rootView.findViewById(R.id.stickers_count);
         stickers_count.setText(Integer.toString(gluedCount) + "/145 Stickers");
 
         db.close();
@@ -203,8 +204,8 @@ public class StickersFragment extends Fragment {
     {
 
         DisplayMetrics dm = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics( dm );
-        view.getLocationOnScreen( originalPos );
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        view.getLocationOnScreen(originalPos);
 
         int xDest = dm.widthPixels/2;
         xDest -= (view.getMeasuredWidth()/2);
@@ -389,7 +390,18 @@ public class StickersFragment extends Fragment {
 
     //recieve listChange from the mainActivity
     public void updateList() {
+        updateGluedStickerCount();
         new LongOperation().execute("");
+    }
+
+
+    private void updateGluedStickerCount(){
+        Database db =Database.getInstance(getActivity());
+        int gluedCount = db.getNumberGluedStickers();
+        bnp.setProgress(gluedCount);
+        stickers_count.setText(Integer.toString(gluedCount) + "/145 Stickers");
+
+        db.close();
     }
 
     //update the list in asyncTask

@@ -160,7 +160,7 @@ public class AlbumFragmentMain extends Fragment {
                 case 5 : //Fragmern 4 - Swapping
                     return AlbumPage.newInstance(
                             "Home", ///problme loading 44 -Tip-last one
-                            new ArrayList<>(Arrays.asList(-1, 39, -1, 40, 42, 41, 43)),
+                            new ArrayList<>(Arrays.asList(38, 39, -1, 40, 42, 41, 43)),
                             new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90)));
 
                 case 6 : //Fragmern 4 - Swapping

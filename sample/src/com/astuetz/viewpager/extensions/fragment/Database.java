@@ -408,7 +408,7 @@ public class Database extends SQLiteOpenHelper {
      * This method does nothing if there is already an entry for 'date' - use
      * {@link #updateSteps} in this case.
      * <p/>
-     * To restore data from a backup, use {@link #insertDayFromBackup}
+     *
      *
      * @param date  the date in ms since 1970
      * @param steps the current step value to be used as negative offset for the
@@ -460,49 +460,8 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
-    /**
-     * Inserts a new entry in the database, if there is no entry for the given
-     * date yet. Use this method for restoring data from a backup.
-     * <p/>
-     * This method does nothing if there is already an entry for 'date'.
-     *
-     * @param date  the date in ms since 1970
-     * @param steps the step value for 'date'; must be >= 0
-     * @return true if a new entry was created, false if there was already an
-     * entry for 'date'
-     */
-    public boolean insertDayFromBackup(long date, int steps) {
-        getWritableDatabase().beginTransaction();
-        boolean re;
-        try {
-            Cursor c = getReadableDatabase().query(DB_NAME, new String[]{"date"}, "date = ?",
-                    new String[]{String.valueOf(date)}, null, null, null);
-            re = c.getCount() == 0 && steps >= 0;
-            if (re) {
-                ContentValues values = new ContentValues();
-                values.put("date", date);
-                values.put("steps", steps);
-                getWritableDatabase().insert(DB_NAME, null, values);
-            }
-            c.close();
-            getWritableDatabase().setTransactionSuccessful();
-        } finally {
-            getWritableDatabase().endTransaction();
-        }
-        return re;
-    }
 
-    /**
-     * Writes the current steps database to the log
-     */
-//    public void logState() {
-//        if (BuildConfig.DEBUG) {
-//            Cursor c = getReadableDatabase()
-//                    .query(DB_NAME, null, null, null, null, null, "date DESC", "5");
-//            Logger.log(c);
-//            c.close();
-//        }
-//    }
+
 
     /**
      * Adds 'steps' steps to the row for the date 'date'. Won't do anything if
@@ -700,6 +659,18 @@ public class Database extends SQLiteOpenHelper {
         c.close();
         return re;
     }
+
+    public int getNumberRecievedStickers() {
+        Cursor c = getReadableDatabase()
+                .query(TABLE_STICKERS, new String[]{"COUNT(*)"}, "status=1",
+                        null, null,
+                        null, null);
+        c.moveToFirst();
+        int re = c.getInt(0) ;
+        c.close();
+        return re;
+    }
+
 
     /**
      * Saves the current 'steps since boot' sensor value in the database.
