@@ -35,6 +35,7 @@
 
     <string name="goal">Goal</string>
     <string name="step_size">Step size</string>
+    <string name="send_data">Send data</string>
     <string name="about">About</string>
     <string name="account">Account</string>
     <string name="goal_summary">Current goal: %,d steps</string>

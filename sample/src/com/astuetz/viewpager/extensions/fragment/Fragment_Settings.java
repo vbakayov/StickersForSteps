@@ -16,36 +16,25 @@
 package com.astuetz.viewpager.extensions.fragment;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.RadioGroup;
 
 import com.astuetz.viewpager.extensions.sample.R;
 
 
+import java.util.Calendar;
 import java.util.Locale;
 
 
@@ -74,6 +63,8 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
         stepsize.setSummary(getString(R.string.step_size_summary,
                 prefs.getFloat("stepsize_value", DEFAULT_STEP_SIZE),
                 prefs.getString("stepsize_unit", DEFAULT_STEP_UNIT)));
+        Preference send = findPreference("send data");
+        send.setOnPreferenceClickListener(this);
 
         setHasOptionsMenu(true);
     }
@@ -100,44 +91,9 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
         final SharedPreferences prefs =
                 getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
         switch (preference.getTitleRes()) {
-//            case R.string.goal:
-//                builder = new AlertDialog.Builder(getActivity());
-//                final NumberPicker np = new NumberPicker(getActivity());
-//
-//                np.setMinValue(1);
-//                np.setMaxValue(10000);
-//                np.setValue(prefs.getInt("goal", 10000));
-//                builder.setView(np);
-//
-//                String text = getString(R.string.set_goal);
-//                SpannableString spannable = new SpannableString(text);
-//                // here we set the color
-//                spannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, text.length(), 0);
-//                builder.setTitle(spannable);
-//                builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        np.clearFocus();
-//                        prefs.edit().putInt("goal", np.getValue()).commit();
-//                        preference.setSummary(
-//                                getString(R.string.goal_summary, np.getValue()));
-//                        dialog.dismiss();
-//                        getActivity().startService(
-//                                new Intent(getActivity(), SensorListener.class)
-//                                        .putExtra("updateNotificationState", true));
-//                    }
-//                });
-//                builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                Dialog dialog = builder.create();
-//                dialog.getWindow().setSoftInputMode(
-//                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-//                dialog.show();
-//                break;
+            case R.string.send_data:
+                showAlertDialog("Sure", "Are you sure you want to send me the data ??");
+                break;
             case R.string.step_size:
                 builder = new AlertDialog.Builder(getActivity());
                 v = getActivity().getLayoutInflater().inflate(R.layout.stepsize, null);
@@ -180,5 +136,108 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
         }
         return false;
     }
+
+    public void showAlertDialog( String title, String message) {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog,
+                                int which) {
+                Log.d("YEEES","YEESS");
+                try {
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("message/rfc822");
+                    i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"viktorbakayov@gmail.com"});
+                    i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+                    i.putExtra(Intent.EXTRA_TEXT, prapareMessageString());
+                    try {
+                        startActivity(Intent.createChooser(i, "Send mail..."));
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        //Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                    }
+                    Log.d("YEEES2", "YEESS2");
+                } catch (Exception e) {
+                    Log.d("SendMail", e.getMessage(), e);
+                }
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog,
+                                int which) {
+                dialog.dismiss();
+            }
+        });
+        // Setting Dialog Message
+        builder.setMessage(message);
+        // Setting alert dialog icon
+      //  builder.setIcon((status) ? R.drawable.success : R.drawable.fail);
+
+        builder.create().show();
+    }
+
+    private String prapareMessageString() {
+        String message= "";
+        Database db = Database.getInstance(getActivity());
+        String total = Integer.toString(db.getTotalWithoutToday());
+        int total_start = db.getTotalWithoutToday();
+        int  total_days = db.getDays();
+        int  todayOffset = db.getSteps(Util.getToday());
+        int since_boot = db.getCurrentSteps();
+        int  steps = Math.max(todayOffset + since_boot, 0);
+
+
+         message += "Total Steps:"+ total+ "\r\n";
+        message+=" Taken steps for the last 7 days:"+"\r\n";
+        message+= generateData(db, false);
+        message+="\r\n";
+        message+="Average Step Count:"+"\r\n";
+        message+=  Integer.toString((total_start + steps / total_days));
+        message+="\r\n";
+        message+=" Collected stickers for the last 7 days:"+"\r\n";
+        message+= generateData(db, true);
+        message+="\r\n";
+        message+=" Stickers glued:"+"\r\n";
+        message+= db.getNumberGluedStickers();
+        message+="\r\n";
+        message+=" Stickers recieved:"+"\r\n";
+        message+= db.getNumberRecievedStickers();
+
+
+        db.close();
+        return  message;
+    }
+
+    private String generateData(Database db, Boolean stickers) {
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.setTimeInMillis(Util.getToday());
+        yesterday.add(Calendar.DAY_OF_YEAR, -1);
+        yesterday.add(Calendar.DAY_OF_YEAR, -6);
+       String message="( ";
+        for (int i = 0; i < 7; i++) {
+            int values;
+            if (stickers){
+                values = db.getStickerCount(yesterday.getTimeInMillis());}
+            else
+            {
+                values =  db.getSteps(yesterday.getTimeInMillis());
+            }
+            Log.d("stickers", Integer.toString(values));
+            if(values !=Integer.MIN_VALUE) {
+                message+=values+",";
+            }else{
+                message+=0+",";
+            }
+            yesterday.add(Calendar.DAY_OF_YEAR, 1);
+        }
+
+        message+=") ";
+        return message;
+    }
+
 
 }

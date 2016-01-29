@@ -24,6 +24,7 @@ dependencies {
     compile 'com.daimajia.androidanimations:library:1.1.3@aar'
     compile 'com.github.zzz40500:AndroidSweetSheet:1.1.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+    compile fileTree(dir: 'libs', include: '*.jar')
 }
 
 android {

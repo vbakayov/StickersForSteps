@@ -270,6 +270,7 @@ public class StepsFragment extends Fragment {
 		prefs.edit().putInt("received stickers", count).apply();
 	}
 
+
 	private void updateCountAndStatusDatabase(Sticker sticker_1, Sticker sticker_2, Sticker sticker_3) {
 		Database db= Database.getInstance(getActivity());
 		if(sticker_1.getCount()== 0){
@@ -288,7 +289,7 @@ public class StepsFragment extends Fragment {
 			db.updateStatus(sticker_3.getId(),1);
 			db.updateCount(sticker_3.getId(),"increase");
 		}else{
-			db.updateCount(sticker_3.getId(),"increase");
+			db.updateCount(sticker_3.getId(), "increase");
 		}
 		db.close();
 	}
@@ -530,7 +531,7 @@ public class StepsFragment extends Fragment {
 		if(steps>= (int)goal){
 			Log.w("GOOOAL", "ACHIEVED");
 			updateGoal();
-			updateStickerPackCountIncrease();
+			updateStickerPackCountText();
 			playGoalAnimation();
 		}else {
 			updatePie();
@@ -539,13 +540,23 @@ public class StepsFragment extends Fragment {
 	}
 
 	private void updateStickerPackCountIncrease() {
-
 		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
-		 int availableStickerPacks = prefs.getInt("packs", 0);
+		int availableStickerPacks = prefs.getInt("packs", 0);
 		availableStickerPacks++;
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putInt("packs", availableStickerPacks);
 		editor.commit();
+		buttonOpenPack.setText(Integer.toString(availableStickerPacks) + " New Packs");
+	}
+
+	private void updateStickerPackCountText() {
+
+		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+		 int availableStickerPacks = prefs.getInt("packs", 0);
+//		availableStickerPacks++;
+//		SharedPreferences.Editor editor = prefs.edit();
+	//	editor.putInt("packs", availableStickerPacks);
+	//	editor.commit();
 		buttonOpenPack.setText(Integer.toString(availableStickerPacks) + " New Packs");
 	}
 

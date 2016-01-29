@@ -259,6 +259,7 @@ public class SensorListener extends Service implements SensorEventListener, Step
             db.insertNewDay(Util.getToday(), steps);
             goal= BaseGOAL;
             saveNextGoal((int)goal);
+            updateStickerPackCountIncrease();
 
         }
 
@@ -277,6 +278,7 @@ public class SensorListener extends Service implements SensorEventListener, Step
             Log.w("GOOOAL", "ACHIEVED");
             goal= goal+goal;
             saveNextGoal((int)goal);
+            updateStickerPackCountIncrease();
             updateWonStickerCount();
         }
 
@@ -308,5 +310,14 @@ public class SensorListener extends Service implements SensorEventListener, Step
         editor.commit();
     }
 
+    private void updateStickerPackCountIncrease() {
+
+        SharedPreferences prefs = getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+        int availableStickerPacks = prefs.getInt("packs", 0);
+        availableStickerPacks++;
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("packs", availableStickerPacks);
+        editor.commit();
+    }
 
 }

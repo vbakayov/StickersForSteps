@@ -3,6 +3,9 @@
     <Preference
         android:key="stepsize"
         android:title="@string/step_size"/>
+    <Preference
+        android:key="send data"
+        android:title="@string/send_data"/>
 
 
 </PreferenceScreen>

@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
 
 
         //getSupportActionBar().setTitle(s);
-        getSupportActionBar().setIcon(R.drawable.icon);
+        getSupportActionBar().setIcon(R.drawable.icon2);
 
 
         Database db = Database.getInstance(this);
