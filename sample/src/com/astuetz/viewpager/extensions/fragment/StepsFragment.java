@@ -27,7 +27,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -51,28 +50,20 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.astuetz.viewpager.extensions.sample.R;
-import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.DecoDrawEffect;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
 
 
-
-import java.util.HashMap;
-
 import album.SampleImage;
-import butterknife.InjectView;
 import stickers.DistributedRandomNumberGenerator;
 
 
@@ -644,7 +635,7 @@ public class StepsFragment extends Fragment {
 				textSteps.setText(Integer.toString(steps) + " steps today ");
 			} else {
 				SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
-				float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_STEP_SIZE);
+				float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_Human_Height);
 				float distance_today = steps * stepsize;
 				if (prefs.getString("stepsize_unit", Fragment_Settings.DEFAULT_STEP_UNIT)
 						.equals("cm")) {

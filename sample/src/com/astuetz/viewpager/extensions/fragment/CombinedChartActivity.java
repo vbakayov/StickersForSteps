@@ -8,8 +8,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -17,11 +15,6 @@ import android.view.WindowManager;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,7 +34,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -91,9 +83,17 @@ public class CombinedChartActivity extends DemoBase {
 
 
         SharedPreferences prefs = this.getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
-        float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_STEP_SIZE);
-        float distance_total = (total_start + steps) * stepsize;
-        if (prefs.getString("stepsize_unit", Fragment_Settings.DEFAULT_STEP_UNIT).equals("cm")) {
+        float height_value = prefs.getFloat("height_value", Fragment_Settings.DEFAULT_Human_Height);
+      //  float sex = prefs.getFloat("sex", Fragment_Settings.DEFAULT_SEX);
+        Log.d("height",String.valueOf(height_value));
+      float stride_lenght;
+        if (prefs.getString("sex", Fragment_Settings.DEFAULT_SEX).equals("male")){
+            stride_lenght = (float) (height_value*0.415);
+        }else {
+            stride_lenght = (float) (height_value* 0.413);
+        }
+        float distance_total = (total_start + steps) * stride_lenght;
+        if (prefs.getString("stepsize_unit", Fragment_Settings.DEFAULT_SEX).equals("cm")) {
             distance_total /= 100000;
         } else {
             distance_total /= 5280;
@@ -101,8 +101,8 @@ public class CombinedChartActivity extends DemoBase {
 
         averageDistanceView = (TextView)findViewById(R.id.averageDistance);
         totalDistanceView = (TextView)findViewById(R.id.totalDistance);
-        totalDistanceView.setText(String.format("%.3f km", distance_total));
-        averageDistanceView.setText(String.format("%.3f km", distance_total / total_days));
+        totalDistanceView.setText(String.format("%.1f km", distance_total));
+        averageDistanceView.setText(String.format("%.1f km", distance_total / total_days));
 
 
     }
@@ -300,7 +300,7 @@ public class CombinedChartActivity extends DemoBase {
                 if(isDistance){
                     //add distance
                     SharedPreferences prefs = this.getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
-                    float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_STEP_SIZE);
+                    float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_Human_Height);
                     float distance_today = steps * stepsize;
                     distance_today=distance_today/100000;
                     entries.add(new BarEntry(distance_today, i));
