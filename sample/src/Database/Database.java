@@ -1,4 +1,4 @@
-package com.astuetz.viewpager.extensions.fragment;/*
+package Database;/*
  * Copyright 2013 Thomas Hoffmann
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");

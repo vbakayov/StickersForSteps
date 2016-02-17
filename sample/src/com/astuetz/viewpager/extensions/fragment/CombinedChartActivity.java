@@ -23,7 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.astuetz.viewpager.extensions.fragment.Database;
+import Database.Database;
 import util.Fragment_Settings;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.github.mikephil.charting.animation.Easing;

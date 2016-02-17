@@ -62,6 +62,7 @@ import java.util.ArrayList;
 
 import Achievements.Achievement;
 import Achievements.AchievementStorage;
+import Database.Database;
 import Steps.StepsFragment;
 import album.AlbumFragmentMain;
 import bluetoothchat.BluetoothChatFragment;

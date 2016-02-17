@@ -35,7 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import ui.CustomGridViewAdapter;
-import com.astuetz.viewpager.extensions.fragment.Database;
+import Database.Database;
 import com.astuetz.viewpager.extensions.fragment.MainActivity;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.daimajia.numberprogressbar.NumberProgressBar;

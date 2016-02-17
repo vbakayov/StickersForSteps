@@ -2,7 +2,7 @@ package stickers;
 
 import android.content.Context;
 
-import com.astuetz.viewpager.extensions.fragment.Database;
+import Database.Database;
 
 import java.util.HashMap;
 import java.util.List;

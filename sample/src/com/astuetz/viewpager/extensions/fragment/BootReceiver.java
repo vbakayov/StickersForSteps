@@ -23,9 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.astuetz.viewpager.extensions.fragment.Database;
-
-import com.astuetz.viewpager.extensions.fragment.SensorListener;
+import Database.Database;
 
 
 public class BootReceiver extends BroadcastReceiver {

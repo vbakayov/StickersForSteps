@@ -32,6 +32,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import Database.Database;
 import Steps.StepDetector;
 import Steps.StepListener;
 import util.Fragment_Settings;

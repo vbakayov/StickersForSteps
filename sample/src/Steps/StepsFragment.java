@@ -57,7 +57,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.viewpager.extensions.fragment.CombinedChartActivity;
-import com.astuetz.viewpager.extensions.fragment.Database;
+import Database.Database;
 import util.Fragment_Settings;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.hookedonplay.decoviewlib.DecoView;
