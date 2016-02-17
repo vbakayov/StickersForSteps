@@ -45,7 +45,7 @@
             android:label="@string/select_device"
            />
         <activity android:name="util.CombinedChartActivity"/>
-        <activity android:name="Achievements.ListActivity"/>
+        <activity android:name="com.astuetz.viewpager.extensions.fragment.ListActivity"/>
 
 
 

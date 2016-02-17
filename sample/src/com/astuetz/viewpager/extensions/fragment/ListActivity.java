@@ -1,4 +1,4 @@
-package Achievements;
+package com.astuetz.viewpager.extensions.fragment;
 
 /**
  * Created by Viktor on 1/14/2016.
@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.astuetz.viewpager.extensions.sample.R;
 
 import java.util.ArrayList;
+
+import Achievements.Achievement;
 
 
 /**
