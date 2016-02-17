@@ -20,11 +20,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.astuetz.viewpager.extensions.fragment.SensorListener;
+import main.SensorListener;
 
 import Database.Database;
-
-import util.Util;
 
 
 public class ShutdownRecevier extends BroadcastReceiver {

@@ -1,4 +1,4 @@
-package com.astuetz.viewpager.extensions.fragment;
+package main;
 
 /**
  * Created by Viktor on 2/12/2016.

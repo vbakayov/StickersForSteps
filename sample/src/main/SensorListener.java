@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.astuetz.viewpager.extensions.fragment;
+package main;
 
 import android.app.AlarmManager;
 import android.app.Notification;

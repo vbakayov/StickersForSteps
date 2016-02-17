@@ -23,7 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.astuetz.viewpager.extensions.fragment.SensorListener;
+import main.SensorListener;
 
 import Database.Database;
 

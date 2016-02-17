@@ -58,7 +58,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import Database.Database;
-import com.astuetz.viewpager.extensions.fragment.MainActivity;
+import main.MainActivity;
 import Steps.StepsFragment;
 import stickers.Sticker;
 import com.astuetz.viewpager.extensions.sample.R;

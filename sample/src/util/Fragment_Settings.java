@@ -33,7 +33,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import Database.Database;
-import com.astuetz.viewpager.extensions.fragment.MainActivity;
+import main.MainActivity;
 import com.astuetz.viewpager.extensions.sample.R;
 
 
