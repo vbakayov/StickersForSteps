@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.astuetz.viewpager.extensions.fragment;
+package util;
 
 import android.app.Notification.Builder;
 import android.app.NotificationManager;
@@ -22,6 +22,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import com.astuetz.viewpager.extensions.fragment.SensorListener;
 
 import Database.Database;
 
