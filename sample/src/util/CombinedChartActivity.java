@@ -1,4 +1,4 @@
-package com.astuetz.viewpager.extensions.fragment;
+package util;
 
 
 import android.content.Context;
