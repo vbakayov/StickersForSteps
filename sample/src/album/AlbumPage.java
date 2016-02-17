@@ -37,8 +37,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.viewpager.extensions.fragment.Database;
-import com.astuetz.viewpager.extensions.fragment.StepsFragment;
-import com.astuetz.viewpager.extensions.fragment.Sticker;
+import Steps.StepsFragment;
+import stickers.Sticker;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;

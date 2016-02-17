@@ -21,26 +21,24 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import au.com.bytecode.opencsv.CSVReader;
+import stickers.Sticker;
+import util.Util;
 
 
 public class Database extends SQLiteOpenHelper {
@@ -613,7 +611,7 @@ public class Database extends SQLiteOpenHelper {
      * Only call this directly after boot, otherwise it might remove the current
      * day as the current offset is likely to be negative
      */
-    void removeNegativeEntries() {
+    public void removeNegativeEntries() {
         getWritableDatabase().delete(DB_NAME, "steps < ?", new String[]{"0"});
     }
 

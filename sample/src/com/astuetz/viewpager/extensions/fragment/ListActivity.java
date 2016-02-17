@@ -4,11 +4,9 @@ package com.astuetz.viewpager.extensions.fragment;
  * Created by Viktor on 1/14/2016.
  */
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,20 +20,18 @@ import android.widget.Toast;
 
 import com.astuetz.viewpager.extensions.sample.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-
-
+import Achievements.Achievement;
 
 
 /**
  * Created by Viktor on 11/18/2015.
  */
 public class ListActivity extends AppCompatActivity {
-    private static Achievement clickedTrip;
+    private static Achievement clickedAchievement;
     int onStartCount = 0;
-    private ArrayList<Achievement> trips;
+    private ArrayList<Achievement> achievements;
 
 
     @Override
@@ -44,7 +40,7 @@ public class ListActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_list);
         Log.d("LIST CREATED", "INITIALIZED");
-        trips = (ArrayList<Achievement>) getIntent().getSerializableExtra("filtered");
+        achievements = (ArrayList<Achievement>) getIntent().getSerializableExtra("filtered");
 
         //for animation the activity
         onStartCount = 1;
@@ -110,7 +106,7 @@ public class ListActivity extends AppCompatActivity {
 
     private class MyListAdapter extends ArrayAdapter<Achievement>{
         public 	MyListAdapter(){
-            super(ListActivity.this, R.layout.list_row, trips);
+            super(ListActivity.this, R.layout.list_row, achievements);
         }
 
         @Override
@@ -121,8 +117,8 @@ public class ListActivity extends AppCompatActivity {
                 itemView = getLayoutInflater().inflate(R.layout.list_row, parent,false);
             }
 
-            //Find trip to work with
-            Achievement currentAchievement = trips.get(position);
+            //Find acheivement to work with
+            Achievement currentAchievement = achievements.get(position);
 
             RelativeLayout mRowLayout = (RelativeLayout) itemView.findViewById(R.id.mRowLayout);
             if(currentAchievement.isAchieved()) {
@@ -160,18 +156,10 @@ public class ListActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long ID) {
-                //which trips we are currently
-                clickedTrip = trips.get(position);
-//                Intent myIntent = new Intent(ListActivity.this, TripActivity.class);
-//                myIntent.putExtra("trip", clickedTrip); //Optional parameters
-//                ListActivity.this.startActivity(myIntent);
-                //build and center the toast
-                Toast toast = Toast.makeText(ListActivity.this, clickedTrip.getTitle(), Toast.LENGTH_LONG);
+                //which achievements we are currently
+                clickedAchievement = achievements.get(position);
+                Toast toast = Toast.makeText(ListActivity.this, clickedAchievement.getTitle(), Toast.LENGTH_LONG);
                 LinearLayout layout = (LinearLayout) toast.getView();
-//                if (layout.getChildCount() > 0) {
-//                    TextView tv = (TextView) layout.getChildAt(0);
-//                    tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-//                }
                 toast.show();
 
             }

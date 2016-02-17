@@ -18,14 +18,14 @@ package com.astuetz.viewpager.extensions.fragment;
 
 import android.app.Notification.Builder;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 
-import com.astuetz.viewpager.extensions.sample.R;
+import com.astuetz.viewpager.extensions.fragment.Database;
+
+import com.astuetz.viewpager.extensions.fragment.SensorListener;
 
 
 public class BootReceiver extends BroadcastReceiver {

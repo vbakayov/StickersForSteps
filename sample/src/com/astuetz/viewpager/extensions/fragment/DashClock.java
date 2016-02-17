@@ -23,6 +23,7 @@ import com.astuetz.viewpager.extensions.sample.R;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
+import util.Util;
 
 
 /**

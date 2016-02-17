@@ -6,12 +6,16 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -19,10 +23,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.astuetz.viewpager.extensions.fragment.Database;
+import util.Fragment_Settings;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
@@ -39,11 +44,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import util.Util;
 
-public class CombinedChartActivity extends DemoBase {
 
-    private CombinedChart mChart;
-    private final int itemcount = 7;
+public class CombinedChartActivity extends FragmentActivity {
     private TextView totalView;
     private TextView averageView;
     private TextView averageDistanceView;
@@ -78,9 +82,17 @@ public class CombinedChartActivity extends DemoBase {
 
         totalView = (TextView) findViewById(R.id.total);
         averageView = (TextView)findViewById(R.id.average);
-        totalView.setText(Integer.toString(total_start + steps));
-        averageView.setText(Integer.toString((total_start + steps / total_days)));
 
+
+        //code for the thousands numbeer separation
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+
+        symbols.setGroupingSeparator(' ');
+        formatter.setDecimalFormatSymbols(symbols);
+
+        totalView.setText(formatter.format(total_start + steps));
+        averageView.setText(formatter.format((total_start + steps) / total_days));
 
         SharedPreferences prefs = this.getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
         float height_value = prefs.getFloat("height_value", Fragment_Settings.DEFAULT_Human_Height);
@@ -167,12 +179,17 @@ public class CombinedChartActivity extends DemoBase {
         yesterday.add(Calendar.DAY_OF_YEAR, -6);
         for (int i = 0; i < 7; i++) {
             int steps = db.getSteps(yesterday.getTimeInMillis());
+
             String date =  df.format(new Date(yesterday.getTimeInMillis()));
             Log.d("steps", Integer.toString(steps));
             Log.d("date", date);
             Log.d("space", "===========");
             if (steps > 0) {
                 entries.add(new BarEntry(steps, i));
+            }else if(steps == Integer.MIN_VALUE){ //no dataa in the database
+                entries.add(new BarEntry(0, i));
+            }else if(steps < 0){
+                entries.add(new BarEntry(Math.abs(steps), i));
             }
             yesterday.add(Calendar.DAY_OF_YEAR, 1);
         }
@@ -270,7 +287,7 @@ public class CombinedChartActivity extends DemoBase {
             yesterday.add(Calendar.DAY_OF_YEAR, 1);
         }
 
-        BarDataSet d = new BarDataSet(entries, "Stickers");
+        BarDataSet d = new BarDataSet(entries, " Collected stickers");
         d.setBarSpacePercent(20f);
         d.setColor(Color.rgb(255, 255, 0));
         d.setValueTextColor(Color.rgb(60, 220, 78));
@@ -296,27 +313,42 @@ public class CombinedChartActivity extends DemoBase {
             int steps = db.getSteps(yesterday.getTimeInMillis());
             Log.d("steps", Integer.toString(steps));
             Log.d("space", "===========");
-            if (steps > 0) {
-                if(isDistance){
+            if (steps > 0 ||steps < 0) {
+                if(isDistance && steps > 0){
                     //add distance
                     SharedPreferences prefs = this.getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
                     float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_Human_Height);
                     float distance_today = steps * stepsize;
                     distance_today=distance_today/100000;
                     entries.add(new BarEntry(distance_today, i));
-                }else{
+                }else if(isDistance && steps < 0 && steps != Integer.MIN_VALUE){ //quick fix for negative step need to find a fix
+                    //add distance
+                    SharedPreferences prefs = this.getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
+                    float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_Human_Height);
+                    float distance_today = Math.abs(steps) * stepsize;
+                    distance_today=distance_today/100000;
+                    Log.d("DistanceToday", Float.toString(distance_today));
+                    entries.add(new BarEntry(distance_today, i));
+                }
+                else{
                     //otherwise add steps
-                    entries.add(new BarEntry(steps, i));
+                    if (steps > 0) {
+                        entries.add(new BarEntry(steps, i));
+                    }else if(steps == Integer.MIN_VALUE){ //no dataa in the database
+                      //  entries.add(new BarEntry(0, i));
+                    }else if(steps < 0){
+                        entries.add(new BarEntry(Math.abs(steps), i));
+                    }
                 }
             }
             yesterday.add(Calendar.DAY_OF_YEAR, 1);
         }
         BarDataSet d;
         if(!isDistance){
-            d = new BarDataSet(entries, "Steps ");
+            d = new BarDataSet(entries, "Step count ");
         }
         else{
-            d = new BarDataSet(entries, "Distance ");
+            d = new BarDataSet(entries, "Distance (km) ");
         }
         d.setBarSpacePercent(20f);
         d.setColor(Color.rgb(60, 220, 78));

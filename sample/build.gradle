@@ -38,7 +38,13 @@ android {
         versionName "100.0"
     }
 
-    signingConfigs { release }
+    signingConfigs { release{
+        storeFile file("myreleasekey.keystore")
+        storePassword "password2"
+        keyAlias "MyReleaseKey"
+        keyPassword "password2"
+
+    } }
 
     buildTypes {
         release {

@@ -3,10 +3,8 @@ package stickers;
 import android.content.Context;
 
 import com.astuetz.viewpager.extensions.fragment.Database;
-import com.astuetz.viewpager.extensions.fragment.Sticker;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 

@@ -28,7 +28,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,14 +36,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -62,14 +57,19 @@ import com.astuetz.SlidingTabLayout;
 import com.astuetz.viewpager.extensions.sample.R;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 
+import Achievements.Achievement;
+import Achievements.AchievementStorage;
+import Steps.StepsFragment;
+import album.AlbumFragmentMain;
 import bluetoothchat.BluetoothChatFragment;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import stickers.StickersFragment;
+import util.Fragment_Settings;
+import util.Util;
 
 public class MainActivity extends AppCompatActivity implements StepsFragment.OnStickerChange  {
 
@@ -361,16 +361,16 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         //checking is done in the stepsFragment when a pack is rewarded
         int numberRecieved = prefs.getInt("received stickers", 0);
 
-        AchievementStorage.addAchievement(new Achievement("Pack 1", numberRecieved>= 6, "swap1", "receive 6 stickers"));
-        AchievementStorage.addAchievement(new Achievement("Pack 2", numberRecieved >= 15, "swap1", "receive 15 stickers"));
-        AchievementStorage.addAchievement(new Achievement("Pack 3", numberRecieved >= 30, "swap1", "receive 30 stickers"));
+        AchievementStorage.addAchievement(new Achievement("Pack 1", numberRecieved>= 6, "pack", "receive 6 stickers"));
+        AchievementStorage.addAchievement(new Achievement("Pack 2", numberRecieved >= 15, "pack", "receive 15 stickers"));
+        AchievementStorage.addAchievement(new Achievement("Pack 3", numberRecieved >= 30, "pack", "receive 30 stickers"));
 
         //checking is done in the Album page a sticker is glued
         int numberGlued=     prefs.getInt("glued stickers", 0);
 
-        AchievementStorage.addAchievement(new Achievement("Collection", numberGlued>= 5, "swap1", "Stick 5 stickers into the album"));
-        AchievementStorage.addAchievement(new Achievement("Collection", numberGlued >= 10, "swap1", "Stick 10 stickers into the album"));
-        AchievementStorage.addAchievement(new Achievement("Collection", numberGlued >= 15, "swap1", "Stick 15 stickers into the album"));
+        AchievementStorage.addAchievement(new Achievement("Collection", numberGlued>= 5, "album", "Stick 5 stickers into the album"));
+        AchievementStorage.addAchievement(new Achievement("Collection", numberGlued >= 10, "album", "Stick 10 stickers into the album"));
+        AchievementStorage.addAchievement(new Achievement("Collection", numberGlued >= 15, "album", "Stick 15 stickers into the album"));
 
 
         //add the achievements to the storage

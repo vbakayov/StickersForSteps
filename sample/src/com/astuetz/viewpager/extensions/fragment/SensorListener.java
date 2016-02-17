@@ -32,12 +32,16 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import Steps.StepDetector;
+import Steps.StepListener;
+import util.Fragment_Settings;
+
 import com.astuetz.viewpager.extensions.sample.R;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Locale;
 
+import util.Util;
 
 
 /**
@@ -50,7 +54,7 @@ import java.util.Locale;
 public class SensorListener extends Service implements SensorEventListener, StepListener {
 
     private final static int NOTIFICATION_ID = 1;
-    private final static int BaseGOAL = 250;
+    private final static int BaseGOAL = 500;
 
     public final static String ACTION_PAUSE = "pause";
 

@@ -6,7 +6,7 @@
     android:layout_height="fill_parent" >
 
 
-    <view class="com.astuetz.viewpager.extensions.fragment.StepsFragment$CustomLayout"
+    <view class="Steps.StepsFragment$CustomLayout"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
 
     </view>
 
-    <view class="com.astuetz.viewpager.extensions.fragment.StepsFragment$CustomLayout"
+    <view class="Steps.StepsFragment$CustomLayout"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
     </view>
 
 
-    <view class="com.astuetz.viewpager.extensions.fragment.StepsFragment$CustomLayout"
+    <view class="Steps.StepsFragment$CustomLayout"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
