@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package com.astuetz.viewpager.extensions.fragment;
+package util;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import com.astuetz.viewpager.extensions.fragment.SensorListener;
 
 import Database.Database;
 
