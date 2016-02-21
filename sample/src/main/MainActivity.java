@@ -118,31 +118,6 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         setContentView(R.layout.activity_main);
         startService(new Intent(this, SensorListener.class));
 
-//        if (b == null) {
-//            // Create new fragment and transaction
-//            android.app.Fragment newFragment = new Fragment_Overview();
-//            FragmentTransaction transaction = null;
-//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-//                transaction = getFragmentManager().beginTransaction();
-//
-//
-//            // Replace whatever is in the fragment_container view with this
-//            // fragment,
-//            // and add the transaction to the back stack
-//            transaction.replace(android.R.id.content, newFragment);
-//
-//            // Commit the transaction
-//            transaction.commit();
-//            }
-//        }
-
-//        if (savedInstanceState == null) {
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            BluetoothChatFragment fragment = new BluetoothChatFragment();
-//             transaction.replace(R.id.sample_content_fragment, fragment);
-//            transaction.commit();
-//        }
-
         initialStep = 0;
         firstTime= true;
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -163,13 +138,6 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         pager.setCurrentItem(0);
         tabs.setBackgroundColor(getResources().getColor(R.color.green));
 
-//        tabs.setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
-//            @Override
-//            public void onTabReselected(int position) {
-//                Toast.makeText(MainActivity.this, "Tab reselected: " + position, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
         // Setting Custom Color for the Scroll bar indicator of the Tab View
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
@@ -177,12 +145,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
                 return getResources().getColor(R.color.tabsScrollColor);
             }
         });
-//        SpannableString s = new SpannableString(" Stickers For Steps");
-//        s.setSpan(new TypefaceSpan("IDroid Bold.otf"), 0, s.length(),
-//                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-
-        //getSupportActionBar().setTitle(s);
         getSupportActionBar().setIcon(R.drawable.icon2);
 
 
@@ -513,6 +476,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
     @Override
     public void notifyChange() {
         fragmenttStickers.updateList();
+        fragmentBlt.updateList();
         Log.w("Notifed","Notified");
     }
 

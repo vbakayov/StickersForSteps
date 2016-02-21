@@ -96,8 +96,6 @@ public class CombinedChartActivity extends FragmentActivity {
 
         SharedPreferences prefs = this.getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
         float height_value = prefs.getFloat("height_value", Fragment_Settings.DEFAULT_Human_Height);
-      //  float sex = prefs.getFloat("sex", Fragment_Settings.DEFAULT_SEX);
-        Log.d("height",String.valueOf(height_value));
       float stride_lenght;
         if (prefs.getString("sex", Fragment_Settings.DEFAULT_SEX).equals("male")){
             stride_lenght = (float) (height_value*0.415);
@@ -105,7 +103,7 @@ public class CombinedChartActivity extends FragmentActivity {
             stride_lenght = (float) (height_value* 0.413);
         }
         float distance_total = (total_start + steps) * stride_lenght;
-        if (prefs.getString("stepsize_unit", Fragment_Settings.DEFAULT_SEX).equals("cm")) {
+        if (prefs.getString("stepsize_unit", Fragment_Settings.DEFAULT_STEP_UNIT).equals("cm")) {
             distance_total /= 100000;
         } else {
             distance_total /= 5280;

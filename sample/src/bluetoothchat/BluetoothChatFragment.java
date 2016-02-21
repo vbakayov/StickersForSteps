@@ -36,6 +36,7 @@ import android.graphics.Matrix;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -102,6 +103,8 @@ public class BluetoothChatFragment extends Fragment {
     private String stickerNameGive;
     private String stickerNameRecieve;
     private boolean connectionLost;
+    private boolean isHideAccept = false;
+    private boolean isHideDecline = false;
     private StepsFragment.OnStickerChange notifyActivityStickerStatusChange;
 
     /**
@@ -144,7 +147,7 @@ public class BluetoothChatFragment extends Fragment {
         getPic=false;
         otherAccepted=false;
         Iaccepted=false;
-        setUpListStickers();
+        new  setUpListStickers().execute("");
         connectionLost= false;
 
         // If the adapter is null, then Bluetooth is not supported
@@ -266,7 +269,7 @@ public class BluetoothChatFragment extends Fragment {
                         changeStickerdbStatus(stickerNameGive,true);
                         resultGUI("The stickers were successfully swapped", true);
                         notifyActivityStickerStatusChange.notifyChange();
-                        setUpListStickers();
+                        new  setUpListStickers().execute("");
                         setupCustomView();
                         updateSwapCount();
                     }
@@ -312,6 +315,30 @@ public class BluetoothChatFragment extends Fragment {
                           if(list.size() != 0) {
                               setupCustomView();
                               mSweetSheet3.toggle();
+                              //nasty hack to bring the buttons to the background
+                              //otherwise they go on top of the sweetSheet
+                              if(mSweetSheet3.isShow()){
+                                 if (btnAccept.isEnabled()) {
+                                     isHideAccept=true;
+                                     btnAccept.setEnabled(false);
+                                 }
+                                  if (btnDecline.isEnabled()) {
+                                      isHideDecline=true;
+                                      btnDecline.setEnabled(false);
+                                  }
+                              }else{
+                                  if(isHideAccept){
+                                      isHideAccept=false;
+                                      btnAccept.setEnabled(true);
+                                  }
+                                  if(isHideDecline){
+                                      isHideDecline= false;
+                                      btnDecline.setEnabled(true);
+
+                                  }
+                              }
+
+
                         }else{
                               Toast.makeText(getActivity(), "You don't have any stickers to swap", Toast.LENGTH_LONG).show();
                           }
@@ -332,8 +359,11 @@ public class BluetoothChatFragment extends Fragment {
         prefs.edit().putInt("swap count", count + 1).apply();
     }
 
+    //update the list in asyncTask
+    private class setUpListStickers extends AsyncTask<String, Void, String> {
 
-    private void setUpListStickers(){
+        @Override
+        protected String doInBackground(String... params) {
         list.clear();
         Database db = Database.getInstance(getActivity());
         List<Sticker> stickers = db.getStickersWithCountGreatherOrEqualTo(1);
@@ -359,9 +389,9 @@ public class BluetoothChatFragment extends Fragment {
 
         }
 
-        db.close();
-
-    }
+            db.close();
+            return "Executed";
+    }}
 
     private void resultGUI(String message, boolean success) {
         givePic= false;
@@ -698,7 +728,7 @@ public class BluetoothChatFragment extends Fragment {
                 stickerNameGive = String.valueOf(menuEntity1.title);
                 //send message, make it Json object and convert id to string
                 sendMessage(toJSon("giveSticker", String.valueOf(menuEntity1.title), null));
-                Toast.makeText(getActivity(), menuEntity1.title + "  " +menuEntity1.icon, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(), menuEntity1.title + "  " +menuEntity1.icon, Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -732,9 +762,11 @@ public class BluetoothChatFragment extends Fragment {
                 givePic=true;
                 if (givePic && getPic){
                     btnAccept.getBackground().setColorFilter(null);
+
                     btnDecline.getBackground().setColorFilter(null);
                     btnAccept.setEnabled(true);
                     btnDecline.setEnabled(true);
+
 
                 }
             }
@@ -779,7 +811,7 @@ public class BluetoothChatFragment extends Fragment {
                         changeStickerdbStatus(stickerNameRecieve, false);
                         resultGUI("The stickers were successfully swapped",true);
                         notifyActivityStickerStatusChange.notifyChange();
-                        setUpListStickers();
+                        new  setUpListStickers().execute("");
                         setupCustomView();
                         updateSwapCount();
                     }
@@ -840,5 +872,11 @@ public class BluetoothChatFragment extends Fragment {
 
         builder.show();
     }
+
+    //recieve listChange from the mainActivity
+    public void updateList() {
+        new  setUpListStickers().execute("");
+    }
+
 
 }

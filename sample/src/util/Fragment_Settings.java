@@ -49,7 +49,7 @@ import java.util.Locale;
 public class Fragment_Settings extends PreferenceFragment implements OnPreferenceClickListener {
 
     public final static int DEFAULT_GOAL = 500;
-    public final static float DEFAULT_Human_Height = Locale.getDefault() == Locale.US ? 5.74f : 175f;
+    public final static float DEFAULT_Human_Height = 175f;
     public final static String DEFAULT_STEP_UNIT = Locale.getDefault() == Locale.US ? "ft" : "cm";
     public final static String DEFAULT_SEX= "male";
 

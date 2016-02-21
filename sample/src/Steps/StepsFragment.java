@@ -640,8 +640,14 @@ public class StepsFragment extends Fragment {
 				textSteps.setText(Integer.toString(steps) + " steps today ");
 			} else {
 				SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
-				float stepsize = prefs.getFloat("stepsize_value", Fragment_Settings.DEFAULT_Human_Height);
-				float distance_today = steps * stepsize;
+				float height_value = prefs.getFloat("height_value", Fragment_Settings.DEFAULT_Human_Height);
+				float stride_lenght;
+				if (prefs.getString("sex", Fragment_Settings.DEFAULT_SEX).equals("male")){
+					stride_lenght = (float) (height_value*0.415);
+				}else {
+					stride_lenght = (float) (height_value* 0.413);
+				}
+				float distance_today = (total_start + steps) * stride_lenght;
 				if (prefs.getString("stepsize_unit", Fragment_Settings.DEFAULT_STEP_UNIT)
 						.equals("cm")) {
 					distance_today /= 100000;

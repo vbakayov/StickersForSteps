@@ -49,8 +49,8 @@ import util.Util;
  * Background service which keeps the step-sensor listener alive to always get
  * the number of steps since boot.
  * <p/>
- * This service won't be needed any more if there is a way to read the
- * step-value without waiting for a sensor event
+ *
+ *
  */
 public class SensorListener extends Service implements SensorEventListener, StepListener {
 
@@ -112,10 +112,8 @@ public class SensorListener extends Service implements SensorEventListener, Step
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
 
-
+        //pausing counting was not succesfully implemented
         if (intent != null && ACTION_PAUSE.equals(intent.getStringExtra("action"))) {
-//            if (BuildConfig.DEBUG)
-//                Logger.log("onStartCommand action: " + intent.getStringExtra("action"));
             if (steps == 0) {
                 Database db = Database.getInstance(this);
                 steps = db.getCurrentSteps();
@@ -187,6 +185,12 @@ public class SensorListener extends Service implements SensorEventListener, Step
         }
     }
 
+
+    /**
+     * Notification for achieved goal
+     * This functionality was removed for the final iteration, but it may
+     * be added for future iterations
+     * */
     private void updateNotificationState() {
         Log.w("SensorListener", " updateNotificationState");
         SharedPreferences prefs = getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
@@ -219,12 +223,6 @@ public class SensorListener extends Service implements SensorEventListener, Step
                             getString(R.string.notification_title)).setContentIntent(PendingIntent
                     .getActivity(this, 0, new Intent(this, MainActivity.class),
                             PendingIntent.FLAG_UPDATE_CURRENT));
-//                    .setSmallIcon(R.drawable.ic_notification)
-//                    .addAction(isPaused ? R.drawable.ic_resume : R.drawable.ic_pause,
-//                            isPaused ? getString(R.string.resume) : getString(R.string.pause),
-//                            PendingIntent.getService(this, 4, new Intent(this, SensorListener.class)
-// .putExtra("action", ACTION_PAUSE),
-   //                                 PendingIntent.FLAG_UPDATE_CURRENT)).setOngoing(true);
             nm.notify(NOTIFICATION_ID, notificationBuilder.build());
         } else {
             nm.cancel(NOTIFICATION_ID);
@@ -232,21 +230,17 @@ public class SensorListener extends Service implements SensorEventListener, Step
     }
 
     private void reRegisterSensor() {
-       Log.w("s ","re-register sensor listener");
         SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
         try {
             sm.unregisterListener(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
-//            if (sm.getSensorList(Sensor.TYPE_STEP_COUNTER).size() < 1) return; // emulator
-
         if(sm.getSensorList(Sensor.TYPE_STEP_COUNTER).size() != 0) {
             // enable batching
             sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER), SensorManager.SENSOR_DELAY_UI);
         }else{
             Toast.makeText(this, "Step detector not available! Don't worry Accelerometer is available", Toast.LENGTH_LONG).show();
-            Log.w("CountSenssor", "NOT Avialble");
             StepDetector  mStepDetector = new StepDetector(this);
             SensorManager mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
             Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -264,10 +258,11 @@ public class SensorListener extends Service implements SensorEventListener, Step
             db.insertNewDay(Util.getToday(), steps);
             goal= BaseGOAL;
             saveNextGoal((int)goal);
-            updateStickerPackCountIncrease();
+           // updateStickerPackCountIncrease();
 
         }
 
+        Log.d("SaveCurrentSteps", Integer.toString(steps));
         db.saveCurrentSteps(steps);
         todayOffset = db.getSteps(Util.getToday());
         Log.w("TodayOfset", Integer.toString(todayOffset));
