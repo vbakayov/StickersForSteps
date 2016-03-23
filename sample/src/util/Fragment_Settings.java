@@ -77,7 +77,7 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
     @Override
     public void onResume() {
         super.onResume();
-        
+
     }
 
     @Override
