@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by Viktor on 1/14/2016.
+ * A helper class to represent an achievement
  */
 public class Achievement implements Serializable {
     private boolean achieved;

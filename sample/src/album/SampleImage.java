@@ -6,6 +6,11 @@ import android.graphics.BitmapFactory;
 
 /**
  * Created by Viktor on 12/12/2015.
+ *
+ * decoding large bitmaps without
+ * exceeding(hopefully)
+ * the per application memory limit by loading
+ * a smaller subsampled version in memory.
  */
 public final class SampleImage {
 

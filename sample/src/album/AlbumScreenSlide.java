@@ -26,7 +26,7 @@ import android.widget.TextView;
 import com.astuetz.viewpager.extensions.sample.R;
 
 /**
- *
+ *Page Screen Slider for Swipping through the pages
  */
 public class AlbumScreenSlide extends Fragment {
     /**

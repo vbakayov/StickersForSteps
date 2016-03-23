@@ -2,6 +2,8 @@ package stickers;
 
 /**
  * Created by Viktor on 12/9/2015.
+ * Helper class representing a sticker
+ * and passing it around between the different views and elements
  */
 public class Sticker {
     private Integer id;

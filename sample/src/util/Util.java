@@ -8,6 +8,7 @@ public abstract class Util {
 
     /**
      * @return milliseconds since 1.1.1970 for today 0:00:00
+     *
      */
     public static long getToday() {
         Calendar c = Calendar.getInstance();

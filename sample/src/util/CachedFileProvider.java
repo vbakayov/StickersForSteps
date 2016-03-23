@@ -53,8 +53,7 @@ public class CachedFileProvider extends ContentProvider {
 
                 // The desired file name is specified by the last segment of the
                 // path
-                // E.g.
-                // 'content://com.stephendnicholas.gmailattach.provider/Test.txt'
+                //
                 // Take this and build the path to the file
                 String fileLocation = getContext().getCacheDir() + File.separator
                         + uri.getLastPathSegment();
@@ -74,9 +73,7 @@ public class CachedFileProvider extends ContentProvider {
         }
     }
 
-    // //////////////////////////////////////////////////////////////
-    // Not supported / used / required for this example
-    // //////////////////////////////////////////////////////////////
+
 
     @Override
     public int update(Uri uri, ContentValues contentvalues, String s,

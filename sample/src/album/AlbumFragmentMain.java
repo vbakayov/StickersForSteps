@@ -36,19 +36,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Demonstrates a "screen-slide" animation using a {@link ViewPager}. Because {@link ViewPager}
- * automatically plays such an animation when calling {@link ViewPager#setCurrentItem(int)}, there
- * isn't any animation-specific code in this sample.
- *
- * <p>This sample shows a "next" button that advances the user to the next step in a wizard,
- * animating the current screen out (to the left) and the next screen in (from the right). The
- * reverse animation is played when the user presses the "previous" button.</p>
- *
- * @see AlbumScreenSlide
+ *The main Album fragment which consist of a
+ * page adapter having 23 fragments
  */
 public class AlbumFragmentMain extends Fragment {
     /**
-     * The number of pages (wizard steps) to show in this demo.
+     * The number of pages (wizard steps) to show.
      */
     private static final int NUM_PAGES = 23;
 
@@ -83,7 +76,7 @@ public class AlbumFragmentMain extends Fragment {
 
         mPagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-        mPager.setOffscreenPageLimit(0);
+        mPager.setOffscreenPageLimit(2);
 
 
 
@@ -118,8 +111,12 @@ public class AlbumFragmentMain extends Fragment {
 
 
     /**
-     * A simple pager adapter that represents 5 {@link AlbumScreenSlide} objects, in
+     * A simple pager adapter that represents  {@link AlbumScreenSlide} objects, in
      * sequence.
+     * for each sub fragment  list of the sticker id-s is  pressed
+     * and the size we want them to be
+     * the order matters and represents in which container
+     * they will be loaded
      */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
@@ -129,137 +126,133 @@ public class AlbumFragmentMain extends Fragment {
         @Override
         public Fragment getItem(int position) {
 
+            //switch between the fragments
             switch (position) {
-                case 0: // Fragment # 1 -
+                case 0: // Fragment # 1 - Brave
                     return AlbumPage.newInstance(
                             "Brave",
+                            //id stickers
                             new ArrayList<>(Arrays.asList(2, 6, 7, 3, 5, 8, 4, 1)),
+                            //size sticker
                             new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90, 90)));
-                case 1: // Fragment # 2 - This will show  Album
+                case 1: // Fragment # 2 - This will show  Bee
                     return AlbumPage.newInstance(
                             "Bee",
                             new ArrayList<>(Arrays.asList(9, 13, 14, 10, 15, 11, 12)),
                             new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90)));
-                case 2: // Fragment # 3 - This will show Stickers
+                case 2: // Fragment # 3 - This will show Cars
                     return AlbumPage.newInstance(
                             "Cars",
                             new ArrayList<>(Arrays.asList(16, 17, 18, 19, 20, 21, 22)),
                             new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90)));
-                case 3 : //Fragmern 4 - Swapping
+                case 3 : //Fragment # 4 - This will show Croods
                     return AlbumPage.newInstance(
                             "Croods",
                             new ArrayList<>(Arrays.asList(23, 24, 25, 26, 27, 28, 29)),
                             new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90)));
-                case 4 : //Fragmern 4 - Swapping
+                case 4 : //Fragment # 5 - This will show Frozen
                     return AlbumPage.newInstance(
                             "Frozen", ///add here one more
                             new ArrayList<>(Arrays.asList(30, 31, 32, 33, 34, 35, 36, 37)),
                             new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90, 90)));
-                case 5 : //Fragmern 4 - Swapping
+                case 5 : //Fragment # 6 - This will show Home
                     return AlbumPage.newInstance(
                             "Home", ///problme loading 44 -Tip-last one
                             new ArrayList<>(Arrays.asList(38, 39, -1, 40, 42, 41, 43)),
                             new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90)));
 
-                case 6 : //Fragmern 4 - Swapping
+                case 6 : //Fragment  # 7 - This is wil show HTTYD
                     return AlbumPage.newInstance(
                             "How to Train Your Dragon",
                             new ArrayList<>(Arrays.asList(45, 46, 47, 48, 49, 50, 51, 52)),
                             new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90, 90, 90)));
-                case 7 : //Fragmern 4 - Swapping
+                case 7 : //Fragment # 8
                     return AlbumPage.newInstance(
                             "Ice Age",
                             new ArrayList<>(Arrays.asList(-1, 53, 54, 55, 56, 57)),
                             new ArrayList<>(Arrays.asList(90, 120, 90, 90, 90, 90)));
-                case 8 :
+                case 8 : //Fragment # 9
                     return AlbumPage.newInstance(
                             "Incredible",
                             new ArrayList<>(Arrays.asList(58, 59, -1, 61, 62, 63, 64, 60)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100, 100)));
-                case 9 :
+                case 9 : //Fragment # 10
                     return AlbumPage.newInstance(
                             "Inside Out",
                             new ArrayList<>(Arrays.asList(65, 66, 67, 68, 69, -1, 70, 71)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100, 100)));
 
-                case 10 :
+                case 10 :  //Fragment # 11
                     return AlbumPage.newInstance(
                             "Kung Fu Panda",
                             new ArrayList<>(Arrays.asList(72, 73, 74, 75, 76, 77, 78, 79)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100, 100)));
 
-                case 11 :
+                case 11 :   //Fragment # 12
                     return AlbumPage.newInstance(
                             "Madagascar",
                             new ArrayList<>(Arrays.asList(80, 81, 82, 83, 84, 85)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100, 100)));
 
-                case 12 :
+                case 12 :  //Fragment # 13
                     return AlbumPage.newInstance(
                             "Madagascar2",
                             new ArrayList<>(Arrays.asList(86, 87, 88, 89, -1, -1)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100)));
 
-                case 13 :
+                case 13 :  //Fragment # 14
                     return AlbumPage.newInstance(
                             "Megamind",
                             new ArrayList<>(Arrays.asList(-1, 90, -1, 91, -1, 92, 93, 94)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100, 100)));
 
-                case 14 :
+                case 14 :  //Fragment # 15
                     return AlbumPage.newInstance(
                             "Monsters",
                             new ArrayList<>(Arrays.asList(95, 96, 97, 98, 99, -1, 100, -1)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100, 100)));
-                case 15 :
+                case 15 :  //Fragment # 16
                     return AlbumPage.newInstance(
                             "Nemo",
                             new ArrayList<>(Arrays.asList(100, 101, 102, 103, 104, 105)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100, 100)));
 
-                case 16 :
+                case 16 :  //Fragment # 17
                     return AlbumPage.newInstance(
                             "Nemo2",
                             new ArrayList<>(Arrays.asList(106, 107, 108, 109, 110, 111)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100, 100)));
-                case 17 :
+                case 17 :  //Fragment # 18
                     return AlbumPage.newInstance(
                             "Ratatouille",
                             new ArrayList<>(Arrays.asList(112, 113, -1, 114, 115, 116, 117, 118)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100, 100)));
 
-                case 18 :
+                case 18 :  //Fragment # 19
                     return AlbumPage.newInstance(
                             "Shrek",
                             new ArrayList<>(Arrays.asList(119, 120, -1, 122, 121)),
                             new ArrayList<>(Arrays.asList(120, 120, 100, 120, 120, 100, 100, 100)));
-                case 19 :
+                case 19 :  //Fragment # 20
                     return AlbumPage.newInstance(
                             "Tangled",
                             new ArrayList<>(Arrays.asList(123, 124, 125, -1, 126, 127, 128)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100, 100)));
-                case 20 :
+                case 20 :  //Fragment # 21
                     return AlbumPage.newInstance(
                             "Toystory",
                             new ArrayList<>(Arrays.asList(129, 130, -1, -1, -1, 131, 132, 133)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100, 100)));
-                case 21 :
+                case 21 :  //Fragment # 22
                     return AlbumPage.newInstance(
                             "Up",
                             new ArrayList<>(Arrays.asList(134, 135, 136, 137, 138, 139, -1, -1)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100, 100)));
-                case 22 :
+                case 22 :   //Fragment # 23
                     return AlbumPage.newInstance(
                             "Walle",
                             new ArrayList<>(Arrays.asList(145, 140, 142, 143, 144, 141, -1, -1)),
                             new ArrayList<>(Arrays.asList(100, 120, 100, 100, 100, 100, 100, 100)));
-
-
-
-
-
-
-
                 default:
                     return null;
             }

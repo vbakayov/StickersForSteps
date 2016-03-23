@@ -30,6 +30,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.hardware.SensorManager;
 import android.os.Build;
+import android.os.Handler;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -53,9 +54,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 
-import com.astuetz.SlidingTabLayout;
+
+import com.astuetz.PagerSlidingTabStrip;
 import com.astuetz.viewpager.extensions.sample.R;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.util.ArrayList;
 
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
     @InjectView(R.id.tabs)
-    SlidingTabLayout tabs;
+    PagerSlidingTabStrip tabs;
     @InjectView(R.id.pager)
     ViewPager pager;
 
@@ -89,19 +90,9 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
     private View.OnClickListener myhandler1;
     private int steps;
     private Database db;
-//    private SensorManager mSensorManager;
-//    private StepDetector mStepDetector;
-//    private Sensor mSensor;
-
     private MyReceiver myReceiver;
-
-
-
     private MyPagerAdapter adapter;//
-
     private Drawable oldBackground = null;
-    private int currentColor;
-    private SystemBarTintManager mTintManager;
     private SmartFragmentStatePagerAdapter adapterViewPager;
     private StepsFragment m;
     private int since_boot;
@@ -109,13 +100,15 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
     private int total_start;
     private static StickersFragment fragmenttStickers;
     private static BluetoothChatFragment fragmentBlt;
+    private int currentColor = 0x00000000;
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle b) {
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(b);
-
         setContentView(R.layout.activity_main);
+
         startService(new Intent(this, SensorListener.class));
 
         initialStep = 0;
@@ -123,13 +116,9 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         ButterKnife.inject(this);
         setSupportActionBar(toolbar);
-        // create our manager instance after the content view is set
-        mTintManager = new SystemBarTintManager(this);
-        // enable status bar tint
-        mTintManager.setStatusBarTintEnabled(true);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
-        tabs.setDistributeEvenly(true);
+       // tabs.setDistributeEvenly(true);
         tabs.setViewPager(pager);
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                 .getDisplayMetrics());
@@ -137,27 +126,16 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         pager.setOffscreenPageLimit(3);
         pager.setCurrentItem(0);
         tabs.setBackgroundColor(getResources().getColor(R.color.green));
-
-        // Setting Custom Color for the Scroll bar indicator of the Tab View
-        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
-            }
-        });
-
-        getSupportActionBar().setIcon(R.drawable.icon2);
-
-
-        Database db = Database.getInstance(this);
-       db.getSticker(3);
+        tabs.setIndicatorColor(R.color.tabsScrollColor);
+        tabs.setTextColor(getResources().getColor(R.color.text_shadow_white));
+      //  getSupportActionBar().setIcon(R.drawable.icon2);
+        tabs.setIndicatorColorResource(R.color.tabsScrollColor);
 
     }
 
+
     @Override
     protected void onStart() {
-        // TODO Auto-generated method stub
-
         //Register BroadcastReceiver
         //to receive event from our service
         myReceiver = new MyReceiver();
@@ -166,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         registerReceiver(myReceiver, intentFilter);
         super.onStart();
     }
+
 
     @Override
     protected  void onStop(){
@@ -220,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
     return true;
     }
 
+
     @Override
     public void onBackPressed() {
         if (fragmentBlt.backPressed()) { // and then you define a method allowBackPressed with the logic to allow back pressed or not
@@ -249,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
 
 
 
+    //check which item was selected from the menue
     public boolean optionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -267,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
                 ArrayList<Achievement> list=   AchievementStorage.getAchievements();
                 if(list != null) {
                     Intent myIntent = new Intent(this, ListActivity.class);
-                    myIntent.putExtra("filtered", list); //pass the filted array with the trips
+                    myIntent.putExtra("filtered", list);
                     this.startActivity(myIntent);
                 }
                 break;
@@ -275,25 +256,9 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         return true;
     }
 
-    private void changeColor(int newColor) {
-        tabs.setBackgroundColor(newColor);
-        mTintManager.setTintColor(newColor);
-        // change ActionBar color just if an ActionBar is available
-        Drawable colorDrawable = new ColorDrawable(newColor);
-        Drawable bottomDrawable = new ColorDrawable(getResources().getColor(android.R.color.transparent));
-        LayerDrawable ld = new LayerDrawable(new Drawable[]{colorDrawable, bottomDrawable});
-        if (oldBackground == null) {
-            getSupportActionBar().setBackgroundDrawable(ld);
-        } else {
-            TransitionDrawable td = new TransitionDrawable(new Drawable[]{oldBackground, ld});
-                getSupportActionBar().setBackgroundDrawable(td);
-            td.startTransition(200);
-        }
 
-        oldBackground = ld;
-        currentColor = newColor;
-    }
 
+    //check some of the  achievements here and build up the list
     private void populateAchievementView() {
         AchievementStorage.clear();
 
@@ -329,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         AchievementStorage.addAchievement(new Achievement("Pack 2", numberRecieved >= 15, "pack", "receive 15 stickers"));
         AchievementStorage.addAchievement(new Achievement("Pack 3", numberRecieved >= 30, "pack", "receive 30 stickers"));
 
-        //checking is done in the Album page a sticker is glued
+        //checking is done in the Album page when a sticker is glued
         int numberGlued=     prefs.getInt("glued stickers", 0);
 
         AchievementStorage.addAchievement(new Achievement("Collection", numberGlued>= 5, "album", "Stick 5 stickers into the album"));
@@ -453,8 +418,7 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        currentColor = savedInstanceState.getInt("currentColor");
-        changeColor(currentColor);
+
     }
 
 
@@ -473,6 +437,8 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         return super.onPrepareOptionsMenu(menu);
     }
 
+    // listen for sticker status or count change
+    //update the lists in the stickers or blth tab
     @Override
     public void notifyChange() {
         fragmenttStickers.updateList();
@@ -480,7 +446,10 @@ public class MainActivity extends AppCompatActivity implements StepsFragment.OnS
         Log.w("Notifed","Notified");
     }
 
-
+    /**
+     * receive notifications from the Service
+     * used to passed the count to the steps fragmenet
+     */
     private class MyReceiver extends BroadcastReceiver {
 
         @Override

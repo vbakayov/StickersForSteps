@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * Created by Viktor on 12/10/2015.
+ * This class is used to randomly pick a sticker
+ * based on probability count
  */
 public class DistributedRandomNumberGenerator {
 
@@ -46,13 +47,16 @@ public class DistributedRandomNumberGenerator {
     }
 
     public int getDistributedRandomNumber() {
+        //returns a number from zero to one
         double rand = Math.random();
+        //calculate the probability of occurring over the distribution sum
         double ratio = 1.0f / distSum;
         double tempDist = 0;
+        //loop the sticker's distributions  and sum them
         for (Integer i : distribution.keySet()) {
             tempDist += distribution.get(i);
             if (rand / ratio <= tempDist) {
-                return i;
+                return i; //return the sticker ID
             }
         }
         return 0;

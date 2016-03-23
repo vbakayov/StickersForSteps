@@ -1,8 +1,6 @@
 package main;
 
-/**
- * Created by Viktor on 1/14/2016.
- */
+
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +24,8 @@ import Achievements.Achievement;
 
 
 /**
- * Created by Viktor on 11/18/2015.
+ * Created by Viktor on 1/14/2016.
+ * A listActivity used for displaying the Achievements
  */
 public class ListActivity extends AppCompatActivity {
     private static Achievement clickedAchievement;
@@ -42,36 +41,18 @@ public class ListActivity extends AppCompatActivity {
         Log.d("LIST CREATED", "INITIALIZED");
         achievements = (ArrayList<Achievement>) getIntent().getSerializableExtra("filtered");
 
-        //for animation the activity
+       //legacy code heree
         onStartCount = 1;
         if (savedInstanceState == null) // 1st time
         {
             this.overridePendingTransition(R.anim.anim_slide_in_right,
                     R.anim.anim_slide_out_left);
-        } else // already created so reverse animation
+        } else
         {
             onStartCount = 2;
         }
-//
-//        final PullRefreshLayout layout = (PullRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-//        layout.setRefreshStyle(PullRefreshLayout.STYLE_CIRCLES);
-//
-//        // listen refresh event
-//        layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                layout.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        layout.setRefreshing(false);
-//                    }
-//                }, 3000);
-//
-//            }
-//        });
-//
-//        // refresh complete
-//        layout.setRefreshing(false);
+
+        // end of legacy code here
 
         populateListView();
         registerClickCallback();
@@ -94,12 +75,11 @@ public class ListActivity extends AppCompatActivity {
 
 
     private void populateListView() {
-        //Build Adapter //Context for the activity, layout to use ,Items to be displayed
+        //Build Adapter
         ArrayAdapter<Achievement> adapter = new MyListAdapter();
 
         //Configurate the list view
         ListView list = (ListView) findViewById(R.id.listMain);
-//        list.setBackgroundResource(R.drawable.gradient_bg);;
         list.setAdapter(adapter);
     }
 

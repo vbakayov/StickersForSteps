@@ -20,7 +20,8 @@ import com.astuetz.viewpager.extensions.sample.R;
 
 /**
  * 
- * @author manish.s
+ *A helper class for displaying the individual stickers in the
+ * stickers tab
  *
  */
 public class CustomGridViewAdapter extends ArrayAdapter<Item> {

@@ -47,27 +47,23 @@ import util.Util;
 
 /**
  * Background service which keeps the step-sensor listener alive to always get
- * the number of steps since boot.
- * <p/>
+ * the number of steps
+ *
  *
  *
  */
 public class SensorListener extends Service implements SensorEventListener, StepListener {
-
     private final static int NOTIFICATION_ID = 1;
     private final static int BaseGOAL = 500;
-
     public final static String ACTION_PAUSE = "pause";
-
     public final static String ACTION_STEPS = "ACTION_STEPS";
     private  float goal =  Fragment_Settings.DEFAULT_GOAL;
-
     private static boolean WAIT_FOR_VALID_STEPS = true;
     private static int steps;
     private int since_boot;
     private int todayOffset;
 
-    private SensorManager mSensorManager;
+
     private StepDetector mStepDetector;
     private Sensor mSensor;
 
@@ -93,9 +89,7 @@ public class SensorListener extends Service implements SensorEventListener, Step
 
     @Override
     public void onStep() {
-
         steps++;
-      //  Toast.makeText(this, "Step  taken  "+ Integer.toString(steps), Toast.).show();
         saveSteps(false,steps);
     }
 
@@ -165,7 +159,6 @@ public class SensorListener extends Service implements SensorEventListener, Step
     @Override
     public void onTaskRemoved(final Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-       // if (BuildConfig.DEBUG) Logger.log("sensor service task removed");
         // Restart service in 500 ms
         ((AlarmManager) getSystemService(Context.ALARM_SERVICE))
                 .set(AlarmManager.RTC, System.currentTimeMillis() + 500, PendingIntent
@@ -218,36 +211,50 @@ public class SensorListener extends Service implements SensorEventListener, Step
                         .setContentText(getString(R.string.your_progress_will_be_shown_here_soon));
             }
             boolean isPaused = prefs.contains("pauseCount");
-            notificationBuilder.setPriority(Notification.PRIORITY_MIN).setShowWhen(false)
-                    .setContentTitle(isPaused ? getString(R.string.ispaused) :
-                            getString(R.string.notification_title)).setContentIntent(PendingIntent
-                    .getActivity(this, 0, new Intent(this, MainActivity.class),
-                            PendingIntent.FLAG_UPDATE_CURRENT));
-            nm.notify(NOTIFICATION_ID, notificationBuilder.build());
+//            notificationBuilder.setPriority(Notification.PRIORITY_MIN).setShowWhen(false)
+//                    .setContentTitle(isPaused ? getString(R.string.ispaused) :
+//                            getString(R.string.notification_title)).setContentIntent(PendingIntent
+//                    .getActivity(this, 0, new Intent(this, MainActivity.class),
+//                            PendingIntent.FLAG_UPDATE_CURRENT));
+//            nm.notify(NOTIFICATION_ID, notificationBuilder.build());
         } else {
             nm.cancel(NOTIFICATION_ID);
         }
     }
 
-    private void reRegisterSensor() {
-        SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
-        try {
-            sm.unregisterListener(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if(sm.getSensorList(Sensor.TYPE_STEP_COUNTER).size() != 0) {
-            // enable batching
-            sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER), SensorManager.SENSOR_DELAY_UI);
-        }else{
-            Toast.makeText(this, "Step detector not available! Don't worry Accelerometer is available", Toast.LENGTH_LONG).show();
-            StepDetector  mStepDetector = new StepDetector(this);
-            SensorManager mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-            Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            mSensorManager.registerListener(mStepDetector, mSensor, SensorManager.SENSOR_DELAY_FASTEST);
-        }
-
+//    private void reRegisterSensor() {
+//        //Sensor Manager
+//        SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+//        sm.unregisterListener(this);
+//
+//        if(sm.getSensorList(Sensor.TYPE_STEP_COUNTER).size() != 0) {
+//            sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER), SensorManager.SENSOR_DELAY_UI);
+//        }else{
+//            Toast.makeText(this, "Step detector not available! Don't worry Accelerometer is available", Toast.LENGTH_LONG).show();
+//            StepDetector  mStepDetector = new StepDetector(this);
+//            sm.registerListener(mStepDetector, mSensor, SensorManager.SENSOR_DELAY_FASTEST);
+//        }
+//
+//    }
+private void reRegisterSensor() {
+    SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+    try {
+        sm.unregisterListener(this);
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    if(sm.getSensorList(Sensor.TYPE_STEP_COUNTER).size() != 0) {
+        // enable batching
+        sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER), SensorManager.SENSOR_DELAY_UI);
+    }else{
+        Toast.makeText(this, "Step detector not available! Don't worry Accelerometer is available", Toast.LENGTH_LONG).show();
+        StepDetector  mStepDetector = new StepDetector(this);
+        SensorManager mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(mStepDetector, mSensor, SensorManager.SENSOR_DELAY_FASTEST);
+    }
+
+}
 
 
     private void saveSteps(boolean isHardwareCount, int steps) {
@@ -256,10 +263,9 @@ public class SensorListener extends Service implements SensorEventListener, Step
         if (db.getSteps(Util.getToday()) == Integer.MIN_VALUE) {
             //start of new day
             db.insertNewDay(Util.getToday(), steps);
+            //set goal to be the goal for today
             goal= BaseGOAL;
             saveNextGoal((int)goal);
-           // updateStickerPackCountIncrease();
-
         }
 
         Log.d("SaveCurrentSteps", Integer.toString(steps));
@@ -271,7 +277,6 @@ public class SensorListener extends Service implements SensorEventListener, Step
         // todayOffset might still be Integer.MIN_VALUE on first start
         int steps_today = Math.max(todayOffset + since_boot, 0);
         Log.w("StepsToday", Integer.toString(steps_today));
-        //   frag.updateCountView(steps_today);
         db.close();
 
         if(steps_today>= (int)goal){
@@ -311,7 +316,6 @@ public class SensorListener extends Service implements SensorEventListener, Step
     }
 
     private void updateStickerPackCountIncrease() {
-
         SharedPreferences prefs = getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
         int availableStickerPacks = prefs.getInt("packs", 0);
         availableStickerPacks++;

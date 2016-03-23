@@ -35,7 +35,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import Database.Database;
 import Steps.StepsFragment;
 import stickers.Sticker;
@@ -79,9 +78,13 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
 
     public static AlbumPage newInstance(String movieName, ArrayList<Integer> stickers,ArrayList<Integer> size) {
         AlbumPage f = new AlbumPage();
+        //pass info from the AlbumFragmentMain class for each individual page
         Bundle b = new Bundle();
+        //what is the movie title
         b.putString("movieName", movieName);
+        //what are the sticker Id's to be displayed
         b.putIntegerArrayList("stickers", stickers);
+        //what is the sticker size for each sticker
         b.putIntegerArrayList("stickerSize", size);
         f.setArguments(b);
         f.setArguments(b);
@@ -102,45 +105,62 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
     {
 
         View view = inflater.inflate(R.layout.pagethree_layout, container, false);
-        Log.w("I AM HEREEE", "HEEE");
 
-
-        TextView tv = (TextView) view.findViewById(R.id.movieName);
         //set the title i.e movie name for this fragment
+        TextView tv = (TextView) view.findViewById(R.id.movieName);
         tv.setText(getArguments().getString("movieName"));
+
+        //build an array with all the stickers and then with all their sizes
         ArrayList<Integer> stickers = new ArrayList<Integer>();
         stickers.addAll(getArguments().getIntegerArrayList("stickers"));
         ArrayList<Integer> size = new ArrayList<Integer>();
         size.addAll(getArguments().getIntegerArrayList("stickerSize"));
-        Log.w("Strickers", stickers.toString());
 
+
+        //loop through each of the stickers
+        //the stickers will bo loaded in the containers
+        // in the same orded as they were passed in the array
         for(int i =0 ; i< stickers.size();i++) {
+            // if this is the first  sticker load on the first container
             if (i == 0 && stickers.get(0)!= -1) {
+                //find the wrapper view group for this container
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_1).getLayoutParams();
+                //get the passed size
                 int sizeSticker = size.get(i);
+                //resize the wrapper container to accommodate the sticker
                 params.height = convertdipToPixel(sizeSticker);
                 params.width = convertdipToPixel(sizeSticker);
+                //get the sticker and it's status
                 sticker = db.getSticker(stickers.get(i));
                 status = sticker.getStatus();
+                //get a reference to the container which is at the
+                // bottom right corner and hosts the stickers ready to be glued
+                // put a listener on it
                 containerImg = (ImageView) view.findViewById(R.id.container1_unglued);
                 containerImg.setOnLongClickListener(this);
                 int resourceId = GetResourceIDForImage(sticker, false);
                 //set the sampled sized of the image with the given dimensions
                 currentImg = SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, dimension, dimension);
                 currentImg = Bitmap.createScaledBitmap(currentImg, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
+               //if the sticker is received or not received
                 if (status == recieved || status == notReieved) {
+                    //if the sticker is received load the image ot the side corner available for gluing
                     if (status == recieved) containerImg.setImageBitmap(currentImg);
+                    //if not received load its black and white counterpart and set the text to be
+                    //the id of the sticker
                     resourceId = GetResourceIDForImage(sticker, true);
                     Bitmap image = BitmapFactory.decodeResource(getResources(), resourceId);
                     image = Bitmap.createScaledBitmap(image, convertdipToPixel(sizeSticker), convertdipToPixel(sizeSticker), true);
                     ((ImageView) view.findViewById(R.id.container1_img)).setImageBitmap(image);
                     ((TextView) view.findViewById(R.id.container1_txt)).setText(sticker.getId().toString());
                 } else if(status == glued) {
+                    //if glued load the actual sticker  image in the first container
                     ((ImageView) view.findViewById(R.id.container1_img)).setImageBitmap(currentImg);
                     ((TextView) view.findViewById(R.id.container1_txt)).setText("");
                     view.findViewById(R.id.container_1).setOnClickListener(this);
                 }
             }
+            //if this is the second  sticker
             if (i == 1 && stickers.get(1)!= -1) {
 
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_5).getLayoutParams();
@@ -170,6 +190,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                 }
 
             }
+            //if this is the 3rd  sticker
             if (i == 2  && stickers.get(2)!= -1) {
 
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_8).getLayoutParams();
@@ -200,7 +221,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
 
             }
 
-
+            //if this is the 4th  sticker
         if (i == 3  && stickers.get(3)!= -1) {
 
             ViewGroup.LayoutParams params = view.findViewById(R.id.container_7).getLayoutParams();
@@ -230,6 +251,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
             }
 
         }
+            //if this is the 5th  sticker
             if (i == 4 && stickers.get(4)!= -1) {
 
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_6).getLayoutParams();
@@ -259,6 +281,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                 }
 
             }
+            //if this is the 6th  sticker
             if (i == 5 && stickers.get(5)!= -1) {
 
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_4).getLayoutParams();
@@ -288,6 +311,8 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                 }
 
             }
+
+            //if this is the 7th  sticker
             if (i == 6 && stickers.get(6)!= -1) {
 
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_3).getLayoutParams();
@@ -317,6 +342,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                 }
 
             }
+            //if this is the 8th  sticker
             if (i == 7 && stickers.get(7)!= -1) {
 
                 ViewGroup.LayoutParams params = view.findViewById(R.id.container_2).getLayoutParams();
@@ -351,6 +377,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
 
 
 //      register drag event listeners for the target layout containers
+
         view.findViewById(R.id.stick_container).setOnDragListener(this);
         view.findViewById(R.id.container_1).setOnDragListener(this);
         view.findViewById(R.id.container_2).setOnDragListener(this);
@@ -406,24 +433,25 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
         }
     }
 
-    //    called when ball has been touched and held
-    @Override
+
+        @Override
     public boolean onLongClick(View imageView) {
-        //        the ball has been touched
-//            create clip data holding data of the type MIMETYPE_TEXT_PLAIN
+        //the sticker  has been touched
+        //create clip data holding data of the type MIMETYPE_TEXT_PLAIN
         ClipData clipData = ClipData.newPlainText("", "");
 
         View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(imageView);
             /*start the drag - contains the data to be dragged,
             metadata for this data and callback for drawing shadow*/
         imageView.startDrag(clipData, shadowBuilder, imageView, 0);
-//        we're dragging the shadow so make the view invisible
+        //we're dragging the shadow so make the view invisible
         imageView.setVisibility(View.INVISIBLE);
         return true;
     }
 
-    //    called when the ball starts to be dragged
-//    used by top and bottom layout containers
+
+//    used by bottom  left layout container,
+    //  hosting the recieved stickers
     @Override
     public boolean onDrag(View receivingLayoutView, DragEvent dragEvent) {
         final View draggedImageView = (View) dragEvent.getLocalState();
@@ -461,7 +489,7 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                 return true;
 
             case DragEvent.ACTION_DRAG_LOCATION:
-                //  Log.i(TAG, "drag action location");
+
                 offsetX = (int)dragEvent.getX();//(int)motionEvent.getX();
                 offsetY = (int)dragEvent.getY();//motionEvent.getY();
 
@@ -479,13 +507,16 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
             return true if successfully handled the drop else false*/
                 switch (draggedImageView.getId()) {
                     case R.id.angus:
-                        Log.i(TAG, "containerImg");
+                        //if the dragged image matches the container it belongs to
                         if(receivingLayoutView.getId()== R.id.container_2) {
+                            //stick it to the container
                             stickSticker(angus,draggedImageView,receivingLayoutView);
+                            //update its status
                             updateStatusDatabase(sticker8);
                             updateCountForAchievements();
                             return true;
                         }else{
+                            //if it is the wrong container animate it back to the bottom left corner
                             AnimateStickerBack(draggedImageView,offsetX,offsetY,originalPos[0],originalPos[1]);
                             return false;
                         }
@@ -579,7 +610,8 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                 Log.i(TAG, "drag action ended");
                 Log.i(TAG, "getResult: " + dragEvent.getResult());
 
-//                if the drop was not successful, set the ball to visible
+//                if the drop was not successful, set the sticker to visible
+
                 if (!dragEvent.getResult()) {
                     draggedImageView.post(new Runnable() {
                         @Override
@@ -599,12 +631,22 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
         return false;
     }
 
+    /**
+     * Update the sticker count  and status
+     * and notify the stickers tab and blth tb for sticker
+     * sttatus chagne event
+     * @param sticker
+     */
     private void updateStatusDatabase(Sticker sticker) {
         db.updateStatus(sticker.getId(), 2);
         db.updateCount(sticker.getId(),"decrease");
         notifyActivityStickerStatusChange.notifyChange();
     }
 
+    /**
+     *d check against the "stick" achievements
+     *
+     */
     private void updateCountForAchievements() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         int count = prefs.getInt("glued stickers", 0)+1;
@@ -618,13 +660,17 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
         prefs.edit().putInt("glued stickers", count).apply();
     }
 
+    //stick the sticker it ints container
     private void stickSticker(final ImageView stickerImage, View draggedImageView, View receivingLayoutView){
         ViewGroup draggedImageViewParentLayout = (ViewGroup) draggedImageView.getParent();
         draggedImageViewParentLayout.removeView(draggedImageView);
         RelativeLayout bottomLinearLayout = (RelativeLayout) receivingLayoutView;
         bottomLinearLayout.addView(draggedImageView);
+        //make it visible
         draggedImageView.setVisibility(View.VISIBLE);
+        //animate it to seem as it is appearing from the background
         YoYo.with(Techniques.BounceIn).duration(700).playOn(stickerImage);
+        //attack lisner to this new container
         draggedImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -669,7 +715,8 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                 }
 
 
-
+            //animate the sticker back to to bottom left corner in case the recieving container
+            // is not right
             private void AnimateStickerBack(View view, int offsetX, int offsetY, int originalPosX, int originalPosY) {
 
                 Animation animation = new TranslateAnimation(offsetX - originalPosX - 160, 0, offsetY - originalPosY + 240, 0);
@@ -721,10 +768,9 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                 }
             }
 
+            //display more info for the sticker
             private void showStickerMoreInfo(final Sticker clickedSticker) {
                 // custom dialog
-
-
                 clickedSticker.getName();
                 Log.d("NAMe", clickedSticker.getName());
 
@@ -770,8 +816,6 @@ public class AlbumPage extends Fragment implements View.OnDragListener, View.OnL
                 TextView movie = (TextView) (dialog).findViewById(R.id.sticker_movie);
                 movie.setText(clickedSticker.getMovie());
                 //set the layout to have the same widh and height as the  windows screen
-
-
                 Display display = getActivity().getWindowManager().getDefaultDisplay();
                 Point size = new Point();
                 display.getSize(size);

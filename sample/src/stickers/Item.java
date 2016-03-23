@@ -2,7 +2,10 @@ package stickers;
 
 import android.graphics.Bitmap;
 
-
+/**
+ * helper class for the GridView in the Stickers table
+ * item represents one sticker
+ */
 public class Item {
 	Bitmap image;
 	String title;

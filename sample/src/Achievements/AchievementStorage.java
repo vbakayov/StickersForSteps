@@ -5,24 +5,24 @@ import java.util.ArrayList;
 import Achievements.Achievement;
 
 /**
- * Created by Viktor on 1/14/2016.
+ *
+ * Have all the achievement  stored in this object
  */
 public class AchievementStorage {
-    private static ArrayList<Achievement> trips= new ArrayList<Achievement>();
+    private static ArrayList<Achievement> achievements= new ArrayList<Achievement>();
 
 
     //prevent any other class from instantiating
     private AchievementStorage(){}
 
 
-
     public static  void addAchievement(Achievement item){
-        trips.add(item);
+        achievements.add(item);
     }
 
     public static ArrayList<Achievement>  getAchievements(){
-        return trips;
+        return achievements;
     }
 
-    public static void clear() {trips.clear();}
+    public static void clear() {achievements.clear();}
 }

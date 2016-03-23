@@ -47,6 +47,9 @@ import java.util.Locale;
 import util.Util;
 
 
+/**
+ * A class for building all the graphs in the applications
+ */
 public class CombinedChartActivity extends FragmentActivity {
     private TextView totalView;
     private TextView averageView;
@@ -63,16 +66,17 @@ public class CombinedChartActivity extends FragmentActivity {
         ListView lv = (ListView) findViewById(R.id.chart1);
 
         ArrayList<BarData> list = new ArrayList<>();
-        //false for steps true for distance
+        //false for steps
         list.add(generateStepsOrDistanceData(false));
         list.add(generateStickerData());
+        //true for distance
         list.add(generateStepsOrDistanceData(true));
 
 
         ChartDataAdapter cda = new ChartDataAdapter(getApplicationContext(), list);
         lv.setAdapter(cda);
 
-
+        //get the respective values from the database
         Database db = Database.getInstance(this);
         int total_start = db.getTotalWithoutToday();
         int  total_days = db.getDays();
@@ -84,31 +88,37 @@ public class CombinedChartActivity extends FragmentActivity {
         averageView = (TextView)findViewById(R.id.average);
 
 
-        //code for the thousands numbeer separation
+        //code for the thousands number separation
         DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
         DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
 
         symbols.setGroupingSeparator(' ');
         formatter.setDecimalFormatSymbols(symbols);
 
+        //output to the views
         totalView.setText(formatter.format(total_start + steps));
         averageView.setText(formatter.format((total_start + steps) / total_days));
 
         SharedPreferences prefs = this.getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
         float height_value = prefs.getFloat("height_value", Fragment_Settings.DEFAULT_Human_Height);
       float stride_lenght;
+        //if male calculate the stride length
         if (prefs.getString("sex", Fragment_Settings.DEFAULT_SEX).equals("male")){
             stride_lenght = (float) (height_value*0.415);
-        }else {
+        }
+        //if female calculate the stride length
+        else {
             stride_lenght = (float) (height_value* 0.413);
         }
+
+        //based on the stride_lenght and steps taken calcualte the total distance
         float distance_total = (total_start + steps) * stride_lenght;
         if (prefs.getString("stepsize_unit", Fragment_Settings.DEFAULT_STEP_UNIT).equals("cm")) {
             distance_total /= 100000;
         } else {
             distance_total /= 5280;
         }
-
+        //output to the screen
         averageDistanceView = (TextView)findViewById(R.id.averageDistance);
         totalDistanceView = (TextView)findViewById(R.id.totalDistance);
         totalDistanceView.setText(String.format("%.1f km", distance_total));
@@ -142,65 +152,6 @@ public class CombinedChartActivity extends FragmentActivity {
 
 
 
-    private LineData generateLineData() {
-        //getStickerCount
-        LineData d = new LineData();
-        ArrayList<Entry> entries = new ArrayList<Entry>();
-
-        Database db = Database.getInstance(this);
-        Calendar yesterday = Calendar.getInstance();
-        yesterday.setTimeInMillis(Util.getToday());
-        yesterday.add(Calendar.DAY_OF_YEAR, -1);
-        yesterday.add(Calendar.DAY_OF_YEAR, -6);
-        for (int i = 0; i < 7; i++) {
-            int stickers = db.getStickerCount(yesterday.getTimeInMillis());
-            Log.d("stickers", Integer.toString(stickers));
-            if(stickers !=Integer.MIN_VALUE) {
-                entries.add(new BarEntry(stickers, i));
-            }
-            yesterday.add(Calendar.DAY_OF_YEAR, 1);
-        }
-        LineDataSet set = new LineDataSet(entries, "Stickers");
-        d.addDataSet(set);
-
-        return d;
-    }
-
-    private BarData generateBarData() {
-        BarData d = new BarData();
-        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
-        Database db = Database.getInstance(this);
-        SimpleDateFormat df = new SimpleDateFormat("E", Locale.getDefault());
-        Calendar yesterday = Calendar.getInstance();
-        yesterday.setTimeInMillis(Util.getToday());
-        yesterday.add(Calendar.DAY_OF_YEAR, -1);
-        yesterday.add(Calendar.DAY_OF_YEAR, -6);
-        for (int i = 0; i < 7; i++) {
-            int steps = db.getSteps(yesterday.getTimeInMillis());
-
-            String date =  df.format(new Date(yesterday.getTimeInMillis()));
-            Log.d("steps", Integer.toString(steps));
-            Log.d("date", date);
-            Log.d("space", "===========");
-            if (steps > 0) {
-                entries.add(new BarEntry(steps, i));
-            }else if(steps == Integer.MIN_VALUE){ //no dataa in the database
-                entries.add(new BarEntry(0, i));
-            }else if(steps < 0){
-                entries.add(new BarEntry(Math.abs(steps), i));
-            }
-            yesterday.add(Calendar.DAY_OF_YEAR, 1);
-        }
-        BarDataSet set = new BarDataSet(entries, "Steps");
-        set.setColor(Color.rgb(60, 220, 78));
-        set.setValueTextColor(Color.rgb(60, 220, 78));
-        set.setValueTextSize(10f);
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        d.addDataSet(set);
-
-        db.close();
-        return d;
-    }
 
     private class ChartDataAdapter extends ArrayAdapter<BarData> {
 

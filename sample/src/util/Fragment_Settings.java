@@ -60,10 +60,6 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
         addPreferencesFromResource(R.xml.settings);
         final SharedPreferences prefs =
                 getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
-//
-//        Preference goal = findPreference("goal");
-//        goal.setOnPreferenceClickListener(this);
-//        goal.setSummary(getString(R.string.goal_summary, prefs.getInt("goal", DEFAULT_GOAL)));
 
 
         Preference stepsize = findPreference("stepsize");
@@ -81,7 +77,7 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
     }
 
     @Override
@@ -100,9 +96,12 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
         final SharedPreferences prefs =
                 getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
         switch (preference.getTitleRes()) {
+            //if the menu clicked is 'Send Data'
             case R.string.send_data:
                 showAlertDialog("Sure", "Are you sure you want to send me the data ??");
                 break;
+
+            //if the menu clicked is 'Height'
             case R.string.step_size:
                 builder = new AlertDialog.Builder(getActivity());
                 v = getActivity().getLayoutInflater().inflate(R.layout.stepsize, null);
@@ -222,6 +221,7 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
 
         //Add the attachment by specifying a reference to our custom ContentProvider
         //and the specific file of interest
+        // this create a URI sting for the locations of the file
         emailIntent.putExtra(
                 Intent.EXTRA_STREAM,
                 Uri.parse("content://" + CachedFileProvider.AUTHORITY + "/"
@@ -230,6 +230,13 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
         return emailIntent;
     }
 
+    /**
+     * generate the file to be send with the Gmail client
+     * @param context
+     * @param fileName
+     * @param content
+     * @throws IOException
+     */
     public static void createCachedFile(Context context, String fileName,
                                         String content) throws IOException {
 
@@ -247,6 +254,13 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
         pw.close();
     }
 
+    /**
+     * generate the message sttring containing the information we need
+     * the sting consists for Total Steps, steps taken for the last 7 days
+     * average step count, collected stickers for the last 7 days; stickers glued
+     * stickers recived
+     * @return
+     */
     private String prapareMessageString() {
 
         String message= "";
@@ -273,12 +287,23 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
         message+= db.getNumberGluedStickers();
         message+="\r\n";
         message+=" Stickers recieved:"+"\r\n";
+        //number recievedStickers does not cover the case
+        //when the sticker is already glued, but it is already recieved
+        // as its status
+        //will be 2 and the logic transfers to checking the count
         message+= db.getNumberRecievedStickers();
         db.close();
-        //create a .txt file
+
     return  message;
     }
 
+    /**
+     *  generate collected stickers for the last 7 days Boolean sticker = true
+     *  generate Collected stickers for the last 7 days Boolean sticker = false
+     * @param db
+     * @param stickers
+     * @return
+     */
     private String generateData(Database db, Boolean stickers) {
         Calendar yesterday = Calendar.getInstance();
         yesterday.setTimeInMillis(Util.getToday());

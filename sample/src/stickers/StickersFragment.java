@@ -1,8 +1,6 @@
 package stickers;
 
-/**
- * Created by Viktor on 10/21/2015.
- */
+
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -55,7 +53,6 @@ import butterknife.ButterKnife;
 /**
  * Created by Viktor on 10/19/2015.
  */
-
 public class StickersFragment extends Fragment {
 
     GridView gridView;
@@ -122,6 +119,10 @@ public class StickersFragment extends Fragment {
 
     }
 
+    /**
+     * mapping for each of the stickers to which album page they belong
+     * used when the "stick" button is pressed to switch to that album page from here
+     */
     private void initMapping() {
         stickerToAlbum.put(0, new ArrayList<>(Arrays.asList(2,6,7,3,5,8,4,1)));
         stickerToAlbum.put(1, new ArrayList<>(Arrays.asList(9,13,14,10,15,11,12)));
@@ -203,6 +204,11 @@ public class StickersFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * once the sticker is pressed animate it it the center of the screen
+     * @param view
+     * @param stickerName
+     */
     private void moveViewToScreenCenter( final View view, final String stickerName )
     {
 
@@ -255,12 +261,16 @@ public class StickersFragment extends Fragment {
         view.startAnimation(cenerAndGrow);
     }
 
+    /**
+     * animate the sticker back to its place in the list view
+     * @param view
+     */
     private void animateStickerBack(View view)
     {
-        //  RelativeLayout root = (RelativeLayout) getActivity().findViewById( R.id.fragment_stickers_main );
+
         DisplayMetrics dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        //     int statusBarOffset = dm.heightPixels );
+
 
         view.getLocationOnScreen(originalPos);
 
@@ -329,13 +339,15 @@ public class StickersFragment extends Fragment {
         Integer count =  clickedSticker.getCount();
         status.setText("("+ statuss+" glued, "+ count+" left)");
 
-        //change here to one
+        //find the big green stick button
         Button stickButton = (Button) (dialog).findViewById(R.id.button_stick);
        if (clickedSticker.getStatus().equals(1))  stickButton.setVisibility(View.VISIBLE);
         stickButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 animateStickerBack(view);
                 dialog.dismiss();
+                //move to the album page for the clicked sticker once
+                //the buton is clicked
                 ((MainActivity)getActivity()).getMainPager().setCurrentItem(1);
                         ((MainActivity) getActivity()).
                         getViewPager().setCurrentItem(getStickerToAlbumIndexMapping(clickedSticker.getId()));
@@ -345,7 +357,7 @@ public class StickersFragment extends Fragment {
 
 
 
-    TextView title = (TextView) (dialog).findViewById(R.id.sticker_title);
+        TextView title = (TextView) (dialog).findViewById(R.id.sticker_title);
         title.setText( clickedSticker.getName());
 
         TextView rarity = (TextView) (dialog).findViewById(R.id.rarity);
@@ -382,6 +394,7 @@ public class StickersFragment extends Fragment {
         });
     }
 
+    //show the info dialog when a glued sticker is pressed
     private void showInfoDialog(Sticker clickedSticker) {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
@@ -397,7 +410,7 @@ public class StickersFragment extends Fragment {
         new LongOperation().execute("");
     }
 
-
+    //update the count in the progress bar
     private void updateGluedStickerCount(){
         Database db =Database.getInstance(getActivity());
         int gluedCount = db.getNumberGluedStickers();
@@ -407,7 +420,7 @@ public class StickersFragment extends Fragment {
         db.close();
     }
 
-    //update the list in asyncTask
+    //update the list in asyncTask as it may some time for bigger sticker collection
     private class LongOperation extends AsyncTask<String, Void, String> {
 
         @Override

@@ -73,13 +73,8 @@ import util.Util;
 
 
 public class StepsFragment extends Fragment {
-
 	private static final String ARG_POSITION = "position";
-
-
 	private static int steps;
-
-
 	private int todayOffset, total_start, since_boot, total_days;
 	private DecoView mDecoView;
 	private int mBackIndex;
@@ -96,7 +91,6 @@ public class StepsFragment extends Fragment {
 	static final AnimationSet as = new AnimationSet(true);
 	private boolean firstTime= true;
 	private TextView textNextPack;
-
 	public interface OnStickerChange {
 		void notifyChange();
 	}
@@ -122,8 +116,6 @@ public class StepsFragment extends Fragment {
 		todayOffset = db.getSteps(Util.getToday());
 		since_boot = db.getCurrentSteps();
 		steps = Math.max(todayOffset + since_boot, 0);
-//		total_start = db.getTotalWithoutToday();
-//		total_days = db.getDays();
 
 		rg= new DistributedRandomNumberGenerator(getActivity());
 
@@ -168,12 +160,15 @@ public class StepsFragment extends Fragment {
 
 		buttonOpenPack = (TextView) rootView.findViewById(R.id.packButton);
 		buttonOpenPack.setText(Integer.toString(availableStickerPacks)+" New Packs");
+		//if the open pack button is pressed
 		buttonOpenPack.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
 				int availableStickerPacks = prefs.getInt("packs", 0);
 				buttonOpenPack.setText(Integer.toString(availableStickerPacks) + " New Packs");
+                //if you have stikers for opening
 				if(availableStickerPacks > 0) {
+                    //pick 3 stickers randomly
 					int sticker1 = rg.getDistributedRandomNumber();
 					int sticker2 = rg.getDistributedRandomNumber();
 					int sticker3 = rg.getDistributedRandomNumber();
@@ -182,11 +177,16 @@ public class StepsFragment extends Fragment {
 					final Sticker sticker_2 = db.getSticker(sticker2);
 					final Sticker sticker_3 = db.getSticker(sticker3);
 					db.close();
+                    //open the new dialog displaying them
 					showNewSticker(sticker_1, sticker_2, sticker_3);
 					Log.w("pressButton", "pressed");
+                    //update the availalbe sticker count
 					updateStickerPackCountDecrease();
+                    //check for the achievement
 					updateCountForAchievements();
+                    //update the statuses and counts in the database for the three stickers
 					updateCountAndStatusDatabase(sticker_1, sticker_2, sticker_3);
+                    //notify all other views for a sticker change
 					notifyActivityStickerStatusChange.notifyChange();
 				}else{
 					Toast.makeText(getActivity(), "You don't have any stickers to open right now",
@@ -198,21 +198,19 @@ public class StepsFragment extends Fragment {
 		});
 
 
-
+        //code for initializing the arc progress step bar
 		mDecoView = (DecoView) rootView.findViewById(R.id.dynamicArcView);
 		createBackSeries();
 		createDataSeries1();
+        mDecoView.executeReset();
 
-
-
-		mDecoView.executeReset();
-
+        //animation
 		mDecoView.addEvent(new DecoEvent.Builder(goal)
 				.setIndex(mBackIndex)
 				.setDuration(3000)
 				.setDelay(100)
 				.build());
-
+        //second animation
 		mDecoView.addEvent(new DecoEvent.Builder(DecoDrawEffect.EffectType.EFFECT_SPIRAL_OUT_FILL)
 				.setIndex(mSeries1Index)
 				.setDuration(3000)
@@ -220,7 +218,7 @@ public class StepsFragment extends Fragment {
 				.build());
 
 
-
+        //togle between distance and steps
 		mDecoView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -229,7 +227,8 @@ public class StepsFragment extends Fragment {
 					isChecked = true;
 					updateViews();
 
-				} else {    //showDistance
+				} else {
+				//showDistance
 					isChecked = false;
 					updateViews();
 				}
@@ -241,6 +240,7 @@ public class StepsFragment extends Fragment {
 
 
 		ImageView img = (ImageView) rootView.findViewById(R.id.trendsImage);
+        //if the trends image is clicked start a new activity displaying the charts
 		img.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Log.w("Test","Trends Clicked");
@@ -292,8 +292,6 @@ public class StepsFragment extends Fragment {
 
 	private void showStickerMoreInfo(final Sticker clickedSticker) {
 		// custom dialog
-
-
 		clickedSticker.getName();
 		Log.d("NAMe", clickedSticker.getName());
 
@@ -485,6 +483,13 @@ public class StepsFragment extends Fragment {
 		});
 	}
 
+    /**
+     * determine if the sticker is rare or super rare in order to
+     * set the background glowing effect
+     * @param sticker
+     * @param image
+     * @param resourceID
+     */
 	private void determinePicture(Sticker sticker, ImageView image, int resourceID) {
 		if(sticker.getPopularity().equals("rare") || sticker.getPopularity().equals( "super rare")){
 			setBackgroundGlow(image, resourceID, 200, 200, 200);}
@@ -493,13 +498,21 @@ public class StepsFragment extends Fragment {
 		}
 	}
 
+
+    /**
+     * Determine if the sticker is new in order to set the top pulsing
+     * "NEW" indicatior
+     * @param imageCategory
+     * @param sticker
+     */
 	private void determineCategoty(ImageView imageCategory, Sticker sticker) {
 		//new Sticker
 		if(sticker.getCount() == 0){
 			Resources resources = getActivity().getResources();
 			int resourceId = resources.getIdentifier("neww", "drawable", getActivity().getPackageName());
 			imageCategory.setImageBitmap(SampleImage.decodeSampledBitmapFromResource(getResources(), resourceId, 250, 250));
-			Animation pulse = AnimationUtils.loadAnimation(getActivity(), R.anim.pulse);
+			//run the animation
+            Animation pulse = AnimationUtils.loadAnimation(getActivity(), R.anim.pulse);
 			pulse.setRepeatCount(Animation.INFINITE);
 			imageCategory.startAnimation(pulse);
 		}
@@ -517,19 +530,25 @@ public class StepsFragment extends Fragment {
 		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
 
 		goal = prefs.getInt("goal", Fragment_Settings.DEFAULT_GOAL);
-//		total_start = db.getTotalWithoutToday();
-//		total_days = db.getDays();
 		db.close();
 	}
 
+    /**
+     * Method called from the Service through the main activity
+     * to update the local step value
+     * @param steps_today
+     */
 	public void updateCountView(float steps_today) {
 		this.steps=Math.round(steps_today);
+        // if the goal is achieved
 		if(steps>= (int)goal){
 			Log.w("GOOOAL", "ACHIEVED");
 			updateGoal();
 			updateStickerPackCountText();
 			playGoalAnimation();
 		}else {
+
+            //else just update the progress arc with the new value
 			updatePie();
 			updateViews();
 		}
@@ -566,9 +585,10 @@ public class StepsFragment extends Fragment {
 		buttonOpenPack.setText(Integer.toString(availableStickerPacks) + " New Packs");
 	}
 
-
-
-
+    /**
+     * Update the goal shred preference value with the steps
+     * needed for the next goal to be achieved
+     */
 	private void updateGoal() {
 		SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS);
 		goal = prefs.getInt("goal", Fragment_Settings.DEFAULT_GOAL);
@@ -579,6 +599,10 @@ public class StepsFragment extends Fragment {
 			mDecoView.addEvent(new DecoEvent.Builder(steps).setIndex(mSeries1Index).build());
 	}
 
+    /**
+     * Once the goal is animate the progress arch back
+     * and start "playGoalAnimation2"
+     */
 	private void playGoalAnimation() {
 		goalAnimationPlaying=true;
 		resetText();
@@ -608,6 +632,9 @@ public class StepsFragment extends Fragment {
 		resetText();
 	}
 
+    /**
+     * Play the nice "GOAL!" animation on the progress bar
+     */
 	private void playGoalAnimation2() {
 
 		mDecoView.addEvent(new DecoEvent.Builder(DecoDrawEffect.EffectType.EFFECT_SPIRAL_EXPLODE)
@@ -631,7 +658,10 @@ public class StepsFragment extends Fragment {
 				}).build());
 	}
 
-
+    /**
+     * Update the steps count
+     * TODO: this method needs refactoring
+     */
 	private void updateViews() {
 		Log.w("updateView", "updateViews");
 		//Log.w("update  VIew", Integer.toString(total_start + steps));
@@ -684,7 +714,7 @@ public class StepsFragment extends Fragment {
 			@Override
 			public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
 				float percentFilled = ((currentPosition - seriesItem.getMinValue()) / (seriesItem.getMaxValue() - seriesItem.getMinValue()));
-
+                //update the views
 				textSteps.setText(Integer.toString(steps) + " steps");
 				textNextPack.setText("Next Pack:");
 				textToGo.setText( Integer.toString(Math.round(seriesItem.getMaxValue() - currentPosition))+" steps");
@@ -724,14 +754,18 @@ public class StepsFragment extends Fragment {
 		}}
 
 
-
-
+    /**
+     * Animate the new sticker rotating them on left and right and back again
+     *
+     * @param sticker
+     * @param durationMillis
+     */
 	private void animate(final RelativeLayout sticker,long durationMillis) {
 
 		//final AnimationSet as = new AnimationSet(true);
 		as.setFillEnabled(true);
 		as.setFillAfter(true);
-
+        //left rotations
 		final RotateAnimation rotateLeft = new RotateAnimation((float) 320, (float) 375,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
@@ -740,7 +774,7 @@ public class StepsFragment extends Fragment {
 
 
 		if(firstTime) as.addAnimation(rotateLeft);
-
+        //right rotations
 		Animation rotateRight = new RotateAnimation((float) 375, (float) 320,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
@@ -757,7 +791,7 @@ public class StepsFragment extends Fragment {
 	}
 
 	private void resetText() {
-
+        //reset text during the animation
 		textToGo.setText("");
 		textSteps.setText("");
 		textGoal.setText("");
@@ -766,7 +800,7 @@ public class StepsFragment extends Fragment {
 
 	private void setBackgroundGlow(ImageView imgview, int imageicon,int r,int g,int b)
 	{
-// An added margin to the initial image
+    // An added margin to the initial image
 		int margin = 50;
 		int halfMargin = margin / 2;
 		// the glow radius

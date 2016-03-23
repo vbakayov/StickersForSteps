@@ -50,6 +50,7 @@ public class Database extends SQLiteOpenHelper {
 
     private Database(final Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        //check if this is the first time we run the app
        createdatabase();
 
     }
@@ -103,10 +104,10 @@ public class Database extends SQLiteOpenHelper {
 
 
     public void populateStickers()  {
-
+        //get reference to the asset manager
        AssetManager assetManager = context.getAssets();
         InputStream is = null;
-
+        //try to find the csv with all the stickers information
         try {
             is = assetManager.open("stickers.csv");
         } catch (IOException e) {
@@ -117,12 +118,12 @@ public class Database extends SQLiteOpenHelper {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
         CSVReader csvReader = new CSVReader(reader);
-
+        //iterate through the file
         try {
             int iteration = 0;
             String [] nextLine;
             while ((nextLine = csvReader.readNext()) != null) {
-                // nextLine[] is an array of values from the line
+
 
                 //skip fist line
                 if(iteration == 0) {iteration++;continue;}
@@ -136,6 +137,7 @@ public class Database extends SQLiteOpenHelper {
                 sticker.setDescription(nextLine[5]);
                 sticker.setCount(0);
                 sticker.setStatus(0);
+                //add each sticker in the database
                 addSticker(sticker);
             }
         } catch (IOException e) {
@@ -175,7 +177,9 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public void createdatabase(){
+        //check if the database exists
         boolean dbexist = checkdatabase();
+        //if it doesnt exist populate it
         if(!dbexist)
             populateStickers();
     }
@@ -682,40 +686,7 @@ public class Database extends SQLiteOpenHelper {
         return re == Integer.MIN_VALUE ? 0 : re;
     }
 
-    /**
-     * Should be called when the timezone on the device changes. This will adjust the databas entries
-     * so that each entry still translates to midnight of a day.
-     *
-     * @param offsetDifference the difference in the rawOffsets of the two timeZones (new - old) in milliseconds
-     */
-    public void timeZoneChanged(int offsetDifference) {
-//        if (BuildConfig.DEBUG) {
-//            Logger.log(" ## before:");
-//            logState();
-//        }
-//        try {
-//            getWritableDatabase()
-//                    .execSQL("UPDATE " + DB_NAME + " SET date = date - '" + offsetDifference +
-//                            "' WHERE date > 0");
-//        } catch (Exception e) {
-//            // try calling the upgrade method again to drop the PRIMARY KEY constraint
-//            onUpgrade(getWritableDatabase(), 1, 2);
-//        }
-//        if (BuildConfig.DEBUG) {
-//            Logger.log(" ## after:");
-//            logState();
-//        }
-//        // check if we need to create an entry for the new today
-//        if (getSteps(Util.getToday()) == Integer.MIN_VALUE) {
-//            if (BuildConfig.DEBUG) {
-//                Logger.log(" creating new entry for date " + Util.getToday() + " with offset -" +
-//                        getCurrentSteps() + " and adding " + getCurrentSteps() + " to " +
-//                        getLastDay());
-//            }
-//            updateSteps(getLastDay(), getCurrentSteps());
-//            insertNewDay(Util.getToday(), getCurrentSteps());
-//        }
-    }
+
 
     /**
      * Gets the date of the newest entry
